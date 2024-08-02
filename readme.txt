@@ -1,7 +1,7 @@
 *******************************************************************************
-*						ARCHIVO PARA DEJAR NOTAS PARA LA					  *
-*						OTRA PERSONA. O RECORDATORIOS PARA					  *
-*						LLEVAR UN MEJOR CONTROL DEL PROYECTO				  *
+*			ARCHIVO PARA DEJAR NOTAS PARA LA		      *
+*			OTRA PERSONA. O RECORDATORIOS PARA		      *
+*			LLEVAR UN MEJOR CONTROL DEL PROYECTO	  	      *
 *******************************************************************************
 
 yaja: he tenido que crear este archivo para poder generar ramas.
