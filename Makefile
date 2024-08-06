@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/06 12:40:16 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/06 12:59:45 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ HEADER = inc/minishell.h
 CC = cc 
 RM = rm -rf 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+LDFLAGS = -lreadline
 
 LIBS = libs/Libft/libft.a -ldl -lglfw -lm
 
@@ -48,7 +49,7 @@ make_libs:
 	make -C libs/Libft all
 
 ${NAME}: ${OBJS}
-	$(CC) $(CFLAGS) ${OBJS} $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) ${OBJS} $(LIBS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	${RM} ${OBJDIR}
