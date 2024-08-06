@@ -6,9 +6,15 @@
 #    By: mfontser <mfontser@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:53:26 by mfontser          #+#    #+#              #
-#    Updated: 2024/02/15 19:30:11 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/06 13:51:15 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+#COLORS#
+GREEN = \033[1;92m
+RED = \033[1;91m
+NC = \033[0m
+YELLOW= \033[1;33m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
@@ -40,7 +46,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 #Metodo implicito
 %.o:%.c libft.h Makefile
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(YELLOW)Compiling... $(END)$(patsubst $(DIR_BUILD)%,%,$@)"
 #compila todos los .c en .o
 
 
@@ -49,24 +56,26 @@ all: ${NAME}
 #crea la libreria, libft.a
 
 ${NAME}: ${OBJS}
-	ar rcs ${NAME} ${OBJS}
+	@ar rcs ${NAME} ${OBJS}
+	@echo "$(GREEN)LIBFT DONE$(END)"
 #declaro la relacion de dependencia entre el libft.a y los archivos que debe contener (los .o transformados a patir de los .c)
 
 bonus: ${OBJS} ${OBJSBONUS} 
-	ar rcs ${NAME} ${OBJS} ${OBJSBONUS} 
+	@ar rcs ${NAME} ${OBJS} ${OBJSBONUS} 
 	@touch $@
 
 clean:
-	${RM} ${OBJS} ${OBJSBONUS}
+	@${RM} ${OBJS} ${OBJSBONUS}
+	@echo "$(RED)LIBFT OBJECTS DELETED$(END)"
 #borra todos los .o
 
 fclean: clean
-	${RM} ${NAME} 
-	${RM} bonus
+	@${RM} ${NAME} 
+	@${RM} bonus
 #borra todos los .o y el libft.a
 
 re: fclean all
-	echo "re done"
+	@echo "$(RED)LIBFT EXEC DELETED$(END)"
 
 .PHONY: all clean fclean re
 #para no confundir estos comandos con nombres de archivos
