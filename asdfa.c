@@ -1,3 +1,0 @@
-<<<<<<< HEAD
-marta dice hola
-=======
