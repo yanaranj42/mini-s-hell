@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 00:39:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:11:33 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int	get_own_env(char **env, t_general *data)
 	//borrar:
 	printf("*********Own enviroment*********\n");
 	print_env(data);
+	printf("\n");
 	return (1);
 }

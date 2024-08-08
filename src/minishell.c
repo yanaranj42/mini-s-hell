@@ -6,21 +6,22 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 12:06:59 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:09:23 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-int main(int argc, char ** argv, char **env)
+int main(int argc, char **argv, char **env)
 {
 	char 		*line;
 	t_general	data; 
 
-	(void)argc;
-	(void)argv;
+	(void)argv; // que hacemos con esto???
 
+	if (argc != 1)
+		return (0);
 	init_data_values(&data); 
 	if (get_own_env(env, &data) == 0)
 		return (0);
@@ -42,17 +43,18 @@ int main(int argc, char ** argv, char **env)
 		printf("%s\n", line); // borrar
 
 		//LEXER
-
+		if (lexer(line) == 0)
+			continue; // para volver a empezar el while
 		//PARSER
 
-		pseudoparser(line, &data);   //pseudaparser sencillo que solo me coja un comando spliteado por espacios
+		pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
 		//EXPANDER
 
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
 		pseudoexecutor(&data); 
 
-		// limpiar los tokens
+		// limpiar los tokens -- FALTA
 		free(line);
 	}
 	free_before_end(&data);

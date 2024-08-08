@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 01:43:37 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:08:56 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,17 @@ void	free_env(t_general *data);
 void	perror_message(char *start, char *message);
 void 	init_data_values(t_general *data); 
 
+//LEXER
+int 	lexer (char *line);
+void 	delete_spaces (char *line);
+
+//PARSER
 void 	pseudoparser(char *line, t_general *data);
 void 	debug_token(t_token *token);
 
+//EXECUTOR
 void 	print_env(t_general *data);
+int 	pseudoexecutor(t_general *data);
 
 
 void	free_before_end(t_general *data);

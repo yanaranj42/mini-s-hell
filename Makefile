@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/08 01:44:22 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/08 14:08:29 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,11 @@ FILES = minishell.c initializations.c own_enviroment.c error_messages.c free.c
 
 FILES += built-ins/env.c 
 
+FILES += lexer/lexer.c 
+
 FILES += parser/pseudoparser.c 
+
+FILES += executor/pseudoexecutor.c 
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
