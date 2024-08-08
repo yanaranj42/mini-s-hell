@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/08 14:08:29 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/08 23:44:42 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,23 @@ make_libs:
 
 ${NAME}: ${OBJS}
 	@$(CC) $(CFLAGS) ${OBJS} $(LIBS) -o $(NAME) $(LDFLAGS)
-	@echo "$(GREEN)DRACKYSHELL DONE$(END)"
+	@echo "$(GREEN)"
+	@echo " "
+	@echo "                   )       \\   /      ("
+	@echo "                  /|\\      )\\_/(     /|\\"
+	@echo "  *              / | \\    (/\\|/\\)   / | \\             *"
+	@echo "  |\`.___________/__|__o____\\\`|'/___o__|__\\__________.'|"
+	@echo "  |                  '^\`    \\|/   '^\`                 |"
+	@echo "  |                          V                        |"
+	@echo "  |$(END)  $(RED)             🔥 DRACKYSHELL DONE 🔥 $(END) $(GREEN)            |"
+	@echo "  |                                                   |"
+	@echo "  | ._______________________________________________. |"
+	@echo "  |'      l    /\\ /     \\\\\\\\            \\ /\\   l       \`|"
+	@echo "  *       l  /   V       ))            V   \\ l        *"
+	@echo "          l/            //                  \\I"
+	@echo "                        V"
+	@echo "$(END)"
+
 clean:
 	@${RM} ${OBJDIR}
 	@make -C libs/Libft clean

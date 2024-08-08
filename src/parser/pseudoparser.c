@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 00:53:22 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 01:49:24 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:46:43 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void debug_token(t_token *token)
 
 	i = 0;
 
+	printf ("\n******************* PARSER *******************\n");
 	printf("argc = %d\n", token->argc);
 	while (token->argv[i])
 	{
@@ -36,7 +37,7 @@ void pseudoparser(char *line, t_general *data)
 	int i;
 	int count;
 	//primero creo un token
-	data->first_token = malloc (sizeof(t_token) * 1);
+	data->first_token = malloc (sizeof(t_token) * 1); //aqui estoy creando un token, lo que me devuelve el malloc es la direccion de memoria, que la guardo en first token (que antes era null). first token ya esta creado desde el momento que creo data, pero first token no es un token, es solo un puntero que almacenara una direccion de memoria
 
 	i = 0;
 	count = 0;

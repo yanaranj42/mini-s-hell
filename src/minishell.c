@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 14:09:23 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:40:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int main(int argc, char **argv, char **env)
 {
-	char 		*line;
+	char 		*line; // mejor dentro de la estructura????????
 	t_general	data; 
 
 	(void)argv; // que hacemos con esto???
@@ -29,8 +29,8 @@ int main(int argc, char **argv, char **env)
 
 	while (1)
 	{
-		line = readline("DrackyShell: ");
-		if (!line) //temporal. Para evitar segfault al comparar si line no existe
+		line = readline("🔥 ÐrackyŠhell ▶ ");
+		if (!line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
 			break;
 		}
@@ -40,13 +40,13 @@ int main(int argc, char **argv, char **env)
 			break;
 		}
 		add_history (line); // para poder acceder al historial de comandos
-		printf("%s\n", line); // borrar
+		printf("\nLinea de comando original: |%s|\n", line); // borrar
 
 		//LEXER
-		if (lexer(line) == 0)
+		if (lexer(&line, &data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 			continue; // para volver a empezar el while
+		
 		//PARSER
-
 		pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
 		//EXPANDER
 
@@ -54,7 +54,11 @@ int main(int argc, char **argv, char **env)
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
 		pseudoexecutor(&data); 
 
-		// limpiar los tokens -- FALTA
+		// limpiar los tokens
+		free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
+		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
+		//el hermano tonto y el original apuntan al sitio que quiero limpiar, y como al limpiar accedo al contenido, ya se limpia para todos.
+		// cuando creo data creo una cajonera que ya tiene dos punteros y donde puedo poner dos direccioens de memoria, osea first token no lo aloco, se crea directamente con data. Si quiero que first token apunte a un token, lo que tengo que hacer es crear el token (malloc), y la direccion se guarda en first token
 		free(line);
 	}
 	free_before_end(&data);
