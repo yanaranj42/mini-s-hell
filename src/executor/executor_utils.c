@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/07 11:48:10 by yanaranj         ###   ########.fr       */
+/*   Created: 2024/08/08 03:01:27 by mfontser          #+#    #+#             */
+/*   Updated: 2024/08/08 03:12:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+//funcion para recibir un string (argv[0] del token) y determino si se corresponde a un builtin o no devolviendo true o false (strcmp)
+//si es un builin, llamare a executor builtin, sino, en un futuro llamare executor command (que tendra execve)
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
-int check_line(char *str);
-
-#endif

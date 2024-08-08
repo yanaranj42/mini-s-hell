@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/07 16:14:16 by yanaranj         ###   ########.fr       */
+/*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
+/*   Updated: 2024/08/08 00:28:34 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+void print_env(t_general *data)
 {
-	char *line;
+	int i;
 
-	while (1)
+	i = 0;
+	while (data->own_env[i])
 	{
-		line = readline("Drackishell: ");
-		printf("%s\n", line);
-		if (strncmp("exit", line, 5) == 0)
-			break ;
+		printf("%s\n", data->own_env[i]);
+		i++;
 	}
-	//if (line) 
-    //	free(line);
-    return (0);
 }
