@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 01:43:37 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:13:45 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct s_token
 	struct s_token *next;
 }	t_token;
 
+/*
+typedef struct s_env
+{
+	char	*value;
+	char	*next;
+}			t_env;
+*/
 typedef struct s_general
 {
 	char **own_env;
