@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/06 13:49:55 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/08/08 23:44:42 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,15 @@ YELLOW= \033[1;33m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
-FILES = minishell.c
+FILES = minishell.c initializations.c own_enviroment.c error_messages.c free.c
+
+FILES += built-ins/env.c 
+
+FILES += lexer/lexer.c 
+
+FILES += parser/pseudoparser.c 
+
+FILES += executor/pseudoexecutor.c 
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
@@ -33,7 +41,7 @@ NAME = minishell
 HEADER = inc/minishell.h
 CC = cc 
 RM = rm -rf 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LDFLAGS = -lreadline
 
 LIBS = libs/Libft/libft.a -ldl -lglfw -lm
@@ -56,18 +64,34 @@ make_libs:
 
 ${NAME}: ${OBJS}
 	@$(CC) $(CFLAGS) ${OBJS} $(LIBS) -o $(NAME) $(LDFLAGS)
-	@echo "$(GREEN)DRACKISHELL DONE$(END)"
+	@echo "$(GREEN)"
+	@echo " "
+	@echo "                   )       \\   /      ("
+	@echo "                  /|\\      )\\_/(     /|\\"
+	@echo "  *              / | \\    (/\\|/\\)   / | \\             *"
+	@echo "  |\`.___________/__|__o____\\\`|'/___o__|__\\__________.'|"
+	@echo "  |                  '^\`    \\|/   '^\`                 |"
+	@echo "  |                          V                        |"
+	@echo "  |$(END)  $(RED)             🔥 DRACKYSHELL DONE 🔥 $(END) $(GREEN)            |"
+	@echo "  |                                                   |"
+	@echo "  | ._______________________________________________. |"
+	@echo "  |'      l    /\\ /     \\\\\\\\            \\ /\\   l       \`|"
+	@echo "  *       l  /   V       ))            V   \\ l        *"
+	@echo "          l/            //                  \\I"
+	@echo "                        V"
+	@echo "$(END)"
+
 clean:
 	@${RM} ${OBJDIR}
 	@make -C libs/Libft clean
-	@echo "$(RED)DRACKISHELL OBJECTS DELETED$(END)"
+	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
 
 fclean:
 	@${RM} ${OBJDIR}
-	@echo "$(RED)DRACKISHELL OBJECTS DELETED$(END)"
+	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
 	@${RM} ${NAME}
 	@make -C libs/Libft fclean
-	@echo "$(RED) DRACKISHELL EXEC DELETED$(END)"
+	@echo "$(RED) DRACKYSHELL EXEC DELETED$(END)"
 
 re: fclean all
 #	@echo "drackishell re done"
