@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 23:40:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:10:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ int main(int argc, char **argv, char **env)
 
 	if (argc != 1)
 		return (0);
-	init_data_values(&data); 
-	if (get_own_env(env, &data) == 0)
-		return (0);
-	
-
+	init_values(&data, env);
+//	if (get_own_env(env, &data) == 0)
+//		return (0);
 	while (1)
 	{
 		line = readline("🔥 ÐrackyŠhell ▶ ");

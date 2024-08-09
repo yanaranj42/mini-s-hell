@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 00:28:34 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:39:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void print_env(t_general *data)
 	int i;
 
 	i = 0;
-	while (data->own_env[i])
+	while (data->env_lst[i])
 	{
-		printf("%s\n", data->own_env[i]);
+		printf("%s\n", data->env_lst[i]->name);
 		i++;
 	}
 }

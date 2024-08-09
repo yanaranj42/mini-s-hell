@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   own_enviroment.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 14:11:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:29:44 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-
+/*
 int env_matrix_base (char **env)
 {
 	int i;
@@ -27,33 +27,22 @@ int env_matrix_base (char **env)
 	}
 	return (count);
 }
-
-int	get_own_env(char **env, t_general *data)
+*/
+int	get_own_env(t_general *data, char **env)
 {
-	int	i;
+	t_env	s_env;
+	int		i;
 
 	i = 0;
 
-	if (env && env[i]) //miro que exista env y luego entro a mirar si existe la columna
+	while (env[i] != NULL)
 	{
-		data->own_env = malloc (sizeof(char*) * (env_matrix_base(env) + 1));
-		if (!data->own_env)
-		{
-			perror_message(NULL, "Failure in enviroment creation");
-			return (0);
-		}
-		while (env[i] != NULL)
-		{
-			data->own_env[i] = ft_strdup(env[i]);
-			if (data->own_env[i] == NULL)
-			{
-				perror_message(NULL, "Malloc failure in take enviroment");
-				free_env(data);
-				return (0);
-			}
-			i++;
-		}
-		data->own_env[i] = NULL;
+		s_env = malloc(sizeof(t_env));
+		if (!s_env)
+			return (perror_message(NULL, "Fail in env creation"), 0);
+		s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
+		s_env->value = ft_strdup(getenv(s_env->name));
+		s_env->next = NULL;
 	}
 	//borrar:
 	printf("*********Own enviroment*********\n");

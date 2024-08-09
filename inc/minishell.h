@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 23:09:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:21:55 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,33 @@ typedef struct s_quotes
 	int miniquotes;
 }	t_quotes;
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}					*t_env;
+
 typedef struct s_general
 {
-	char **own_env;
+	t_env		*env_lst;
 	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_quotes qdata; 
 }	t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
+//built-ins
+//			--OWN_ENVIRONMENT.C--				//
+int		get_own_env(t_general *data, char **env);
+//int 	env_matrix_base (char **env);
+
+//			--INITIALIZATIONS.C--				//
+int 	init_values(t_general *data, char **env);
+void	init_quote_values(t_general *data); 
 
 
-int		get_own_env(char **env, t_general *data);
-int 	env_matrix_base (char **env);
 void	free_env(t_general *data);
 void	perror_message(char *start, char *message);
-void 	init_data_values(t_general *data);
-void	init_quote_values(t_general *data); 
 
 //LEXER
 int 	lexer (char **line, t_general *data);

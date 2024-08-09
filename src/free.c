@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 21:48:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:14:05 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void	free_env(t_general *data)
 	int	i;
 
 	i = 0;
-	if (data->own_env == NULL)
+	if (data->env_lst == NULL)
 		return ;
-	while (data->own_env[i])
+	while (data->env_lst[i])
 	{
-		free(data->own_env[i]);
+		free(data->env_lst[i]);
 		i++;
 	}
-	free(data->own_env);
+	free(data->env_lst);
 }
 
 
