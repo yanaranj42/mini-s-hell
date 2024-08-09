@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 23:09:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/09 00:41:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ typedef struct s_quotes
 typedef struct s_general
 {
 	char **own_env;
-	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
-	t_quotes qdata; 
+	char *pretoken;
+	t_quotes qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
+	t_token *first_token; 
 }	t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
@@ -53,7 +54,7 @@ void	init_quote_values(t_general *data);
 //LEXER
 int 	lexer (char **line, t_general *data);
 void 	delete_spaces (char **line);
-int 	review_quotes (char **line, t_general *data);
+int 	review_closed_quotes (char **line, t_general *data);
 
 //PARSER
 void 	pseudoparser(char *line, t_general *data);
