@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 13:31:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:06:38 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int pseudoexecutor(t_general *data)
 	else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
 		return (2);
 	else if (ft_strncmp("pwd", data->first_token->argv[0], 3) == 0)
-		return (3);
+		ft_pwd();
 	else if (ft_strncmp("export", data->first_token->argv[0], 6) == 0)
 		return (4);
 	else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
