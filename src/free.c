@@ -6,14 +6,13 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:05 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:04:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "libft.h"
 #include "minishell.h"
-
 
 void	free_env(t_general *data)
 {
@@ -29,7 +28,6 @@ void	free_env(t_general *data)
 	}
 	free(data->env_lst);
 }
-
 
 void	free_before_end(t_general *data)
 {

@@ -6,36 +6,40 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/09 14:29:44 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:04:10 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-/*
-int env_matrix_base (char **env)
-{
-	int i;
-	int count;
 
-	i = 0;
-	count = 0;
-	while (env[i] != NULL)
+void env_to_lst(t_general *data, t_env *my_env)
+{
+	t_env	*head;
+	t_env	*tmp;
+	
+	head = data->env_lst;
+	tmp = head;
+	if (my_env == NULL)
+		return ;
+	if (head == NULL)
 	{
-		count++;
-		i++;
+		data->env_lst = my_env;
+		return ;
 	}
-	return (count);
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = my_env;
 }
-*/
+
 int	get_own_env(t_general *data, char **env)
 {
-	t_env	s_env;
+	t_env	*s_env;
 	int		i;
 
-	i = 0;
+	i = -1;
 
-	while (env[i] != NULL)
+	while (env[++i])
 	{
 		s_env = malloc(sizeof(t_env));
 		if (!s_env)
@@ -43,10 +47,9 @@ int	get_own_env(t_general *data, char **env)
 		s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 		s_env->value = ft_strdup(getenv(s_env->name));
 		s_env->next = NULL;
+		env_to_lst(data, s_env);
+		printf("%s = %s\n", s_env->name, s_env->value);
+		free(s_env->name);
 	}
-	//borrar:
-	printf("*********Own enviroment*********\n");
-	print_env(data);
-	printf("\n");
 	return (1);
 }

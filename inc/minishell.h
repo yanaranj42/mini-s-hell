@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/09 14:21:55 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:04:10 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	struct s_env	*next;
-}					*t_env;
+}					t_env;
 
 typedef struct s_general
 {
@@ -51,7 +51,7 @@ typedef struct s_general
 //built-ins
 //			--OWN_ENVIRONMENT.C--				//
 int		get_own_env(t_general *data, char **env);
-//int 	env_matrix_base (char **env);
+void	env_to_lst(t_general *data, t_env *new_env);
 
 //			--INITIALIZATIONS.C--				//
 int 	init_values(t_general *data, char **env);
