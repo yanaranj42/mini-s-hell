@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:15:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:42:08 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,13 @@ void	env_to_lst(t_general *data, t_env *new_env);
 int 	init_values(t_general *data, char **env);
 void	init_quote_values(t_general *data); 
 
+//				--FREE.C--				//
+void	free_env(t_env *head);
+void 	free_tokens_list(t_token *token);
+void 	free_token(t_token *token);
+void	free_before_end(t_general *data);
 
-void	free_env(t_general *data);
 void	perror_message(char *start, char *message);
-
 //LEXER
 int 	lexer (char **line, t_general *data);
 void 	delete_spaces (char **line);
@@ -73,10 +76,6 @@ void 	debug_token(t_token *token);
 //EXECUTOR
 void 	print_env(t_general *data);
 int 	pseudoexecutor(t_general *data);
-
-void 	free_tokens_list(t_token *token);
-void 	free_token(t_token *token);
-void	free_before_end(t_general *data);
 
 
 #endif

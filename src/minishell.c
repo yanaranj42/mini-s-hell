@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:15:38 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:17:53 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv, char **env)
 //		return (0);
 	while (1)
 	{
-		line = readline("🔥 ÐrackyŠhell ▶ ");
+		line = readline("🔥 ÐrackyŠhell 🔥 ▶ ");
 		if (!line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
 			break;
