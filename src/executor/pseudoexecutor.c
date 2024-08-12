@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pseudoexecutor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 14:10:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:31:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int pseudoexecutor(t_general *data)
 	else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
 		return (5);
 	else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
-		return (6);
+		ft_env(data->env_lst);
 	else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
 		return (7);
 	return (0);

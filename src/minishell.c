@@ -6,12 +6,11 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:17:53 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:51:53 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 int main(int argc, char **argv, char **env)
 {
@@ -23,8 +22,6 @@ int main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	init_values(&data, env);
-//	if (get_own_env(env, &data) == 0)
-//		return (0);
 	while (1)
 	{
 		line = readline("🔥 ÐrackyŠhell 🔥 ▶ ");

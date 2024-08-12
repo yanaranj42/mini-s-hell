@@ -6,18 +6,29 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:42:08 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:51:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../libs/Libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+/* COLORS*/
+#define END		"\x1b[0m"
+#define RED		"\x1b[31m"
+#define YELLOW	"\x1b[33m"
+#define BLUE	"\x1b[34m"
+
+/*ERRORS*/
+#define	ERR01	"Malloc error\n"
+#define ERR02	RED"ENV creation failiure"END
 
 typedef struct s_token
 {
@@ -52,6 +63,7 @@ typedef struct s_general
 //			--OWN_ENVIRONMENT.C--				//
 int		get_own_env(t_general *data, char **env);
 void	env_to_lst(t_general *data, t_env *new_env);
+int		ft_env(t_env *env);
 
 //			--INITIALIZATIONS.C--				//
 int 	init_values(t_general *data, char **env);

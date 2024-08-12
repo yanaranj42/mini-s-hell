@@ -6,21 +6,21 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:15:36 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:51:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void print_env(t_general *data)
-{
-	t_env	*s_env
-	int i;
 
-	i = 0;
-	while (data->env_lst[i])
+/*builtin. Para que cuando lo llame, me lo imprima. Esto es un esquema*/
+int ft_env(t_env *env)
+{
+	while (env && env->next != NULL)
 	{
-		printf("%s\n", data->env_lst[i]->name);
-		i++;
+		ft_putendl_fd(env->value, 0);
+		env = env->next;
 	}
-}*/
+	if (env)
+		ft_putendl_fd(env->value, 0);
+	return (0);
+}

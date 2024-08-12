@@ -6,12 +6,12 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:48:56 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:51:51 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
+
 /* cada nodo que vayamos obteniendo al hacer la copia del env, lo agregamos y
 creamos una nuestra lista. */
 void env_to_lst(t_general *data, t_env *my_env)
@@ -44,14 +44,13 @@ int	get_own_env(t_general *data, char **env)
 	{
 		s_env = malloc(sizeof(t_env));
 		if (!s_env)
-			return (perror_message(NULL, "Fail in env creation"), 0);
+			return (perror_message(NULL, ERR02), 0);
 		s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 		s_env->value = ft_strdup(getenv(s_env->name));
 		s_env->next = NULL;
 		env_to_lst(data, s_env);
 		if (!s_env->name || !s_env->value)
 			return (free_env(data->env_lst), 0);
-		printf("%s = %s\n", s_env->name, s_env->value);
 	}
 	return (1);
 }
