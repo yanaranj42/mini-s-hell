@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 15:51:51 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:25:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void env_to_lst(t_general *data, t_env *my_env)
 		tmp = tmp->next;
 	tmp->next = my_env;
 }
+/* la funcion solo detecta los valores del env que contengan '=' */
 
 int	get_own_env(t_general *data, char **env)
 {

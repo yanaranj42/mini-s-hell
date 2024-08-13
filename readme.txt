@@ -12,3 +12,7 @@ yaja 12/08: BUILTINS - he creado ya la copia del env con nodos. Y tambien ya me
 			los libera correctamente y no genera leaks (por el momento) =)
 			He modificado un poco el .h, simplemente he ordenado las funciones
 			segun el archivo en el que se encuentren!
+	 13/08: he retirado la libft de los headers de los archivos y esta en el .h
+			me falta completar funciones para cambiar el path del env para el
+			CD. Usar mejor la estructura en lugar de los punteros para moverse
+			entre los nodos

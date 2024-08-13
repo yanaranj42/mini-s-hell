@@ -6,7 +6,7 @@
 #    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/12 16:15:43 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/08/13 16:15:11 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ YELLOW= \033[1;33m
 
 FILES = minishell.c initializations.c error_messages.c free.c
 
-FILES += built-ins/builtins.c
+FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c
 
 FILES += env/own_enviroment.c
 

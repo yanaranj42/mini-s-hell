@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 16:09:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:15:10 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*builtin. Para que cuando lo llame, me lo imprima. Esto es un esquema*/
+/*builtin. Todos estos son esquemas, ya que hay que meter los FD para las
+redirecciones y mas cosas
+*/
 int ft_env(t_env *env)
 {
 	while (env && env->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 16:10:55 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:15:20 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@
 #define RED		"\x1b[31m"
 #define YELLOW	"\x1b[33m"
 #define BLUE	"\x1b[34m"
+#define GREEN	"\x1b[32m"
 
 /*ERRORS*/
 #define FAIL	0
 #define SUCCESS	1
 #define	ERR01	"Malloc error\n"
-#define ERR02	RED"ENV creation failiure"END
+#define ERR02	"ENV creation failiure"
 
 typedef struct s_token
 {
@@ -56,9 +57,10 @@ typedef struct s_env
 
 typedef struct s_general
 {
+	char		**argv;
 	t_env		*env_lst;
 	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
-	t_quotes qdata; 
+	t_quotes qdata;
 }	t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
@@ -66,19 +68,21 @@ typedef struct s_general
 //				**built-ins**					//
 int		ft_env(t_env *env);
 int		ft_pwd(void);
+int		ft_cd(t_general *data);
+int		ft_echo(char **argv);
 
 //					**lexer**					//
-int 	lexer (char **line, t_general *data);
-void 	delete_spaces (char **line);
-int 	review_quotes (char **line, t_general *data);
+int		lexer (char **line, t_general *data);
+void	delete_spaces (char **line);
+int		review_quotes (char **line, t_general *data);
 
 //					**parser**					//
-void 	pseudoparser(char *line, t_general *data);
-void 	debug_token(t_token *token);
+void	pseudoparser(char *line, t_general *data);
+void	debug_token(t_token *token);
 
 //					**executor**				//
-void 	print_env(t_general *data);
-int 	pseudoexecutor(t_general *data);
+void	print_env(t_general *data);
+int		pseudoexecutor(t_general *data);
 
 //			--OWN_ENVIRONMENT.C--				//
 int		get_own_env(t_general *data, char **env);
@@ -86,18 +90,16 @@ void	env_to_lst(t_general *data, t_env *new_env);
 
 
 //			--INITIALIZATIONS.C--				//
-int 	init_values(t_general *data, char **env);
+int		init_values(t_general *data, char **env);
 void	init_quote_values(t_general *data); 
 
 //					--FREE.C--					//
 void	free_env(t_env *head);
-void 	free_tokens_list(t_token *token);
-void 	free_token(t_token *token);
+void	free_tokens_list(t_token *token);
+void	free_token(t_token *token);
 void	free_before_end(t_general *data);
 
 //				--ERROR_MESSAGES.C--			//
 void	perror_message(char *start, char *message);
-
-
 
 #endif
