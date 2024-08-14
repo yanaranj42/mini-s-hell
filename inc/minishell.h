@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/13 16:15:20 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:40:02 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@
 #define GREEN	"\x1b[32m"
 
 /*ERRORS*/
-#define FAIL	0
-#define SUCCESS	1
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
+#define STDERR	2
+#define FAIL	0
+#define SUCCESS	1
+#define OTHER	3 //tmp
 
 typedef struct s_token
 {
@@ -88,6 +90,12 @@ int		pseudoexecutor(t_general *data);
 int		get_own_env(t_general *data, char **env);
 void	env_to_lst(t_general *data, t_env *new_env);
 
+//					--CD.C--					//
+int		ft_cd(t_general *data);
+int		go_to_path(int opt, t_general *data);
+int		update_pwd(t_general *data);
+int		env_update(t_env *head, char *k_word, char *n_value);
+char	*get_env_path(t_general *data, char *k_word);
 
 //			--INITIALIZATIONS.C--				//
 int		init_values(t_general *data, char **env);

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/13 12:25:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:12:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 /* cada nodo que vayamos obteniendo al hacer la copia del env, lo agregamos y
 creamos una nuestra lista. */
-void env_to_lst(t_general *data, t_env *my_env)
+void	env_to_lst(t_general *data, t_env *my_env)
 {
 	t_env	*head;
 	t_env	*tmp;
-	
+
 	head = data->env_lst;
 	tmp = head;
 	if (my_env == NULL)
@@ -40,7 +40,6 @@ int	get_own_env(t_general *data, char **env)
 	int		i;
 
 	i = -1;
-
 	while (env[++i])
 	{
 		s_env = malloc(sizeof(t_env));
