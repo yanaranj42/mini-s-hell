@@ -29,11 +29,11 @@ int main(int argc, char **argv, char **env)
 		{
 			break;
 		}
-		if (ft_strncmp("exit", line, 5) == 0) //temporal
+/*		if (ft_strncmp("exit", line, 5) == 0) //temporal
 		{
+			ft_exit(&data);
 			free(line);
-			break;
-		}
+		}*/
 		add_history (line); // para poder acceder al historial de comandos
 		printf("\nLinea de comando original: |%s|\n", line); // borrar
 

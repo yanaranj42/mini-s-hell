@@ -59,7 +59,7 @@ typedef struct s_env
 
 typedef struct s_general
 {
-	char		**argv;
+	int			ret_exit;
 	t_env		*env_lst;
 	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_quotes qdata;
@@ -72,6 +72,8 @@ int		ft_env(t_env *env);
 int		ft_pwd(void);
 int		ft_cd(t_general *data);
 int		ft_echo(char **argv);
+void	ft_exit(t_general *data);
+
 
 //					**lexer**					//
 int		lexer (char **line, t_general *data);

@@ -29,7 +29,6 @@ int	pseudoexecutor(t_general *data)
 	if (ft_strncmp("echo", data->first_token->argv[0], 4) == 0)
 		ft_echo(data->first_token->argv);
 	else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
-		//ft_cd(data->first_token->argv, data->env_lst);
 		ft_cd(data);
 	else if (ft_strncmp("pwd", data->first_token->argv[0], 3) == 0)
 		ft_pwd();
@@ -40,7 +39,7 @@ int	pseudoexecutor(t_general *data)
 	else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
 		ft_env(data->env_lst);
 	else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
-		return (7);
+		ft_exit(data);
 	return (0);
 	//return (SUCCESS)
 }

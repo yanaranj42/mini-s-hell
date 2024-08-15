@@ -16,6 +16,7 @@ int init_values(t_general *data, char **env)
 {
 	data->env_lst = NULL;
 	data->first_token = NULL;
+	data->ret_exit = 0;
 	if (env)
 		get_own_env(data, env);
 	return (0);
