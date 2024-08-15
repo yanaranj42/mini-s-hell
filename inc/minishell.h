@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/09 00:41:30 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/15 21:26:21 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,13 @@ void	init_quote_values(t_general *data);
 int 	lexer (char **line, t_general *data);
 void 	delete_spaces (char **line);
 int 	review_closed_quotes (char **line, t_general *data);
+char 	*strjoinchar (char *str, char c); //IRA EN LIBFT, BORRAR LUEGO DE AQUI
+void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
 
 //PARSER
-void 	pseudoparser(char *line, t_general *data);
-void 	debug_token(t_token *token);
+int 	parser(char *line, t_general *data);
+void 	debug_token(t_token *token, int num);
+char	**ft_token_split(char const *s, char del, t_general *data);
 
 //EXECUTOR
 void 	print_env(t_general *data);

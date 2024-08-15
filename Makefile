@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/09 00:12:29 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/15 21:24:54 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ FILES += built-ins/env.c
 
 FILES += lexer/lexer.c 
 
-FILES += parser/pseudoparser.c 
+FILES += parser/parser.c parser/ft_token_split.c
 
 FILES += executor/pseudoexecutor.c 
 
