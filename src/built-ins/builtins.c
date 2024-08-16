@@ -15,9 +15,13 @@
 /*builtin. Todos estos son esquemas, ya que hay que meter los FD para las
 redirecciones y mas cosas
 */
-/*acabo de agregar los putstr para que imprima name=value*/
+/*acabo de agregar los putstr para que imprima name=value
+imprime todos los valores?? al menos todos lo que detecta que tienen un '='*/
+static int	ft_strnum(char *s);
+
 int	ft_env(t_env *env)
 {
+	printf(YELLOW"OUR ENVIRONMENT\n"END);
 	while (env && env->next != NULL)
 	{
 		ft_putstr_fd(env->name, 0);
@@ -43,28 +47,6 @@ int	ft_pwd(void)
 	return (FAIL);
 }
 /*busca */
-static int	ft_strnum(char *s)
-{
-	int	flag;
-
-	flag = 0;
-	if (s == NULL)
-		return (0);
-	if (*s == '-')
-		s++;
-	while (*s)
-	{
-		if (*s >= '0' && *s <= '9')
-			flag = 1;
-		else
-		{
-			flag = 0;
-			break ;
-		}
-		s++;
-	}
-	return (flag);
-}
 
 void	ft_exit(t_general *data)
 {
@@ -86,4 +68,27 @@ void	ft_exit(t_general *data)
 	else if(argv[1])
 		data->ret_exit = ft_atoi(argv[1]);
 	exit(data->ret_exit);
+}
+
+static int	ft_strnum(char *s)
+{
+	int	flag;
+
+	flag = 0;
+	if (s == NULL)
+		return (0);
+	if (*s == '-')
+		s++;
+	while (*s)
+	{
+		if (*s >= '0' && *s <= '9')
+			flag = 1;
+		else
+		{
+			flag = 0;
+			break ;
+		}
+		s++;
+	}
+	return (flag);
 }
