@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 21:32:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/16 00:08:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void debug_token(t_token *token, int num)
 	int i;
 
 	i = 0;
-	printf("  >> Contenido del token %d:\n", num);
+	printf("\n  >> Contenido del token %d:\n", num);
 	printf("     argc = %d\n", token->argc);
 	while (token->argv[i])
 	{
@@ -49,7 +49,7 @@ int parser(char *line, t_general *data)
 	printf ("#Creacion de tokens:\n");
 	while (line[i])
 	{
-		printf(" TOKEN %d\n", num);
+		printf(" 🟡 TOKEN %d\n", num);
 		//guardo en pretoken
 		if (line[i] == '<' || line[i] == '>' || line[i] == '|')
 		{
@@ -76,10 +76,11 @@ int parser(char *line, t_general *data)
 			//si falla la creacion de un token tendre que liberar los tokens ya creados de la lista (si existe) y liberar pretoken, no???
 			printf("Error: New token malloc fail\n");
 			free(data->pretoken);
-			i = 0;
+			
 			if (data->first_token)
 				while (data->first_token)
 				{
+					i = 0;
 					tmp_token = data->first_token->next;
 					while (data->first_token->argv && data->first_token->argv[i]) //REVISAR QUE CONTENT HAY QUE LIBERAR DE CADA NODO DE LOS TOKENS
 					{
@@ -114,17 +115,17 @@ int parser(char *line, t_general *data)
 		//genero el contenido del token
 		
 		printf ("  Pretoken final: |%s|\n\n", data->pretoken); 
-		new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
-		//new_token->argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+		new_token->argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+		//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
 		//dentro del split tengo que controlar que no haya comillas abiertas o cerradas cuando evaluo el espacio.
 		//contar palabras teniendo en cuenta que todo lo de dentro de las comillas es una sola.
 		if (!new_token->argv)
 		{
 			printf("Error: There have been problems doing the argv token split\n");
 			free(data->pretoken);
-			i = 0;
 			while (data->first_token)
 			{
+				i = 0;
 				tmp_token = data->first_token->next;
 				while (data->first_token->argv && data->first_token->argv[i]) //REVISAR QUE CONTENT HAY QUE LIBERAR DE CADA NODO DE LOS TOKENS
 				{
@@ -150,7 +151,6 @@ int parser(char *line, t_general *data)
 		//destruyo pretoken para volver a crearlo en la siguiente vuelta
 		free(data->pretoken);
 		data->pretoken = NULL;
-		printf("\ncontenido de line[i] despues de la vuelta: |%c|\n\n", line [i]);
 	}
 	return (1);
 }

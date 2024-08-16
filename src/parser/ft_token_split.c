@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 21:08:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 21:26:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/16 00:05:06 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	token_num_words(const char *s, char del, t_general *data)
 
 	i = 0;
 	words = 0;
+	init_quote_values(data);
 	while (s[i])
 	{
 		if ((s[i] == '"' && data->qdata.miniquotes == 0) || (s[i] == '\'' && data->qdata.quotes == 0))
@@ -38,7 +39,6 @@ static int	token_num_words(const char *s, char del, t_general *data)
 			words ++;
 		i++;
 	}
-	printf("numero de palabras: |%d|\n", words);
 	return (words);
 }
 
@@ -54,12 +54,40 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 	word = 0;
 	while (++j < token_num_words(s, del, data))
 	{
-		while (s[i] == del)
-			i++;
+		if ((s[i] == '"' && data->qdata.miniquotes == 0) || (s[i] == '\'' && data->qdata.quotes == 0))
+			account_quotes (s[i], data);
+		if (data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
+		{
+			while (s[i] == del)
+				i++;
+		}
 		start = i;
-		while (s[i] != del && s[i] != '\0')
+		if (data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
+		{
+			while (s[i] != del && s[i] != '\0')
+				i++;
+			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
+		}
+		else if (data->qdata.quotes == 1)
+		{
+			i++; //porque ya estoy en las comillas, y sino no entro
+			while (s[i] != '"')
+				i++;
+			i++; // sino en la siguiente iteracion estare aun en la comilla y la cogere como palabra
+			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
+		}
+
+		else if (data->qdata.miniquotes == 1)
+		{
 			i++;
-		res[word] = ft_substr(s, start, i - start);
+			while (s[i] != '\'')
+				i++;
+			i++;
+			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
+		}
 		if (!res[word])
 		{
 			free_token_matrix(res, word);
@@ -76,8 +104,10 @@ char	**ft_token_split(char const *s, char del, t_general *data)
 	int		words;
 	char	**res;
 
-	init_quote_values(data);
+	
 	words = token_num_words (s, del, data);
+	printf("  >> Split:\n");
+	printf("     Numero de palabras: |%d|\n", words);
 	res = malloc(sizeof(char *) * (words + 1));
 	if (!res)
 		return (NULL);

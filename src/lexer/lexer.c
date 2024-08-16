@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 13:39:24 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 20:42:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/15 21:45:22 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void account_quotes (char c, t_general *data)
 			else if(data->qdata.quotes == 1)
 				data->qdata.quotes = 0;
 		}
-		else if (c == '\'' && data->qdata.quotes == 0)
+	else if (c == '\'' && data->qdata.quotes == 0)
 		{
 			if (data->qdata.miniquotes == 0)
 				data->qdata.miniquotes = 1;

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 21:06:58 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/15 23:58:35 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int main(int argc, char **argv, char **env)
 {
 	char 		*line; // mejor dentro de la estructura????????
 	t_general	data; 
+	int i = 0; //borrar;
+	t_token *tmp_token; //borrar;
 
 	(void)argv; // que hacemos con esto???
 
@@ -64,10 +66,35 @@ int main(int argc, char **argv, char **env)
 		pseudoexecutor(&data); 
 
 		// limpiar los tokens
-		free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
+		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
 		//el hermano tonto y el original apuntan al sitio que quiero limpiar, y como al limpiar accedo al contenido, ya se limpia para todos.
 		// cuando creo data creo una cajonera que ya tiene dos punteros y donde puedo poner dos direccioens de memoria, osea first token no lo aloco, se crea directamente con data. Si quiero que first token apunte a un token, lo que tengo que hacer es crear el token (malloc), y la direccion se guarda en first token
+		
+		//En free_tokens limpio solo un token y ademas no pongo first token a null, por eso cuando vuelvo a llamarlo se piensa que ya hay un token existente que a saber a donde apunta y hace cosas raras. Tengo que poner todo a null para la proxima vuelta
+		
+		//meter en una funcion en free:
+		printf ("\n******************* FREE *******************\n");
+		while (data.first_token)
+		{
+			i = 0;
+			tmp_token = data.first_token->next;
+			printf ("%p\n", tmp_token);
+			printf (" contenido del primer argumento : %s\n", data.first_token->argv[0]);
+			while (data.first_token->argv && data.first_token->argv[i]) 
+			{
+				printf("limpio argv[%d] = %s\n", i, data.first_token->argv[i]);
+				free(data.first_token->argv[i]);
+				i++;
+			}
+			printf("me cargo el argv del token\n");
+			free(data.first_token->argv);
+			printf("mato el token actual\n");
+			free(data.first_token);
+			data.first_token = tmp_token;
+			printf("next token  es = %p\n", data.first_token);
+		}
+
 		free(line);
 	}
 	free_before_end(&data);
