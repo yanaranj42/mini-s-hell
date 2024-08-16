@@ -15,10 +15,13 @@
 /*builtin. Todos estos son esquemas, ya que hay que meter los FD para las
 redirecciones y mas cosas
 */
+/*acabo de agregar los putstr para que imprima name=value*/
 int	ft_env(t_env *env)
 {
 	while (env && env->next != NULL)
 	{
+		ft_putstr_fd(env->name, 0);
+		ft_putstr_fd(GREEN"="END, 0);
 		ft_putendl_fd(env->value, 0);
 		env = env->next;
 	}
