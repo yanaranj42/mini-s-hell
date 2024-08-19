@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/14 13:13:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/19 11:29:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	ft_exit(t_general *data)
 	}
 	else if(argv[1])
 		data->ret_exit = ft_atoi(argv[1]);
+	free(argv);
 	exit(data->ret_exit);
 }
 
