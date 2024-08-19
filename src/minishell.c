@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 23:58:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/16 06:36:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 int main(int argc, char **argv, char **env)
 {
-	char 		*line; // mejor dentro de la estructura????????
 	t_general	data; 
-	int i = 0; //borrar;
-	t_token *tmp_token; //borrar;
 
 	(void)argv; // que hacemos con esto???
 
 	if (argc != 1)
+	{
+		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (0);
+	}
 	init_data_values(&data); 
 	if (get_own_env(env, &data) == 0)
 		return (0);
@@ -31,31 +31,31 @@ int main(int argc, char **argv, char **env)
 
 	while (1)
 	{
-		line = readline("🔥 ÐrackyŠhell ▶ ");
-		if (!line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
+		data.line = readline("🔥 ÐrackyŠhell ▶ ");
+		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
 			break;
 		}
-		if (ft_strncmp("exit", line, 5) == 0) //temporal
+		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
 		{
-			free(line);
+			free(data.line);
 			break;
 		}
-		add_history (line); // para poder acceder al historial de comandos
-		printf("\nLinea de comando original: |%s|\n", line); // borrar
+		add_history (data.line); // para poder acceder al historial de comandos
+		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
 
 		//LEXER
-		if (lexer(&line, &data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
+		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 		{
-			free (line);
+			free (data.line);
 			continue; // para volver a empezar el while
 		}
 		
 		//PARSER
 		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
-		if (parser(line, &data) == 0) 
+		if (parser(&data) == 0) 
 		{
-			free (line);
+			free (data.line);
 			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
 		}
 		
@@ -65,6 +65,7 @@ int main(int argc, char **argv, char **env)
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
 		pseudoexecutor(&data); 
 
+		printf ("\n******************* FREE *******************\n");
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
@@ -73,29 +74,9 @@ int main(int argc, char **argv, char **env)
 		
 		//En free_tokens limpio solo un token y ademas no pongo first token a null, por eso cuando vuelvo a llamarlo se piensa que ya hay un token existente que a saber a donde apunta y hace cosas raras. Tengo que poner todo a null para la proxima vuelta
 		
-		//meter en una funcion en free:
-		printf ("\n******************* FREE *******************\n");
-		while (data.first_token)
-		{
-			i = 0;
-			tmp_token = data.first_token->next;
-			printf ("%p\n", tmp_token);
-			printf (" contenido del primer argumento : %s\n", data.first_token->argv[0]);
-			while (data.first_token->argv && data.first_token->argv[i]) 
-			{
-				printf("limpio argv[%d] = %s\n", i, data.first_token->argv[i]);
-				free(data.first_token->argv[i]);
-				i++;
-			}
-			printf("me cargo el argv del token\n");
-			free(data.first_token->argv);
-			printf("mato el token actual\n");
-			free(data.first_token);
-			data.first_token = tmp_token;
-			printf("next token  es = %p\n", data.first_token);
-		}
-
-		free(line);
+		//funcion final:
+		free_tokens_list(&data);
+		free(data.line);
 	}
 	free_before_end(&data);
     return (0);	

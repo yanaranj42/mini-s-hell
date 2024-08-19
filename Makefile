@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/15 21:24:54 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/16 06:59:25 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@
 GREEN = \033[1;92m
 RED = \033[1;91m
 NC = \033[0m
-YELLOW= \033[1;33m
+YELLOW = \033[1;33m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
-FILES = minishell.c initializations.c own_enviroment.c error_messages.c free.c
+FILES = minishell.c initializations.c own_enviroment.c error_messages.c lexer_parser_utils.c free.c
 
 FILES += built-ins/env.c 
 

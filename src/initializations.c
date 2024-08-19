@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 21:34:21 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/16 06:16:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_data_values(t_general *data)
 {
+	data->line = NULL;
 	data->own_env = NULL;
 	data->first_token = NULL;
 	data->pretoken = NULL;

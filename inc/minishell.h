@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/15 21:26:21 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/19 08:23:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_quotes
 
 typedef struct s_general
 {
+	char *line;
 	char **own_env;
 	char *pretoken;
 	t_quotes qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
@@ -46,30 +47,39 @@ typedef struct s_general
 
 int		get_own_env(char **env, t_general *data);
 int 	env_matrix_base (char **env);
-void	free_env(t_general *data);
 void	perror_message(char *start, char *message);
+
+//INITIALITATIONS
 void 	init_data_values(t_general *data);
 void	init_quote_values(t_general *data); 
 
 //LEXER
-int 	lexer (char **line, t_general *data);
-void 	delete_spaces (char **line);
-int 	review_closed_quotes (char **line, t_general *data);
-char 	*strjoinchar (char *str, char c); //IRA EN LIBFT, BORRAR LUEGO DE AQUI
-void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
+int 	lexer (t_general *data);
+void 	delete_spaces (t_general *data);
+int 	review_closed_quotes (t_general *data);
+int 	delete_useless_spaces (t_general *data);
 
 //PARSER
-int 	parser(char *line, t_general *data);
+int 	parser(t_general *data);
+int 	take_pretoken (t_general *data, int *i);
+t_token	*create_token (t_general *data);
+void 	put_new_list_node (t_general *data, t_token *new_token);
+t_token *create_token_content (t_general *data, t_token *new_token);
 void 	debug_token(t_token *token, int num);
 char	**ft_token_split(char const *s, char del, t_general *data);
 
+	//UTILS
+	char 	*strjoinchar (char *str, char c); //IRA EN LIBFT, BORRAR LUEGO DE AQUI
+	void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
+	
 //EXECUTOR
 void 	print_env(t_general *data);
 int 	pseudoexecutor(t_general *data);
 
-void 	free_tokens_list(t_token *token);
-void 	free_token(t_token *token);
+//FREE
+void	free_env(t_general *data);
 void	free_before_end(t_general *data);
+void 	free_tokens_list(t_general *data);
 
 
 #endif
