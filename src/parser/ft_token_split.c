@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 21:08:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 12:06:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/19 13:29:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static int	token_num_words(const char *s, char del, t_general *data)
 	return (words);
 }
 
+//Cosas a probar en terminal para parseo:
 //|a"asd "   asas   "asdf "s|
+// "       asdfa   " asfasdf as"asdf  " asdf"   asdf" asdf a "asdfdf"as  asf"asdfas"as 
+
 
 
 static char	**matrix_token_words(char **res, const char *s, char del, t_general *data)
@@ -74,7 +77,30 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 		{
 			while (s[i] != del && s[i] != '\0')
 			{
+				printf("\n\nevaluando la letra: |%c|\n", s[i]);
 				i++;
+				printf("evaluando la letra: |%c|\n", s[i]);
+				account_quotes (s[i], data);
+				printf ("valor de quotes %d\n", data->qdata.quotes);
+				if (data->qdata.quotes == 1)
+				{
+					i++; //porque ya estoy en las comillas, y sino no entro
+					while (s[i] != '"')
+					{
+						i++;
+						printf("Evaluando la letra: |%c|\n", s[i]);
+					}
+				}
+				else if(data->qdata.miniquotes == 1)
+				{
+					i++; //porque ya estoy en las comillas, y sino no entro
+					while (s[i] != '\'')
+					{
+						i++;
+						printf("Evaluando la letra: |%c|\n", s[i]);
+					}
+				}
+				account_quotes (s[i], data);
 
 			}
 			res[word] = ft_substr(s, start, i - start);
@@ -87,6 +113,8 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 				i++;
 			account_quotes (s[i], data);
 			i++; // sino en la siguiente iteracion estare aun en la comilla y la cogere como palabra
+			while (s[i] != '\0' && s[i] != del)
+				i++;
 			res[word] = ft_substr(s, start, i - start);
 			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
 		}
@@ -98,6 +126,8 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 				i++;
 			account_quotes (s[i], data);
 			i++;
+			while (s[i] != '\0' && s[i] != del)
+				i++;
 			res[word] = ft_substr(s, start, i - start);
 			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
 		}

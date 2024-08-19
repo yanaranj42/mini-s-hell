@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 08:53:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:05:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,6 @@ int parser(t_general *data)
 		free(data->pretoken);
 		data->pretoken = NULL;
 	}
+	
 	return (1);
 }
-
-//check_after_parsing: mirar si tengo dos pipes seguidas etc..

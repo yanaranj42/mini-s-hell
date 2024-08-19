@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/16 06:36:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:05:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv, char **env)
 		
 		//PARSER
 		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
-		if (parser(&data) == 0) 
+		if (parser(&data) == 0 || check_viable_tokens(&data) == 0) 
 		{
 			free (data.line);
 			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
