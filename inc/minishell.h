@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/14 12:40:02 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/19 13:55:32 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_env
 typedef struct s_general
 {
 	int			ret_exit;
+	int			flag;
 	t_env		*env_lst;
 	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_quotes qdata;
@@ -72,7 +73,10 @@ int		ft_env(t_env *env);
 int		ft_pwd(void);
 int		ft_cd(t_general *data);
 int		ft_echo(char **argv);
+
+//				**EXIT.C**					//
 void	ft_exit(t_general *data);
+void	cases(t_general *data);
 
 
 //					**lexer**					//

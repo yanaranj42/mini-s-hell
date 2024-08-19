@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/12 12:59:09 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/19 11:57:25 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_env(t_env *head)
 		prev = NULL;
 	}
 }
-
+/* puede que esta no sea necesaria*/
 void	free_before_end(t_general *data)
 {
 	free_env(data->env_lst);
