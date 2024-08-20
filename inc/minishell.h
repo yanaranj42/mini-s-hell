@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 13:55:32 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:25:24 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 #define FAIL	0
 #define SUCCESS	1
 #define OTHER	3 //tmp
+
+/*OTROS
+#define LONG_MIN "-9223372036854775807"
+#define LONG_MAX "9223372036854775807"*/
 
 typedef struct s_token
 {
