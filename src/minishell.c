@@ -53,12 +53,18 @@ int main(int argc, char **argv, char **env)
 		
 		//PARSER
 		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
-		if (parser(&data) == 0 || check_viable_tokens(&data) == 0) 
+		// if (parser(&data) == 0 || check_viable_tokens(&data) == 0) 
+		// {
+		// 	free (data.line);
+		// 	continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
+		// }
+		
+		if (parser(&data) == 0) 
 		{
 			free (data.line);
 			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
 		}
-		
+
 		//EXPANDER
 
 		//EXECUTOR

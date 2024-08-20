@@ -24,9 +24,6 @@
 
 int pseudoexecutor(t_general *data)
 {
-	int i;
-
-	i = 0; 
 	if (ft_strncmp("echo", data->first_token->argv[0], 4) == 0)
 		return (1);
 	else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
