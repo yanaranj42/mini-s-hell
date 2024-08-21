@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/16 06:59:25 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/21 23:02:07 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,13 @@ YELLOW = \e[1;93m
 
 FILES = minishell.c initializations.c own_enviroment.c error_messages.c lexer_parser_utils.c free.c
 
-FILES += built-ins/env.c 
-
 FILES += lexer/lexer.c 
 
 FILES += parser/parser.c parser/ft_token_split.c
 
 FILES += executor/pseudoexecutor.c 
+
+FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))

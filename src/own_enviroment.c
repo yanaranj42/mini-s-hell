@@ -6,12 +6,25 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 14:11:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:00:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+
+void print_env(t_general *data) //BORRAR FUNCION
+{
+	int i;
+
+	i = 0;
+	while (data->own_env[i])
+	{
+		printf("%s\n", data->own_env[i]);
+		i++;
+	}
+}
+
 
 int env_matrix_base (char **env)
 {
