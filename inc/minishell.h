@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/20 12:25:24 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:44:08 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int		ft_cd(t_general *data);
 int		ft_echo(char **argv);
 
 //				**EXIT.C**					//
-void	ft_exit(t_general *data);
-void	cases(t_general *data);
+void		ft_exit(t_general *data);
+//void	cases(t_general *data);
 
 
 //					**lexer**					//

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:29:38 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/20 14:00:10 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/21 13:03:09 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,7 @@ void    cases(t_general *data)
     else
         data->flag = -1;
 }
-void    ft_exit(t_general *data)
-{
-    cases(data);
-    ft_putstr_fd("exit:\n", STDERR);
-    if (data->flag == 1)
-        ;
-    else if (data->flag == -1)
-        exit(data->ret_exit);
-}
+
 
 static int  valid_arg(char *argv)
 {

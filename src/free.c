@@ -6,13 +6,18 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 11:57:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/21 13:23:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
+/*void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT
+{
+	free(data->read_line);
+	exit(data->ret_exit);
+}*/
 void	free_env(t_env *head)
 {
 	t_env	*tmp;
