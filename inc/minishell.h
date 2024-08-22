@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/21 12:44:08 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:45:19 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #define YELLOW	"\x1b[33m"
 #define BLUE	"\x1b[34m"
 #define GREEN	"\x1b[32m"
+#define CYAN	"\x1b[36m"
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
@@ -64,7 +65,7 @@ typedef struct s_env
 typedef struct s_general
 {
 	int			ret_exit;
-	int			flag;
+	int			exit_flag;
 	t_env		*env_lst;
 	t_token *first_token; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_quotes qdata;
