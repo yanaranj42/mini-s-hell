@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 18:05:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:26:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,21 @@ t_token *create_token_content (t_general *data, t_token *new_token)
 	return (new_token);
 }
 
+void classify_token_type (t_token *new_token)
+{
+	if (ft_strncmp ("|", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = PIPE;
+	else if (ft_strncmp ("<", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = STDIN_REDIRECTION;
+	else if (ft_strncmp ("<<", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+		new_token->type = STDIN_DOUBLE_REDIRECTION;
+	else if (ft_strncmp (">", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = STDOUT_REDIRECTION;
+	else if (ft_strncmp (">>", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+		new_token->type = STDOUT_DOUBLE_REDIRECTION;
+	else
+		new_token->type = NO_SEPARATOR;
+}
 
 int parser(t_general *data)
 {
@@ -218,7 +233,7 @@ int parser(t_general *data)
 		// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
 		// if (!new_token->argv)     NULL->argv (no tiene sentido)
 
-		
+		classify_token_type (new_token);
 		debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++; //BORRAR
 		//destruyo pretoken para volver a crearlo en la siguiente vuelta

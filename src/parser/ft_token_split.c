@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 21:08:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 13:29:42 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:37:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,25 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 				i++;
 			account_quotes (s[i], data);
 		}
-		printf ("valor de quotes %d\n", data->qdata.quotes);
-		printf ("valor de miniquotes %d\n", data->qdata.miniquotes);
+		// printf ("valor de quotes %d\n", data->qdata.quotes);
+		// printf ("valor de miniquotes %d\n", data->qdata.miniquotes);
 		start = i;
 		if (data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
 		{
 			while (s[i] != del && s[i] != '\0')
 			{
-				printf("\n\nevaluando la letra: |%c|\n", s[i]);
+				// printf("\n\nevaluando la letra: |%c|\n", s[i]);
 				i++;
-				printf("evaluando la letra: |%c|\n", s[i]);
+				// printf("evaluando la letra: |%c|\n", s[i]);
 				account_quotes (s[i], data);
-				printf ("valor de quotes %d\n", data->qdata.quotes);
+				// printf ("valor de quotes %d\n", data->qdata.quotes);
 				if (data->qdata.quotes == 1)
 				{
 					i++; //porque ya estoy en las comillas, y sino no entro
 					while (s[i] != '"')
 					{
 						i++;
-						printf("Evaluando la letra: |%c|\n", s[i]);
+						// printf("Evaluando la letra: |%c|\n", s[i]);
 					}
 				}
 				else if(data->qdata.miniquotes == 1)
@@ -97,7 +97,7 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 					while (s[i] != '\'')
 					{
 						i++;
-						printf("Evaluando la letra: |%c|\n", s[i]);
+						// printf("Evaluando la letra: |%c|\n", s[i]);
 					}
 				}
 				account_quotes (s[i], data);

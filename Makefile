@@ -6,14 +6,15 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/16 06:59:25 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/22 16:23:18 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------------------------------------------------COLORS------------------------------------------------------#
+
+NC = \033[0m
 GREEN = \033[1;92m
 RED = \033[1;91m
-NC = \033[0m
 #YELLOW = \033[1;33m
 YELLOW = \e[1;93m
 
@@ -25,7 +26,7 @@ FILES += built-ins/env.c
 
 FILES += lexer/lexer.c 
 
-FILES += parser/parser.c parser/ft_token_split.c
+FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
 FILES += executor/pseudoexecutor.c 
 
