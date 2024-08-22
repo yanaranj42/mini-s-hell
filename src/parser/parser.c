@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/22 16:26:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:28:28 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void debug_token(t_token *token, int num)
 {
 	int i;
+	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "no_separator"};
 
 	i = 0;
 	printf("\n  >> Contenido del token %d:\n", num);
@@ -26,6 +27,7 @@ void debug_token(t_token *token, int num)
 		printf("     argv[%d] = |%s|\n", i, token->argv[i]);
 		i++;
 	}
+	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);
 	printf("     token actual: %p\n", token);
 	printf("     next apunta a %p\n", token->next);
 	printf("     back apunta a %p\n\n", token->back);
@@ -60,7 +62,7 @@ void debug_token(t_token *token, int num)
 
 int take_pretoken (t_general *data, int *i)
 {
-	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
+	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|' || (data->line[*i] == ' ' && (data->line[*i + 1] == '<' || data->line[*i + 1] == '>' || data->line[*i + 1] == '|')))
 	{
 		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
 		if (!data->pretoken)
@@ -79,6 +81,7 @@ int take_pretoken (t_general *data, int *i)
 			return (0);
 		(*i)++;
 	}
+
 	else
 	{
 		while (data->line[*i] && data->line[*i] != '<' && data->line[*i] != '>' && data->line[*i] != '|') // el or es que mientras se cumpla alguna de las condiciones, el and es que se cumplan todas. Si pongo or, si encuentra un separador <, como no es | ni >, la condicion se cumple y sigue entrando en el while.
