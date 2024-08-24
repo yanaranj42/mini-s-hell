@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/24 18:33:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:36:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,46 +60,116 @@ void debug_token(t_token *token, int num)
 // 		//uso el return de 0 - 1 por si falla el malloc o no.
 // }
 
+
+
+//Cuando llego a pretoken solo puedo encontrarme espacio, o separador o otra cosa. Por lo que lo de las cuotes lo gestiono directamente en el ultimo caso, no hace falta que lo repita por separado, por si empieza en comilas o las encuentra mas adelante. TOdo en el caso de "otros" y listo
+//Version buena pero larga:
+
+// int take_pretoken (t_general *data, int *i)
+// {
+
+// 	if (data->line[*i] == ' ')
+// 		(*i)++;
+// 	printf ("valor de quotes 1: %d\n", data->qdata.quotes);
+
+// 	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
+// 	{
+// 		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		if (!data->pretoken)
+// 			return (0);
+// 		if (data->line[*i] == '<' && data->line[*i + 1] == '<')
+// 		{
+// 			(*i)++;
+// 			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		}
+// 		else if (data->line[*i] == '>' && data->line[*i + 1] == '>')
+// 		{
+// 			(*i)++;
+// 			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		}
+// 		if (!data->pretoken)
+// 			return (0);
+// 		(*i)++;
+// 	}
+
+// 	else
+// 	{
+// 		//while (data->line[*i] && is_real_separator(data->line[*i], data->qdata))
+// 		while (data->line[*i] && data->line[*i] != '<' && data->line[*i] != '>' && data->line[*i] != '|') // el or es que mientras se cumpla alguna de las condiciones, el and es que se cumplan todas. Si pongo or, si encuentra un separador <, como no es | ni >, la condicion se cumple y sigue entrando en el while.
+// 		{
+// 			account_quotes (data->line[*i], data);
+// 			printf ("valor de quotes 4: %d\n", data->qdata.quotes);
+// 			if (data->qdata.quotes == 1)
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				while (data->line[*i] && data->line[*i] != '"')
+// 				{
+// 					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				}
+// 				account_quotes (data->line[*i], data);
+// 				printf ("valor de quotes 5: %d\n", data->qdata.quotes);
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			} 
+// 			else if (data->qdata.miniquotes == 1)
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				while (data->line[*i] && data->line[*i] != '\'')
+// 				{
+// 					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				}
+// 				account_quotes (data->line[*i], data);
+// 				printf ("valor de quotes 6: %d\n", data->qdata.quotes);
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			}
+// 			else
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			}
+// 		}
+// 	}
+// 		//falta proteger
+// 		//uso el return de 0 - 1 por si falla el malloc o no.
+
+// 		// Antes tenia puesto que si despues de un separador encontraba otro separador, que volviera a empezar el bucle de parser y fuera acumulando todos los simbolos en un token. Pero en realidad, tengo que tratarlo como tokens separados, ya que bash acepta los simbolos de < y > por pares, y en cuanto a la pipe, va de una en una, ya que dos seguidas lo interpreta como un or y eso es parte del bonus, nosotras si encontramos varias pipes seguidas las interpretamos como si fuera esto "| |", pipes individuales
+// 	return (1);
+// }
+
+int is_real_separator(char c, t_general *data)
+{
+	account_quotes (c, data);
+	if ((c == '<' || c == '>' || c == '|') && data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
+		return (1);
+	return (0);
+}
+
 int take_pretoken (t_general *data, int *i)
 {
-	account_quotes (data->line[*i], data);
-	if (data->line[*i] == ' ' && data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
-		(*i)++;
-	printf ("valor de quotes 1: %d\n", data->qdata.quotes);
-	if (data->qdata.quotes == 1)
-	{
-		while (data->line[*i] && data->line[*i] != '"')
-		{
-			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-			if (!data->pretoken)
-				return (0);
-			(*i)++;
-		}
-		account_quotes (data->line[*i], data);
-		printf ("valor de quotes 2: %d\n", data->qdata.quotes);
-		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-		if (!data->pretoken)
-			return (0);
-		(*i)++;
-	} 
 
-	else if (data->qdata.miniquotes == 1)
-	{
-		while (data->line[*i] && data->line[*i] != '\'')
-		{
-			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-			if (!data->pretoken)
-				return (0);
-			(*i)++;
-		}
-		account_quotes (data->line[*i], data);
-		printf ("valor de quotes 3: %d\n", data->qdata.quotes);
-		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-		if (!data->pretoken)
-			return (0);
+	if (data->line[*i] == ' ')
 		(*i)++;
-	}
-	else if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
+
+	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
 	{
 		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
 		if (!data->pretoken)
@@ -121,57 +191,12 @@ int take_pretoken (t_general *data, int *i)
 
 	else
 	{
-		while (data->line[*i] && data->line[*i] != '<' && data->line[*i] != '>' && data->line[*i] != '|') // el or es que mientras se cumpla alguna de las condiciones, el and es que se cumplan todas. Si pongo or, si encuentra un separador <, como no es | ni >, la condicion se cumple y sigue entrando en el while.
+		while (data->line[*i] && is_real_separator(data->line[*i], data) == 0)
 		{
-			account_quotes (data->line[*i], data);
-			printf ("valor de quotes 4: %d\n", data->qdata.quotes);
-			if (data->qdata.quotes == 1)
-			{
-				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-					if (!data->pretoken)
-						return (0);
-					(*i)++;
-				while (data->line[*i] && data->line[*i] != '"')
-				{
-					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-					if (!data->pretoken)
-						return (0);
-					(*i)++;
-				}
-				account_quotes (data->line[*i], data);
-				printf ("valor de quotes 5: %d\n", data->qdata.quotes);
-				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-				if (!data->pretoken)
-					return (0);
-				(*i)++;
-			} 
-			else if (data->qdata.miniquotes == 1)
-			{
-				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-					if (!data->pretoken)
-						return (0);
-					(*i)++;
-				while (data->line[*i] && data->line[*i] != '\'')
-				{
-					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-					if (!data->pretoken)
-						return (0);
-					(*i)++;
-				}
-				account_quotes (data->line[*i], data);
-				printf ("valor de quotes 6: %d\n", data->qdata.quotes);
-				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-				if (!data->pretoken)
-					return (0);
-				(*i)++;
-			}
-			else
-			{
-				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
-				if (!data->pretoken)
-					return (0);
-				(*i)++;
-			}
+			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+			if (!data->pretoken)
+				return (0);
+			(*i)++;
 		}
 	}
 		//falta proteger

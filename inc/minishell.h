@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/22 16:29:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:02:08 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int 	delete_useless_spaces (t_general *data);
 
 //PARSER
 int 	parser(t_general *data);
+int 	is_real_separator(char c, t_general *data);
 int 	take_pretoken (t_general *data, int *i);
 t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);

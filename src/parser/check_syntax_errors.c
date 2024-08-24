@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/22 18:44:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/24 21:53:33 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 int check_pipe (t_general *data, t_token *token)
 {
 	
-	if (!token->back) 
+	if (!token->back) //empieza por pipe
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
-	else if (!token->next)
+	else if (!token->next) // acaba por pipe
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
