@@ -6,14 +6,14 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/22 15:11:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:14:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	ft_strnum(char *s, int i);
-static void	exit_code(t_general *data);
+static int	exit_code(t_general *data);
 static int	check_long(char *arg);
 
 void	ft_exit(t_general *data)
@@ -21,12 +21,10 @@ void	ft_exit(t_general *data)
 	ft_putstr_fd("exit \n", STDERR);
 	if (data->first_token->argv[0] && data->first_token->argv[1] == NULL)
 		exit(0);
-	exit_code(data);
-	if (data->exit_flag == 1)
+	if (exit_code(data) == 1)
 		;
-	else if(data->exit_flag == -1)
-		exit(data->ret_exit);
-	//TENEMOS QUE LIBERAR EL READLINE
+	else
+		free_exit(data);
 }
 
 static int	valid_arg(char *argv)
@@ -46,32 +44,36 @@ static int	valid_arg(char *argv)
 		return (1);
 	return (0);
 }
-static void	exit_code(t_general *data)
+static int	exit_code(t_general *data)
 {
 	char	**argv;
 
 	argv = data->first_token->argv;
-	data->exit_flag = -1;
-	if (valid_arg(argv[1]) == 0)
+	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 20)
 	{
-		ft_putstr_fd(argv[1], STDERR);
-		ft_putendl_fd(" numeric arg required", STDERR);
-		data->ret_exit = 99;
+		if (argv[2])
+		{
+			ft_putendl_fd(CYAN"minishell: exit: too many arguments"END, STDERR);
+			data->ret_exit = 155;
+			return (1);
+		}
+		else
+		{	
+			if (check_long(argv[1]))
+				data->ret_exit = 255;
+			else
+				data->ret_exit = ft_atoi(argv[1]);
+		}
+		return (0);
 	}
 	else
 	{
-		data->exit_flag = -1;
-		if (check_long(argv[1]))
-			data->ret_exit = 50;
-		else
-			data->ret_exit = ft_atoi(argv[1]);
+		ft_putstr_fd(argv[1], STDERR);
+		ft_putendl_fd(RED" numeric arg required"END, STDERR);
+		data->ret_exit = 99;
+		return (0);
 	}
-	if (argv[2])
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", STDERR);
-		data->exit_flag = 1;
-		data->ret_exit = 155;
-	}
+	return (0);
 }
 
 static int	ft_strnum(char *s, int i)
@@ -98,8 +100,9 @@ static int	check_long(char *argv)
 	int	len;
 
 	len = ft_strlen(argv);
-	if (len > 19)
+	if (len == 19)
 	{
+		printf(YELLOW"IS LONG SIGN NUM\n"END);
 		if (argv[0] == '-' && ft_strncmp(argv, "-9223372036854775807", len) == 0)
 			return (1);
 		else if (argv[0] == '+' && ft_strncmp(argv, "+9223372036854775807", len) == 0)
@@ -108,7 +111,10 @@ static int	check_long(char *argv)
 	else
 	{
 		if (ft_strncmp(argv, "9223372036854775807", len) ==  0)
+		{
+			printf(BLUE"IS LONG NO SIGN NUM\n"END);
 			return (1);
+		}
 	}
 	return (0);
 }

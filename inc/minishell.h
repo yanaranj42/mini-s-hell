@@ -6,9 +6,10 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/22 14:45:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:58:44 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -37,10 +38,6 @@
 #define SUCCESS	1
 #define OTHER	3 //tmp
 
-/*OTROS
-#define LONG_MIN "-9223372036854775807"
-#define LONG_MAX "9223372036854775807"*/
-
 typedef struct s_token
 {
 	char **argv;
@@ -64,6 +61,9 @@ typedef struct s_env
 
 typedef struct s_general
 {
+	char *line;
+	char **own_env;
+	char *pretoken;
 	int			ret_exit;
 	int			exit_flag;
 	t_env		*env_lst;
@@ -79,19 +79,46 @@ int		ft_pwd(void);
 int		ft_cd(t_general *data);
 int		ft_echo(char **argv);
 
+//INITIALITATIONS
+int 	init_data_values(t_general *data, char **env);
+void	init_quote_values(t_general *data); 
+
+//LEXER
+int 	lexer (t_general *data);
+void 	delete_spaces (t_general *data);
+int 	review_closed_quotes (t_general *data);
+int 	delete_useless_spaces (t_general *data);
+
+//PARSER
+int 	parser(t_general *data);
+int 	take_pretoken (t_general *data, int *i);
+t_token	*create_token (t_general *data);
+void 	put_new_list_node (t_general *data, t_token *new_token);
+t_token *create_token_content (t_general *data, t_token *new_token);
+void 	debug_token(t_token *token, int num);
+char	**ft_token_split(char const *s, char del, t_general *data);
+
+//UTILS
+char 	*strjoinchar (char *str, char c); //IRA EN LIBFT, BORRAR LUEGO DE AQUI
+void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
+
+//EXECUTOR
+void 	print_env(t_general *data);
+int 	pseudoexecutor(t_general *data);
+
+//FREE
+//void	free_env(t_general *data);
 //				**EXIT.C**					//
 void		ft_exit(t_general *data);
-//void	cases(t_general *data);
-
 
 //					**lexer**					//
-int		lexer (char **line, t_general *data);
-void	delete_spaces (char **line);
+//int		lexer (char **line, t_general *data);
+//void	delete_spaces (char **line);
 int		review_quotes (char **line, t_general *data);
 
 //					**parser**					//
 void	pseudoparser(char *line, t_general *data);
-void	debug_token(t_token *token);
+//void	debug_token(t_token *token);
 
 //					**executor**				//
 void	print_env(t_general *data);
@@ -114,7 +141,9 @@ void	init_quote_values(t_general *data);
 
 //					--FREE.C--					//
 void	free_env(t_env *head);
-void	free_tokens_list(t_token *token);
+void	free_exit(t_general *data);
+//void	free_tokens_list(t_token *token);
+void	free_tokens_list(t_general *data);
 void	free_token(t_token *token);
 void	free_before_end(t_general *data);
 

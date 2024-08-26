@@ -6,14 +6,18 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/13 13:11:50 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:42:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int init_values(t_general *data, char **env)
+int init_data_values(t_general *data, char **env)
 {
+	data->line = NULL;
+	data->own_env = NULL;
+	data->first_token = NULL;
+	data->pretoken = NULL;
 	data->env_lst = NULL;
 	data->first_token = NULL;
 	data->ret_exit = 0;
