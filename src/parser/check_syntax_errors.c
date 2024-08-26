@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/24 21:53:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:54:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int check_pipe (t_general *data, t_token *token)
 		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
-	else if (token->next->type == PIPE)
+	else if (token->next->type == PIPE) // dos pipes seguidas
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
@@ -45,56 +45,157 @@ int check_pipe (t_general *data, t_token *token)
 	
 int check_stdin_redirection (t_general *data, t_token *token) // <
 {
-	if (!token->back) 
+	// if (!token->back && !token->next) // < unico token
+	// {
+	// 	free_tokens_list(data);
+	// 	printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+	// 	return (0);
+	// }
+	if (!token->next) // acaba por <
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
+	else if (token->next->type == PIPE) // despues de < viene una pipe
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_REDIRECTION) // despues de < viene un <
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
 	return (1);
 }
-
-// else if (tmp2 && tmp1_token == data->first_token && (tmp1_token->argv[0] == "<" || tmp1_token->argv[0] == "<<" || tmp1_token->argv[0] == ">>")  && tmp2_token->argv[0] == "|") 
-		// {
-		// 	free_tokens_list(data);
-		// 	printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
-		// 	return (0);
-		// }
-		// else if (tmp2 && tmp1_token == data->first_token && tmp1_token->argv[0] == ">" && tmp2_token->argv[0] == "|") 
-		// {
-		// 	free_tokens_list(data);
-		// 	printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
-		// 	return (0);
-		// }
 
 int check_stdin_double_redirection (t_general *data, t_token *token) // <<
 {
-	if (!token->back) 
+	// if (!token->back && !token->next) // << unico token
+	// {
+	// 	free_tokens_list(data);
+	// 	printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+	// 	return (0);
+	// }
+	if (!token->next) // acaba por <<
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
-	return (1);
-}
-
-int check_stout_redirection (t_general *data, t_token *token) // >
-{
-	if (!token->back) 
+	else if (token->next->type == PIPE) // despues de << viene una pipe
 	{
 		free_tokens_list(data);
-		printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_REDIRECTION) // despues de << viene un <
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de << viene un <<
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<<'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDOUT_REDIRECTION) // despues de << viene un >
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `>'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de << viene un >>
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `>>'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
 	return (1);
 }
 
-int check_stout_double_redirection (t_general *data, t_token *token) // >>
+int check_stdout_redirection (t_general *data, t_token *token) // >
 {
-	if (!token->back) 
+	// if (!token->back && !token->next) // > unico token
+	// {
+	// 	free_tokens_list(data);
+	// 	printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+	// 	return (0);
+	// }
+	if (!token->next) // acaba por >
 	{
 		free_tokens_list(data);
 		printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == PIPE) // despues de > viene una pipe
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_REDIRECTION) // despues de > viene un <
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDOUT_REDIRECTION) // despues de > viene un >
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `>'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	return (1);
+}
+
+int check_stdout_double_redirection (t_general *data, t_token *token) // >>
+{
+	// if (!token->back && !token->next) // >> unico token
+	// {
+	// 	free_tokens_list(data);
+	// 	printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+	// 	return (0);
+	// }
+	if (!token->next) // acaba por >>
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `newline'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == PIPE) // despues de >> viene una pipe
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDOUT_REDIRECTION) // despues de >> viene un >
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `>'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de >> viene un >>
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `>>'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_REDIRECTION) // despues de >> viene un <
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<'\n"); //modificar con lo de perror y error de salida 2:command not found
+		return (0);
+	}
+	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de >> viene un <<
+	{
+		free_tokens_list(data);
+		printf("Drackyshell: syntax error near unexpected token `<<'\n"); //modificar con lo de perror y error de salida 2:command not found
 		return (0);
 	}
 	return (1);
@@ -125,12 +226,12 @@ int check_syntax_errors (t_general *data)
 		}
 		if (tmp1_token->type == STDOUT_REDIRECTION)
 		{
-			if (check_stout_redirection (data, tmp1_token) == 0)
+			if (check_stdout_redirection (data, tmp1_token) == 0)
 				return (0);
 		}
 		if (tmp1_token->type == STDOUT_DOUBLE_REDIRECTION)
 		{
-			if (check_stout_double_redirection (data, tmp1_token) == 0)
+			if (check_stdout_double_redirection (data, tmp1_token) == 0)
 				return (0);
 		}
 		tmp1_token = tmp1_token->next;

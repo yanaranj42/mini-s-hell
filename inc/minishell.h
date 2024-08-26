@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/24 20:02:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:48:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,17 @@ char	**ft_token_split(char const *s, char del, t_general *data);
 	void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
 
 int 	check_syntax_errors (t_general *data);
+int 	check_pipe (t_general *data, t_token *token);
+int 	check_stdin_redirection (t_general *data, t_token *token);
+int 	check_stdin_double_redirection (t_general *data, t_token *token);
+int 	check_stdout_redirection (t_general *data, t_token *token);
+int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
 void 	print_env(t_general *data);
 int 	pseudoexecutor(t_general *data);
+
 
 	//BUILT-INS
 	int		ft_env(t_env *env);
