@@ -6,14 +6,14 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/26 16:14:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:43:15 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	ft_strnum(char *s, int i);
-static int	exit_code(t_general *data);
+static int	exit_code(t_general *data, char **argv);
 static int	check_long(char *arg);
 
 void	ft_exit(t_general *data)
@@ -21,7 +21,7 @@ void	ft_exit(t_general *data)
 	ft_putstr_fd("exit \n", STDERR);
 	if (data->first_token->argv[0] && data->first_token->argv[1] == NULL)
 		exit(0);
-	if (exit_code(data) == 1)
+	if (exit_code(data, data->first_token->argv) == 1)
 		;
 	else
 		free_exit(data);
@@ -44,11 +44,8 @@ static int	valid_arg(char *argv)
 		return (1);
 	return (0);
 }
-static int	exit_code(t_general *data)
+static int	exit_code(t_general *data, char **argv)
 {
-	char	**argv;
-
-	argv = data->first_token->argv;
 	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 20)
 	{
 		if (argv[2])
@@ -63,15 +60,15 @@ static int	exit_code(t_general *data)
 				data->ret_exit = 255;
 			else
 				data->ret_exit = ft_atoi(argv[1]);
+			return (0);
 		}
-		return (0);
 	}
 	else
 	{
+		ft_putstr_fd("minishell: exit: " , STDERR);
 		ft_putstr_fd(argv[1], STDERR);
-		ft_putendl_fd(RED" numeric arg required"END, STDERR);
-		data->ret_exit = 99;
-		return (0);
+		ft_putendl_fd(RED": numeric arg required"END, STDERR);
+		data->ret_exit = 2;
 	}
 	return (0);
 }
