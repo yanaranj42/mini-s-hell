@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/27 19:15:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:26:10 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 int check_pipe (t_general *data, t_token *token)
 {
-	if (!token->back) //empieza por pipe
+	if (!token->back) // empieza por pipe
 	{
 		free_tokens_list(data);
 		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
