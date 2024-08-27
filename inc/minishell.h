@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/26 12:58:44 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:32:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
+#define ERR03	"syntax error near unexpected token `|'"
+#define STDIN	0
+#define STDOUT	1
 #define STDERR	2
-#define FAIL	0
 #define SUCCESS	1
+#define FAIL	0
 #define OTHER	3 //tmp
 
 typedef struct s_token

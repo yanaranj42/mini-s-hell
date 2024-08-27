@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   check_viable_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 20:21:27 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:33:37 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 //mirar si tengo dos pipes seguidas etc..
 
-
-
+/*CAMBIAR LOS PRINTS POR PERROR_MSG*/
 int check_pipe (t_general *data)
 {
 	t_token *tmp1_token;
@@ -30,7 +29,8 @@ int check_pipe (t_general *data)
 		if (tmp1_token->argv[0] == "|" && tmp1_token == data->first_token) 
 		{
 			free_tokens_list(data);
-			printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
+			perror_message("Drackyshell", ERROR3);
+			//printf("Drackyshell: syntax error near unexpected token `|'\n"); //modificar con lo de perror y error de salida 2:command not found
 			return (0);
 		}
 		else if (tmp2 && tmp1_token->argv[0] == "|" && tmp2_token->argv[0] == "|")

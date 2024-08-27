@@ -6,14 +6,13 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/14 13:12:23 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:27:22 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* cada nodo que vayamos obteniendo al hacer la copia del env, lo agregamos y
-creamos una nuestra lista. */
+/* we add to our the list, the value we got  */
 void	env_to_lst(t_general *data, t_env *my_env)
 {
 	t_env	*head;
@@ -32,8 +31,11 @@ void	env_to_lst(t_general *data, t_env *my_env)
 		tmp = tmp->next;
 	tmp->next = my_env;
 }
-/* la funcion solo detecta los valores del env que contengan '=' */
-
+/*
+*	while env in i-pos exist, once we find '=', we create a cpy of the value and we add this in our own lst
+*	and we move to next node.
+*	In case of one of the values gives error, we free the lst created and saved in data->env_lst
+*/
 int	get_own_env(t_general *data, char **env)
 {
 	t_env	*s_env;
