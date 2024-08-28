@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/16 06:07:54 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:15:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,35 @@
 #include "minishell.h"
 
 
-void	free_env(t_general *data)
+void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT
 {
-	int	i;
-
-	i = 0;
-	if (data->own_env == NULL)
-		return ;
-	while (data->own_env[i])
-	{
-		free(data->own_env[i]);
-		i++;
-	}
-	free(data->own_env);
+	free(data->line);
+	exit(data->ret_exit);
 }
+void	free_env(t_env *head)
+{
+	t_env	*tmp;
+	t_env	*prev;
 
-
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->name)
+			free(tmp->name);
+		if (tmp->value)
+			free(tmp->value);
+		prev = tmp;
+		tmp = tmp->next;
+		free(prev);
+		prev = NULL;
+	}
+}
+/* puede que esta no sea necesaria*/
 void	free_before_end(t_general *data)
 {
-	free_env(data);
+	free_env(data->env_lst);
 }
+
 
 void free_tokens_list(t_general *data)
 {

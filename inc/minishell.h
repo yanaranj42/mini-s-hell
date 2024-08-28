@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/26 15:48:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:12:39 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 # include <readline/history.h>
 # include <limits.h>
 
-/* COLORS*/
+/*COLORS*/
 #define END		"\x1b[0m"
 #define RED		"\x1b[31m"
 #define YELLOW	"\x1b[33m"
 #define BLUE	"\x1b[34m"
 #define GREEN	"\x1b[32m"
+#define CYAN	"\x1b[36m"
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
@@ -34,6 +35,11 @@
 #define FAIL	0
 #define SUCCESS	1
 #define OTHER	3 //tmp
+
+
+#define STDIN	0
+#define STDOUT	1
+#define STDERR	2
 
 
 /*PARSING*/
@@ -82,7 +88,6 @@ typedef struct s_general
 	t_env		*env_lst;//variable yaja
 
 	char 		*line;
-	char 		**own_env;
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
@@ -95,8 +100,8 @@ typedef struct s_general
 
 
 //CREATE OWN ENVIROMENT
-int		get_own_env(char **env, t_general *data);
-int 	env_matrix_base (char **env);
+int		get_own_env(t_general *data, char **env);
+void	env_to_lst(t_general *data, t_env *new_env);
 
 
 //INITIALITATIONS
@@ -119,7 +124,7 @@ t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);
 t_token *create_token_content (t_general *data, t_token *new_token);
 void 	classify_token_type (t_token *new_token);
-void 	debug_token(t_token *token, int num);
+void 	debug_token(t_token *token, int num); // BORRAR
 char	**ft_token_split(char const *s, char del, t_general *data);
 
 	//UTILS
@@ -135,30 +140,29 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
-void 	print_env(t_general *data);
 int 	pseudoexecutor(t_general *data);
 
 
 	//BUILT-INS
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);
-		// CD
-		int		ft_cd(t_general *data);
-		int		go_to_path(int opt, t_general *data);
-		int		update_pwd(t_general *data);
-		int		env_update(t_env *head, char *k_word, char *n_value);
-		char	*get_env_path(t_general *data, char *k_word);
+	
+	int		ft_cd(t_general *data);
+	int		go_to_path(int opt, t_general *data);
+	int		update_pwd(t_general *data);
+	int		env_update(t_env *head, char *k_word, char *n_value);
+	char	*get_env_path(t_general *data, char *k_word);
 
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
-	//void	cases(t_general *data);
 
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
 
 //FREE
-void	free_env(t_general *data);
+void	free_exit(t_general *data);
+void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 

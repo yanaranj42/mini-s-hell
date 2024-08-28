@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/22 16:40:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:33:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **env)
 {
 	t_general	data; 
 
-	(void)argv; // que hacemos con esto???
+	(void)argv; 
 
 	if (argc != 1)
 	{
@@ -25,20 +25,21 @@ int main(int argc, char **argv, char **env)
 		return (0);
 	}
 	init_data_values(&data); 
-	if (get_own_env(env, &data) == 0)
+	if (get_own_env(&data, env) == 0)
 		return (0);
-	
+
+	// PROPUESTA: PODRIAMOS SACAR LO DE CREAR EL ENV EN EL MAIN, PORQUE SI NO HAY ENV TIENE QUE CORTARSE EL PROGRAMA PARA QUE NO PETE, NO?
+	// OSEA LLAMAR A LA FUNCION HAYA O NO HAYA ENV, Y SI RETORNA 0 ACABAR PROGRAMA
+	// Asi estaba en initialitations:
+		//if (env)
+		//	get_own_env(data, env);
+
 
 	while (1)
 	{
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
-			break;
-		}
-		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
-		{
-			free(data.line);
 			break;
 		}
 		add_history (data.line); // para poder acceder al historial de comandos
