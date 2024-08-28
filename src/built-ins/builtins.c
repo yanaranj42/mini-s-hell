@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 04:11:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:33:40 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ redirecciones y mas cosas
 /*tiene que salir por e STDOUT*/
 int	ft_env(t_env *env)
 {
-	printf(YELLOW"OUR ENVIRONMENT\n"END);
+	printf(YELLOW"OUR ENVIRONMENT\n\n"END);
 	while (env && env->next != NULL)
 	{
 		ft_putstr_fd(env->name, 1);
