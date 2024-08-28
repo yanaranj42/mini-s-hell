@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 14:10:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:15:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,26 @@
 //el pseudo executor en el futuro iterara sobre los tokens, y abrira pipes y redirecciones si toca, luego mirara el comando a ejecutar y lo ejecutara (executor builtin, executor cmd), y luego cerrara redirecciones y pipes si tiene que hacerlo
 
 
-int pseudoexecutor(t_general *data)
+int	pseudoexecutor(t_general *data)
 {
-	if (ft_strncmp("echo", data->first_token->argv[0], 4) == 0)
-		return (1);
-	else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
-		return (2);
-	else if (ft_strncmp("pwd", data->first_token->argv[0], 3) == 0)
-		return (3);
-	else if (ft_strncmp("export", data->first_token->argv[0], 6) == 0)
-		return (4);
-	else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
-		return (5);
-	else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
-		return (6);
-	else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
-		return (7);
+		if (ft_strncmp("echo", data->first_token->argv[0], 4)  == 0)
+			ft_echo(data->first_token->argv);
+		else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
+			ft_cd(data);
+		else if (ft_strncmp("pwd", data->first_token->argv[0], 2)  == 0)
+			ft_pwd();
+		else if (ft_strncmp("export", data->first_token->argv[0], 6) == 0)
+			return (4);
+		else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
+			return (5);
+		else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
+			ft_env(data->env_lst);
+		else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
+			ft_exit(data);
+		else
+			printf(BLUE"%s: command not found\n"END, data->first_token->argv[0]);
 	return (0);
+	//return (SUCCESS)
 }
 
 //provisional, esta mal porque si me pasan echoasdaf, por ejemplo, lo cogeria como builtin, cuando en realidad no existe.
