@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 04:11:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:42:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ redirecciones y mas cosas
 /*tiene que salir por e STDOUT*/
 int	ft_env(t_env *env)
 {
-	printf(YELLOW"OUR ENVIRONMENT\n"END);
+	printf(YELLOW"OUR ENVIRONMENT\n\n"END);
 	while (env && env->next != NULL)
 	{
 		ft_putstr_fd(env->name, 1);
@@ -31,6 +31,16 @@ int	ft_env(t_env *env)
 		ft_putendl_fd(env->value, 1);
 	return (0);
 }
+
+//IMPRIME EL PRIMER NOMBRE DEL ENVIROMENT EN AMARILLO, NO ENTIENDO PORQUE, 
+//Y FALTA EL NAME DE LA ULTIMA VARIABLE DE ENTORNO, SOLO DA EL VALOR
+
+//AL CREAR LA COPIA DEL ENV LLAMO A  ESTA FUNCION PARA QUE AUTOMATICAMENTE 
+//SE IMPRIMA LA COPIA Y COMPROVAR QUE SE HACE TODO BIEN, PERO SOLO IMPRIME 
+//LO DE OUR ENVIROMENT Y EL MAIL DIRECTAMENTE
+
+
+
 
 int	ft_pwd(void)
 {
