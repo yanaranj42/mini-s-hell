@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:39 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:01:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,28 @@
 
 /*COLORS*/
 #define END		"\x1b[0m"
+#define RED		"\e[1;91m"
+#define YELLOW	"\e[1;93m"
+#define BLUE	"\e[1;94m"
+#define GREEN	"\e[1;92m"
+#define CYAN	"\e[1;96m"
+
+//De donde son los codigos de estos colores? Porque son distintos de los del makefile???
+//Propongo esos codigos nuevos que creo que en tu terminal se ven igual y en la mia se ven vivos también
+//Codigos viejos por si acaso:
+/*
+#define END		"\x1b[0m"
 #define RED		"\x1b[31m"
 #define YELLOW	"\x1b[33m"
 #define BLUE	"\x1b[34m"
 #define GREEN	"\x1b[32m"
 #define CYAN	"\x1b[36m"
+*/
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
 #define STDERR	2
-#define FAIL	0
-#define SUCCESS	1
-#define OTHER	3 //tmp
 
 
 #define STDIN	0
@@ -91,6 +100,7 @@ typedef struct s_general
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
+	
 }				t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
@@ -159,6 +169,7 @@ int 	pseudoexecutor(t_general *data);
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
+void	unexpected_token_message(char *message);
 
 //FREE
 void	free_exit(t_general *data);

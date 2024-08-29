@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 03:15:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:07:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,17 @@ void free_tokens_list(t_general *data)
 		{
 			i = 0;
 			tmp_token = data->first_token->next;
-			printf ("%p\n", tmp_token);
-			printf (" contenido del primer argumento : %s\n", data->first_token->argv[0]);
+			printf ("token actual es = %p\n", data->first_token);
 			while (data->first_token->argv && data->first_token->argv[i]) 
 			{
 				printf("limpio argv[%d] = %s\n", i, data->first_token->argv[i]);
 				free(data->first_token->argv[i]);
 				i++;
 			}
-			printf("me cargo el argv del token\n");
-			free(data->first_token->argv);
-			printf("mato el token actual\n");
-			free(data->first_token);
+			free(data->first_token->argv); //me cargo el argv del token
+			free(data->first_token); //mato el token actual
 			data->first_token = tmp_token;
-			printf("next token  es = %p\n", data->first_token);
+			printf("next token es = %p\n\n", data->first_token);
 		}
 }
 

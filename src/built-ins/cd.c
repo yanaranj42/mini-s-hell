@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:02 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:50:35 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_env_path(t_general *data, char *k_word)
 	int		len;
 
 	if (!data || !k_word)
-		return (FAIL);
+		return (0);
 	tmp = data->env_lst;
 	if (ft_strlen(k_word) > ft_strlen(tmp->name))
 		len = ft_strlen(k_word);
@@ -52,12 +52,12 @@ int	env_update(t_env *head, char *k_word, char *n_value)
 		{
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
-				return (FAIL);
-			return (SUCCESS);
+				return (0);
+			return (1);
 		}
 		tmp = tmp->next;
 	}
-	return (FAIL);
+	return (0);
 }
 
 int	update_pwd(t_general *data)
@@ -65,9 +65,9 @@ int	update_pwd(t_general *data)
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
-		return (FAIL);
+		return (0);
 	if (env_update(data->env_lst, "OLDPWD", cwd))
-		return (SUCCESS);
+		return (1);
 	return (0); //que hace si no ha entrado a ninguna de las condiciones??
 }
 
@@ -84,14 +84,14 @@ int	go_to_path(int opt, t_general *data)
 		if (!env_path)
 		{
 			ft_putendl_fd("minishell: cd: HOME is not set", 2);
-			return (FAIL);
+			return (0);
 		}
 	}
 	else if (opt == 1)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), FAIL);
+			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), 0);
 		update_pwd(data);
 	}
 	ret = chdir(env_path);

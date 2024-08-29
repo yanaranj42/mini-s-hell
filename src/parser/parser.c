@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/24 19:36:42 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:37:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,8 +304,8 @@ int parser(t_general *data)
 	//puedo ir guardando un cacho en pretoken, creo token, destruyo pretoken y sigo recorriendo para coger el siguiente cacho
 	//primero saber cuantos cachos hay en la linea, hacer un array de strings de la cantidad de cachos que voy a necesitar, recorrer e ir metiendo cachos en ese array y luego ya crear los tokens.
 	i = 0;
-	printf ("\n******************* PARSER *******************\n");
-	printf ("#Creacion de tokens:\n");
+	printf (GREEN"\n******************* PARSER *******************\n"END);
+	printf ("#Creacion de tokens:\n\n");
 	while (data->line[i])
 	{
 		printf(" 🟡 TOKEN %d\n", num); //BORRAR
