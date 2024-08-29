@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:10:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:31:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,3 @@ int	ft_env(t_env *env)
 	}
 	return (0);
 }
-
-//IMPRIME EL PRIMER NOMBRE DEL ENVIROMENT EN AMARILLO, NO ENTIENDO PORQUE, 
-//Y FALTA EL NAME DE LA ULTIMA VARIABLE DE ENTORNO, SOLO DA EL VALOR
-
-//AL CREAR LA COPIA DEL ENV LLAMO A  ESTA FUNCION PARA QUE AUTOMATICAMENTE 
-//SE IMPRIMA LA COPIA Y COMPROVAR QUE SE HACE TODO BIEN, PERO SOLO IMPRIME 
-//LO DE OUR ENVIROMENT Y EL MAIL DIRECTAMENTE

@@ -16,3 +16,6 @@ yaja 12/08: BUILTINS - he creado ya la copia del env con nodos. Y tambien ya me
 			me falta completar funciones para cambiar el path del env para el
 			CD. Usar mejor la estructura en lugar de los punteros para moverse
 			entre los nodos
+	 29/08: he separado los builtins de pwd y env. Y el exit ya funciona. Solo
+			quedaria limpiar los mensajes y mirar si queremos controlar el exit
+			de LONG MIN

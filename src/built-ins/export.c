@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/29 13:30:56 by yanaranj         ###   ########.fr       */
+/*   Created: 2024/08/29 13:44:12 by yanaranj          #+#    #+#             */
+/*   Updated: 2024/08/29 16:06:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-int	ft_pwd(void)
+int	ft_export(t_general *data)
 {
-	char	cwd[PATH_MAX];
+	char	**argv; //cmd
+	t_env	tmp_env;
 
-	if (getcwd(cwd, PATH_MAX))
-	{
-		ft_putendl_fd(cwd, 1);
-		printf(BLUE"PWD: %s\n"END, cwd);
-		return (SUCCESS);
-	}
-	return (FAIL);
+	argv = data->first_token->argv;
+	tmp_env = data->env_lst;
 }

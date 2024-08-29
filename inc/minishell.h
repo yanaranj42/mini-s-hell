@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:39 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:51:48 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@
 #define STDOUT_REDIRECTION 4
 #define STDOUT_DOUBLE_REDIRECTION 5
 #define NO_SEPARATOR 6
-
-
-/*OTROS
-#define LONG_MIN "-9223372036854775807"
-#define LONG_MAX "9223372036854775807"*/
-
 
 
 typedef struct s_token
@@ -155,6 +149,9 @@ int 	pseudoexecutor(t_general *data);
 
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
+
+	int	ft_export(t_general *data);
+
 
 
 //ERROR_MESSAGES
