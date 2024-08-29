@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 18:42:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:10:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ redirecciones y mas cosas
 /*tiene que salir por e STDOUT*/
 int	ft_env(t_env *env)
 {
-	printf(YELLOW"OUR ENVIRONMENT\n\n"END);
+	printf(YELLOW"OWN ENVIRONMENT\n\n"END);
 	while (env && env->next != NULL)
 	{
 		ft_putstr_fd(env->name, 1);
@@ -28,7 +28,11 @@ int	ft_env(t_env *env)
 		env = env->next;
 	}
 	if (env)
+	{
+		ft_putstr_fd(env->name, 1);
+		ft_putstr_fd(GREEN"="END, 1);
 		ft_putendl_fd(env->value, 1);
+	}
 	return (0);
 }
 
@@ -38,21 +42,3 @@ int	ft_env(t_env *env)
 //AL CREAR LA COPIA DEL ENV LLAMO A  ESTA FUNCION PARA QUE AUTOMATICAMENTE 
 //SE IMPRIMA LA COPIA Y COMPROVAR QUE SE HACE TODO BIEN, PERO SOLO IMPRIME 
 //LO DE OUR ENVIROMENT Y EL MAIL DIRECTAMENTE
-
-
-
-
-int	ft_pwd(void)
-{
-	char	cwd[PATH_MAX];
-
-	if (getcwd(cwd, PATH_MAX))
-	{
-		ft_putendl_fd(cwd, 1);
-		printf(BLUE"PWD: %s\n"END, cwd);
-		return (SUCCESS);
-	}
-	return (FAIL);
-}
-/*busca */
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:25:42 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static int	ft_strnum(char *s, int i);
 static int	exit_code(t_general *data, char **argv);
 static int	check_long(char *arg);
-
+/* El error de salida de LONG_MIN es bash, es 1... que fem??*/
 void	ft_exit(t_general *data)
 {
 	ft_putstr_fd("exit \n", STDERR);
@@ -47,7 +47,8 @@ static int	valid_arg(char *argv)
 }
 static int	exit_code(t_general *data, char **argv)
 {
-	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 20)
+	printf("LEN: %zu\n", ft_strlen(argv[1]));
+	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 21)
 	{
 		if (argv[2])
 		{
@@ -98,7 +99,7 @@ static int	check_long(char *argv)
 	int	len;
 
 	len = ft_strlen(argv);
-	if (len == 19)
+	if (len == 20)
 	{
 		printf(YELLOW"IS LONG SIGN NUM\n"END);
 		if (argv[0] == '-' && ft_strncmp(argv, "-9223372036854775807", len) == 0)
