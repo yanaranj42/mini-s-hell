@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/26 12:58:01 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:15:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include "libft.h"
 #include "minishell.h"
+
 
 void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT
 {
@@ -40,6 +43,7 @@ void	free_before_end(t_general *data)
 {
 	free_env(data->env_lst);
 }
+
 
 void free_tokens_list(t_general *data)
 {

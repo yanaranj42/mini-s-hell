@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pseudoexecutor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/27 12:48:17 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:15:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 //este pseudoexecutor va a recibir el data, mirara el argv[0] del token, va a comprobar si ese argv[0] se corresponde a un builtin y entonces va a llamar a la funcion execute builtin que va a llamar al builtin que le toca. 
 //si llamo a env que llame al builtin env

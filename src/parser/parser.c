@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/19 18:05:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:36:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void debug_token(t_token *token, int num)
 {
 	int i;
+	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "no_separator"};
 
 	i = 0;
 	printf("\n  >> Contenido del token %d:\n", num);
@@ -26,6 +27,7 @@ void debug_token(t_token *token, int num)
 		printf("     argv[%d] = |%s|\n", i, token->argv[i]);
 		i++;
 	}
+	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);
 	printf("     token actual: %p\n", token);
 	printf("     next apunta a %p\n", token->next);
 	printf("     back apunta a %p\n\n", token->back);
@@ -58,8 +60,115 @@ void debug_token(t_token *token, int num)
 // 		//uso el return de 0 - 1 por si falla el malloc o no.
 // }
 
+
+
+//Cuando llego a pretoken solo puedo encontrarme espacio, o separador o otra cosa. Por lo que lo de las cuotes lo gestiono directamente en el ultimo caso, no hace falta que lo repita por separado, por si empieza en comilas o las encuentra mas adelante. TOdo en el caso de "otros" y listo
+//Version buena pero larga:
+
+// int take_pretoken (t_general *data, int *i)
+// {
+
+// 	if (data->line[*i] == ' ')
+// 		(*i)++;
+// 	printf ("valor de quotes 1: %d\n", data->qdata.quotes);
+
+// 	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
+// 	{
+// 		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		if (!data->pretoken)
+// 			return (0);
+// 		if (data->line[*i] == '<' && data->line[*i + 1] == '<')
+// 		{
+// 			(*i)++;
+// 			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		}
+// 		else if (data->line[*i] == '>' && data->line[*i + 1] == '>')
+// 		{
+// 			(*i)++;
+// 			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 		}
+// 		if (!data->pretoken)
+// 			return (0);
+// 		(*i)++;
+// 	}
+
+// 	else
+// 	{
+// 		//while (data->line[*i] && is_real_separator(data->line[*i], data->qdata))
+// 		while (data->line[*i] && data->line[*i] != '<' && data->line[*i] != '>' && data->line[*i] != '|') // el or es que mientras se cumpla alguna de las condiciones, el and es que se cumplan todas. Si pongo or, si encuentra un separador <, como no es | ni >, la condicion se cumple y sigue entrando en el while.
+// 		{
+// 			account_quotes (data->line[*i], data);
+// 			printf ("valor de quotes 4: %d\n", data->qdata.quotes);
+// 			if (data->qdata.quotes == 1)
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				while (data->line[*i] && data->line[*i] != '"')
+// 				{
+// 					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				}
+// 				account_quotes (data->line[*i], data);
+// 				printf ("valor de quotes 5: %d\n", data->qdata.quotes);
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			} 
+// 			else if (data->qdata.miniquotes == 1)
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				while (data->line[*i] && data->line[*i] != '\'')
+// 				{
+// 					data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 					if (!data->pretoken)
+// 						return (0);
+// 					(*i)++;
+// 				}
+// 				account_quotes (data->line[*i], data);
+// 				printf ("valor de quotes 6: %d\n", data->qdata.quotes);
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			}
+// 			else
+// 			{
+// 				data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
+// 				if (!data->pretoken)
+// 					return (0);
+// 				(*i)++;
+// 			}
+// 		}
+// 	}
+// 		//falta proteger
+// 		//uso el return de 0 - 1 por si falla el malloc o no.
+
+// 		// Antes tenia puesto que si despues de un separador encontraba otro separador, que volviera a empezar el bucle de parser y fuera acumulando todos los simbolos en un token. Pero en realidad, tengo que tratarlo como tokens separados, ya que bash acepta los simbolos de < y > por pares, y en cuanto a la pipe, va de una en una, ya que dos seguidas lo interpreta como un or y eso es parte del bonus, nosotras si encontramos varias pipes seguidas las interpretamos como si fuera esto "| |", pipes individuales
+// 	return (1);
+// }
+
+int is_real_separator(char c, t_general *data)
+{
+	account_quotes (c, data);
+	if ((c == '<' || c == '>' || c == '|') && data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
+		return (1);
+	return (0);
+}
+
 int take_pretoken (t_general *data, int *i)
 {
+
+	if (data->line[*i] == ' ')
+		(*i)++;
+
 	if (data->line[*i] == '<' || data->line[*i] == '>' || data->line[*i] == '|')
 	{
 		data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
@@ -79,13 +188,14 @@ int take_pretoken (t_general *data, int *i)
 			return (0);
 		(*i)++;
 	}
+
 	else
 	{
-		while (data->line[*i] && data->line[*i] != '<' && data->line[*i] != '>' && data->line[*i] != '|') // el or es que mientras se cumpla alguna de las condiciones, el and es que se cumplan todas. Si pongo or, si encuentra un separador <, como no es | ni >, la condicion se cumple y sigue entrando en el while.
+		while (data->line[*i] && is_real_separator(data->line[*i], data) == 0)
 		{
 			data->pretoken = strjoinchar (data->pretoken, data->line[*i]);
 			if (!data->pretoken)
-			return (0);
+				return (0);
 			(*i)++;
 		}
 	}
@@ -95,6 +205,9 @@ int take_pretoken (t_general *data, int *i)
 		// Antes tenia puesto que si despues de un separador encontraba otro separador, que volviera a empezar el bucle de parser y fuera acumulando todos los simbolos en un token. Pero en realidad, tengo que tratarlo como tokens separados, ya que bash acepta los simbolos de < y > por pares, y en cuanto a la pipe, va de una en una, ya que dos seguidas lo interpreta como un or y eso es parte del bonus, nosotras si encontramos varias pipes seguidas las interpretamos como si fuera esto "| |", pipes individuales
 	return (1);
 }
+
+// asdf asdf | asf " asdf<aasdf" asd
+
 
 t_token *create_token (t_general *data)
 {
@@ -164,6 +277,21 @@ t_token *create_token_content (t_general *data, t_token *new_token)
 	return (new_token);
 }
 
+void classify_token_type (t_token *new_token)
+{
+	if (ft_strncmp ("|", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = PIPE;
+	else if (ft_strncmp ("<", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = STDIN_REDIRECTION;
+	else if (ft_strncmp ("<<", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+		new_token->type = STDIN_DOUBLE_REDIRECTION;
+	else if (ft_strncmp (">", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+		new_token->type = STDOUT_REDIRECTION;
+	else if (ft_strncmp (">>", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+		new_token->type = STDOUT_DOUBLE_REDIRECTION;
+	else
+		new_token->type = NO_SEPARATOR;
+}
 
 int parser(t_general *data)
 {
@@ -218,7 +346,7 @@ int parser(t_general *data)
 		// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
 		// if (!new_token->argv)     NULL->argv (no tiene sentido)
 
-		
+		classify_token_type (new_token);
 		debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++; //BORRAR
 		//destruyo pretoken para volver a crearlo en la siguiente vuelta

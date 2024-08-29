@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/26 12:23:28 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:33:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,34 @@ int main(int argc, char **argv, char **env)
 {
 	t_general	data; 
 
-	(void)argv; // que hacemos con esto???
+	(void)argv; 
 
 	if (argc != 1)
 	{
 		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (0);
 	}
-	init_data_values(&data, env); 
+	init_data_values(&data); 
+	if (get_own_env(&data, env) == 0)
+		return (0);
+
+	// PROPUESTA: PODRIAMOS SACAR LO DE CREAR EL ENV EN EL MAIN, PORQUE SI NO HAY ENV TIENE QUE CORTARSE EL PROGRAMA PARA QUE NO PETE, NO?
+	// OSEA LLAMAR A LA FUNCION HAYA O NO HAYA ENV, Y SI RETORNA 0 ACABAR PROGRAMA
+	// Asi estaba en initialitations:
+		//if (env)
+		//	get_own_env(data, env);
+
+
 	while (1)
 	{
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
+		{
 			break;
+		}
 		add_history (data.line); // para poder acceder al historial de comandos
 		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
-	
-	//init_values(&data, env);
-	/*while (1)
-	{
-		line = readline("🔥 ÐrackyŠhell 🔥 ▶ ");
-		if (!line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
-		{
-			break;
-		}
-		if (ft_strncmp("exit", line, 5) == 0) //temporal
-		{
-			ft_exit(&data);
-			free(line);
-		}
-		add_history (line); // para poder acceder al historial de comandos
-		printf("\nLinea de comando original: |%s|\n", line); // borrar
-*/
+
 		//LEXER
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 		{
@@ -58,17 +54,18 @@ int main(int argc, char **argv, char **env)
 		
 		//PARSER
 		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
-		// if (parser(&data) == 0 || check_viable_tokens(&data) == 0) 
-		// {
-		// 	free (data.line);
-		// 	continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
-		// }
-		
-		if (parser(&data) == 0) 
+		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
 			free (data.line);
 			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
 		}
+	
+		
+		// if (parser(&data) == 0) 
+		// {
+		// 	free (data.line);
+		// 	continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
+		// }
 
 		//EXPANDER
 

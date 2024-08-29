@@ -3,28 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   initializations.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/27 12:11:44 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:31:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int init_data_values(t_general *data, char **env)
+void	init_data_values(t_general *data)
 {
 	data->line = NULL;
 	data->first_token = NULL;
 	data->pretoken = NULL;
-	data->own_env = NULL;
 	data->env_lst = NULL;
 	data->first_token = NULL;
 	data->ret_exit = 0;
-	if (env)
-		get_own_env(data, env);
-	return (0);
 }
+
+//NO ENTIENDO EL SENTIDO DE CONVERTIR ESTA FUNCION A INT, PORQUE FUERA NO RECIBE NADA, LA DEJO EN VOID
+
 
 //En pipex metia a saco el enviroment en data->env porque solo podia pasar una variable a ciertas funciones, y en verdad data->env era un puntero al enviroment original. Aqui en cambio construyo mi propio enviroment, que es una copia del original, por eso no lo puedo igualar a saco, sino que tengo que hacer mallocs.
 

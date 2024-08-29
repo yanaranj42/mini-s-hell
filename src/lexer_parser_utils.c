@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:50:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/16 13:45:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:47:07 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void account_quotes (char c, t_general *data)
 
 //strjoinchar, que una un carácter a un string, y una variable tipo char *pretoken que vaya acumulando los chars para formar el string.
 
-char *strjoinchar (char *str, char c) // REDUCIR Y METER EN EL LIBFT
+char *strjoinchar (char *str, char c) // METER EN EL LIBFT
 {
 	int i;
 	char *new_str;

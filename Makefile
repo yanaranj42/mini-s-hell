@@ -3,34 +3,34 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
+#    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/26 12:35:56 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/08/28 03:46:09 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------------------------------------------------COLORS------------------------------------------------------#
+
+NC = \033[0m
 GREEN = \033[1;92m
 RED = \033[1;91m
-NC = \033[0m
 #YELLOW = \033[1;33m
 YELLOW = \e[1;93m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
 FILES = minishell.c initializations.c error_messages.c lexer_parser_utils.c free.c
-#FILES = minishell.c initializations.c error_messages.c free.c
 
-FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
-
-FILES += env/own_enviroment.c
+FILES += own_env/own_enviroment.c
 
 FILES += lexer/lexer.c 
 
-FILES += parser/parser.c parser/ft_token_split.c
+FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
 FILES += executor/pseudoexecutor.c 
+
+FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
