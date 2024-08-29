@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 14:01:30 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 21:22:22 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,13 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_command
+{
+	char	*path;
+	char	**argv;
+	char	*name;
+	pid_t	pid;
+}			t_command;
 
 typedef struct s_general
 {
@@ -100,7 +107,8 @@ typedef struct s_general
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
-	
+	char		**paths;
+	t_command	*first_command;
 }				t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
@@ -150,7 +158,12 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
-int 	pseudoexecutor(t_general *data);
+//int 	pseudoexecutor(t_general *data);
+int executor (t_general *data);
+int	get_all_paths(t_env	*env_lst, t_general *data);
+t_env *there_is_path(t_env	*env_lst);
+void	get_children(t_general *data);
+int count_commands(t_general *data);
 
 
 	//BUILT-INS

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:37:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:30:53 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,8 @@ int main(int argc, char **argv, char **env)
 	}
 	init_data_values(&data); 
 	if (get_own_env(&data, env) == 0)
-		return (0);
+		return (0); //cortamos programa??????????
 
-	// PROPUESTA: PODRIAMOS SACAR LO DE CREAR EL ENV EN EL MAIN, PORQUE SI NO HAY ENV TIENE QUE CORTARSE EL PROGRAMA PARA QUE NO PETE, NO?
-	// OSEA LLAMAR A LA FUNCION HAYA O NO HAYA ENV, Y SI RETORNA 0 ACABAR PROGRAMA
-	// Asi estaba en initialitations:
-		//if (env)
-		//	get_own_env(data, env);
 
 
 	while (1)
@@ -53,25 +48,19 @@ int main(int argc, char **argv, char **env)
 		}
 		
 		//PARSER
-		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
 		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
 			free (data.line);
 			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
 		}
 	
-		
-		// if (parser(&data) == 0) 
-		// {
-		// 	free (data.line);
-		// 	continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
-		// }
 
 		//EXPANDER
 
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
-		pseudoexecutor(&data); 
+		//pseudoexecutor(&data); 
+		executor (&data);
 
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
