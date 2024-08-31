@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 21:22:22 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/01 00:19:05 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,6 @@
 
 
 
-typedef struct s_token
-{
-	char 		**argv;
-	int 		argc;
-	struct 		s_token *back;
-	struct 		s_token *next;
-	int 		type;
-}				t_token;
-
 
 typedef struct s_quotes
 {
@@ -89,13 +80,28 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_token
+{
+	char 		**argv;
+	int 		argc;
+	struct 		s_token *back;
+	struct 		s_token *next;
+	int 		type;
+}				t_token;			
+
 typedef struct s_command
 {
 	char	*path;
 	char	**argv;
-	char	*name;
 	pid_t	pid;
 }			t_command;
+
+typedef struct s_file
+{
+	//char	*path;
+	//char	**argv;
+	pid_t	pid;
+}			t_file;
 
 typedef struct s_general
 {

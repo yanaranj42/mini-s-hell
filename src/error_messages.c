@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:50:28 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/31 22:15:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 // void	permission_denied(char *start)
 // {
-// 	printf("%s", "Permission denied: ");
+// 	ft_putstr_fd(2, "Permission denied: ");
 // 	exit(126);
 // }
 
 // void	command_not_found(char *start)
 // {
-// 	printf("%s", "Command not found: ");
+// 	ft_putstr_fd(2, "Command not found: ");
 // 	exit(127);
 // }
 
