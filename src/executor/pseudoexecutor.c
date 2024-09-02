@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pseudoexecutor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:52:24 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:22:18 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	pseudoexecutor(t_general *data)
 		else
 			printf(BLUE"%s: command not found\n"END, data->first_token->argv[0]);
 	return (0);
-	//return (SUCCESS)
+	//return (OK)
 }
 
 //provisional, esta mal porque si me pasan echoasdaf, por ejemplo, lo cogeria como builtin, cuando en realidad no existe.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:41:00 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/28 04:11:54 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:22:37 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ int	ft_echo(char **argv)
 		if (n_opt == 0)
 			write(1, "\n", 1);
 	}
-	return (SUCCESS);
+	return (OK);
 }

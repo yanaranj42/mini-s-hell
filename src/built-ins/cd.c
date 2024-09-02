@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:02 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:23:38 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_env_path(t_general *data, char *k_word)
 	int		len;
 
 	if (!data || !k_word)
-		return (FAIL);
+		return (KO);
 	tmp = data->env_lst;
 	if (ft_strlen(k_word) > ft_strlen(tmp->name))
 		len = ft_strlen(k_word);
@@ -52,12 +52,12 @@ int	env_update(t_env *head, char *k_word, char *n_value)
 		{
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
-				return (FAIL);
-			return (SUCCESS);
+				return (KO);
+			return (OK);
 		}
 		tmp = tmp->next;
 	}
-	return (FAIL);
+	return (KO);
 }
 
 int	update_pwd(t_general *data)
@@ -65,9 +65,9 @@ int	update_pwd(t_general *data)
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
-		return (FAIL);
+		return (KO);
 	if (env_update(data->env_lst, "OLDPWD", cwd))
-		return (SUCCESS);
+		return (OK);
 	return (0); //que hace si no ha entrado a ninguna de las condiciones??
 }
 
@@ -84,14 +84,14 @@ int	go_to_path(int opt, t_general *data)
 		if (!env_path)
 		{
 			ft_putendl_fd("minishell: cd: HOME is not set", 2);
-			return (FAIL);
+			return (KO);
 		}
 	}
 	else if (opt == 1)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), FAIL);
+			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), KO);
 		update_pwd(data);
 	}
 	ret = chdir(env_path);

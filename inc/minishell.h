@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:51:48 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:50:48 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
 #define STDERR	2
-#define FAIL	0
-#define SUCCESS	1
+#define KO	0
+#define OK	1
 #define OTHER	3 //tmp
 
 
@@ -150,18 +150,24 @@ int 	pseudoexecutor(t_general *data);
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
 
-	int	ft_export(t_general *data);
+	int		ft_export(t_general *data);
+	/*export utils*/
+	int		print_export_lst(t_env *own_env);
+	void	print_env(t_env *tmp);
+	int		export_opt(char *name);
 
 
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
+int		error_opt(char *s1, char *s2, char **arr);
 
 //FREE
 void	free_exit(t_general *data);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
+char	**arr_clean(char **arr, int flag);
 
 
 #endif

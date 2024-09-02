@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 03:15:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:54:13 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,33 @@ void free_tokens_list(t_general *data)
 // }
 
 //ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
+
+/*YAJA:
+* hay que rehacer el arr_clean, porque seguro lo usamos en otras partes y no tenemos la funcion de memdel
+* quiero mirar como hacer directamente con el free (un swap quiza? esta por verse) 
+*/
+static void	*ft_memdel(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	return (NULL);
+}
+
+char	**arr_clean(char **arr, int flag)
+{
+	int		i;
+
+	i = 0;
+	if (!arr)
+		return (NULL);
+	while (arr && arr[i])
+	{
+		if (!flag)
+			arr[i] = ft_memdel(arr[i]);
+		else
+			arr[i] = NULL;
+		i++;
+	}
+	arr = ft_memdel(arr);
+	return (NULL);
+}
