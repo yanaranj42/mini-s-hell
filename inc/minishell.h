@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/01 00:19:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/06 21:15:24 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
+# include <sys/wait.h>
 
 /*COLORS*/
 #define END		"\x1b[0m"
@@ -27,18 +28,7 @@
 #define BLUE	"\e[1;94m"
 #define GREEN	"\e[1;92m"
 #define CYAN	"\e[1;96m"
-
-//De donde son los codigos de estos colores? Porque son distintos de los del makefile???
-//Propongo esos codigos nuevos que creo que en tu terminal se ven igual y en la mia se ven vivos también
-//Codigos viejos por si acaso:
-/*
-#define END		"\x1b[0m"
-#define RED		"\x1b[31m"
-#define YELLOW	"\x1b[33m"
-#define BLUE	"\x1b[34m"
-#define GREEN	"\x1b[32m"
-#define CYAN	"\x1b[36m"
-*/
+#define PURPLE 	"\e[1;95m"
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
@@ -65,8 +55,6 @@
 #define LONG_MAX "9223372036854775807"*/
 
 
-
-
 typedef struct s_quotes
 {
 	int 	quotes;
@@ -87,21 +75,9 @@ typedef struct s_token
 	struct 		s_token *back;
 	struct 		s_token *next;
 	int 		type;
+	char		*path;
+	pid_t		pid;
 }				t_token;			
-
-typedef struct s_command
-{
-	char	*path;
-	char	**argv;
-	pid_t	pid;
-}			t_command;
-
-typedef struct s_file
-{
-	//char	*path;
-	//char	**argv;
-	pid_t	pid;
-}			t_file;
 
 typedef struct s_general
 {
@@ -114,8 +90,27 @@ typedef struct s_general
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
 	char		**paths;
-	t_command	*first_command;
+	char 		**env_matrix;
+	int 		exit_status;
+
+
+
 }				t_general;
+
+
+// | | -> error 2
+// g_exit_status = 2;
+// readline drakishell: $? // en la fase de expansor sustituyo $? por el valor de g_exit_status, osea 2 en este caso.
+// despues de expansor , viene ejecutor, que estoy ejecutando , un token que antes tenia argv[0] -> $? pero ahora es argv[0] -> 2
+//por lo tanto lo que estoy ejecutando es como si directamente hubiera puesto un 2
+
+// | | -> error 2
+// g_exit_status = 2;
+// echo $?
+// En el expansor me queda echo 2, porque se ha expandido al valor de g_exit_status y me imprime el 2 que le he pedido con el echo
+
+
+
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
 
@@ -165,11 +160,23 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 //EXECUTOR
 //int 	pseudoexecutor(t_general *data);
-int executor (t_general *data);
-int	get_all_paths(t_env	*env_lst, t_general *data);
-t_env *there_is_path(t_env	*env_lst);
-void	get_children(t_general *data);
-int count_commands(t_general *data);
+int 	executor (t_general *data);
+int		get_matrix_env(t_general *data, t_env *env_lst);
+int 	env_matrix_base (t_env *env_lst);
+void 	print_matrix_env(char **matrix_env); //borrar
+int		get_all_paths(t_env	*env_lst, t_general *data);
+t_env 	*there_is_path(t_env	*env_lst);
+int 	get_children(t_general *data);
+int 	count_commands(t_general *data);
+int		create_child(t_general *data, t_token *tkn);
+void	check_cmd(t_token *cmd, char **paths);
+char	*check_cmd_access(char **paths, char *cmd_argv);
+char 	*check_cmd_current_directory(char *cmd_argv);
+char	*check_cmd_absolut_path(char *cmd_argv);
+char	*check_cmd_relative_path(char *cmd_argv, char *path);
+void	father_status(t_general *data);
+
+
 
 
 	//BUILT-INS
@@ -189,12 +196,17 @@ int count_commands(t_general *data);
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
 void	unexpected_token_message(char *message);
+void	command_not_found(char *start);
+void	permission_denied(char *start);
+void	no_such_file_or_directory(char *start);
 
 //FREE
 void	free_exit(t_general *data);
+void	free_data_paths (char **paths);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
+void	free_matrix_env(t_general *data);
 
 
 #endif

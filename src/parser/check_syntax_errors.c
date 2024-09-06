@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 15:05:55 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/03 21:22:02 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int check_pipe (t_general *data, t_token *token)
 		unexpected_token_message("`|'"); //error de salida 2:command not found
 	else
 		return (1);
+	data->exit_status = 2;
 	free_tokens_list(data);
 	return (0);
 }
@@ -46,6 +47,7 @@ int check_stdin_redirection (t_general *data, t_token *token) // <
 		unexpected_token_message("`<'"); //error de salida 2:command not found
 	else
 		return (1);
+	data->exit_status = 2;
 	free_tokens_list(data);
 	return (0);
 }
@@ -66,6 +68,7 @@ int check_stdin_double_redirection (t_general *data, t_token *token) // <<
 		unexpected_token_message("`>>'"); //error de salida 2:command not found
 	else
 		return (1);
+	data->exit_status = 2;
 	free_tokens_list(data);
 	return (0);
 }
@@ -82,6 +85,7 @@ int check_stdout_redirection (t_general *data, t_token *token) // >
 		unexpected_token_message("`>'"); //error de salida 2:command not found
 	else
 		return (1);
+	data->exit_status = 2;
 	free_tokens_list(data);
 	return (0);
 }
@@ -102,6 +106,7 @@ int check_stdout_double_redirection (t_general *data, t_token *token) // >>
 		unexpected_token_message("`<<'"); //error de salida 2:command not found
 	else
 		return (1);
+	data->exit_status = 2;
 	free_tokens_list(data);
 	return (0);
 }

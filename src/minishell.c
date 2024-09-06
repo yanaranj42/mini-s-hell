@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 20:30:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:03:21 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ int main(int argc, char **argv, char **env)
 	if (argc != 1)
 	{
 		printf("To run the program, no parameters are needed other than the executable itself\n");
-		return (0);
+		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
 	init_data_values(&data); 
 	if (get_own_env(&data, env) == 0)
-		return (0); //cortamos programa??????????
+		return (1); //cortamos programa?????????? NO, REVISAR PARA QUE LA LISTA SEA VACIA EN VEZ DE SALIR
+	//Si no hay enviroment, crearse una lista vacia, osea poner el puntero first a null. Esto es lo mas correcto, porque aunque no haya enviroment, hay comandos que siguen pudiendo ejecutarse y puedo crear archivos y meterles cosas. Y quizas empiezo el minishell sin enviroment y a base de exports me lo podria crear
 
 
 
@@ -51,16 +52,22 @@ int main(int argc, char **argv, char **env)
 		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
 			free (data.line);
-			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
+			continue; // para volver a empezar el while
 		}
 	
 
 		//EXPANDER
 
+
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
 		//pseudoexecutor(&data); 
-		executor (&data);
+		if (executor (&data)== 0)
+		{
+			free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
+			free (data.line);
+			continue; // para volver a empezar el while
+		}
 
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
@@ -73,6 +80,7 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
+		free_matrix_env(&data);
 		free(data.line);
 	}
 	free_before_end(&data);

@@ -6,39 +6,25 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/01 00:18:48 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:46:43 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-int	check_cmd(t_command *cmd, char **paths)
-{
-	split_cmd(cmd1);
-	if (!cmd1->argv)
-	{
-		perror_message(NULL, "Malloc failure in take command 1 args");
-		return (0);
-	}
-	if (!paths)
-	{
-		cmd1->path = check_cmd_absolut_path(cmd1->argv[0]);
-		if (cmd1->path == NULL)
-		{
-			write (2, "Command not found: ", 19);
-			write(2, cmd1->argv[0], ft_strlen(cmd1->argv[0]));
-			write(2, "\n", 1);
-			exit(127);
-		}
-	}
-	else
-		cmd1->path = check_cmd_access(paths, cmd1->argv[0]);
-	return (1);
-}
+// Planteamiento evolucion executor:
+	// Ejecutar comando unico
+	// Ejecutar varios comandos, simplemente saltadome los separdos
+	// Ejectuar los pipes
+	// Hacer redirecciones a la derecha > >>
+	// Hacer redicrecciones a la izquierda < <<
 
 
-void	create_child(t_general *data, t_token *cmd1)
+// En el caso de que el token sea < infile cat, dejar que se ejecute el < infile, y luego reconvertir el token a cat (lo machaco)
+
+
+int	create_child(t_general *data, t_token *tkn)
 {
 
 	//COMO SABER SI EL HIJO TIENE QUE PODER LEER O ESCRIBIR? Por el toquen que tiene a izquierda o derecha
@@ -46,41 +32,46 @@ void	create_child(t_general *data, t_token *cmd1)
 
 	//cada token corresponde a una cosa, no me voy a encontrar que en un toquen hay un archivo, un comando y una flag, o es archivo o es comando, y separados por separadores
 
-
-
-	if (check_cmd(cmd, data->paths) == 0)
-		exit(1);
-	if (execve(cmd1->path, cmd1->argv, data->envp) == -1)
+	
+	write(1, PURPLE, ft_strlen(PURPLE)); // BORRAR
+	write(1, "\nSOY UN HIJO\n", 13); // BORRAR
+	write(1, "\n# Checkear comandos:\n", 22); // BORRAR
+	write(2, END, ft_strlen(END)); // BORRAR
+	//si no hago esperar al padre mientras el hijo hace cosas, el padre sigue y me aparece el siguiente readline en medio, por eso cuando el hijo acaba no me aparece el prompt, porque ya estoy ahi
+	check_cmd(tkn, data->paths);
+	printf ("\n");
+	printf ("   >>> Token path antes del execve: %s\n", tkn->path);
+	printf(PURPLE"\n# Excecve:\n"END);
+	printf ("\n");
+	if (execve(tkn->path, tkn->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 	{
-		perror_message(NULL, "Regular command execve failed");
+		perror_message(NULL, "Execve failed");
 		exit(1);
 	}
+	return (1);
 }
 
+//!!!REVISAR:
+// EL PERROR, LO UNICO QUE NO GESTIONA ES EL COMMAND NOT FOUND, HAY QUE HARDCODEARLO. SI NO ENCUENTRA EL COMANDO EN EL PATH, COMMAND NOT FOUND
+// AHORA ESTOY DICIENDO QUE SI NO ENCUENTRA EL PATH O NO EXISTE, QUE EL PATH ES EL PROPIO COMANDO Y LO INTENTE IGUAL, Y ME DICE ARCHIVO NO ENCONTRADO, PERO ESO ESTA MAL.
+// ESO TENGO QUE HACERLO ASI SOLO SI ME PASAN EL COMANDO CON LA RUTA ABSOLUTA, SI HAY UNA / EN EL COMANDO (QUE SIGNIFICA QUE ESTOY PASANDO UNA RUTA ABSOLUTA, O INTENTANDOLO). EN ESE MOMENTO SI QUE INDEPENDIENTEMENTE DE QUE NO LO ENCUENTRE SE LO TENGO QUE PASAR AL PERROR PARA QUE ME PASE EL ERROR DE FILE NOT FOUND
 
-//pipex:
-	// if (check_read_file(fdata) == 0)
-	// 	exit(1);
-	// if (check_cmd1(cmd1, data->paths) == 0)
-	// 	exit(1);
-	// if (dup2(fdata->infile_fd, 0) == -1)
-	// {
-	// 	perror_message(NULL, "Problem with dup2 of std_input in 1st command");
-	// 	exit(1);
-	// }
-	// close(fdata->infile_fd);
-	// if (dup2(data->pipe_fd[1], 1) == -1)
-	// {
-	// 	perror_message(NULL, "Problem with dup2 of std_output in 1st command");
-	// 	exit(1);
-	// }
-	// close(data->pipe_fd[0]);
-	// close(data->pipe_fd[1]);
-	// if (execve(cmd1->path, cmd1->argv, data->envp) == -1)
-	// {
-	// 	perror_message(NULL, "Command 1 execve failed");
-	// 	exit(1);
-	// }
+
+//El execve solo ejecuta comandos de los que tiene el path. Aunque haya path, comandos del sistema como cd, export o unset, no los encuentra como el resto, por lo tanto tampoco los puede ejecutar.
+
+
+//Quan entro un comando al sistema primer mira si esta la ruta que li passo, ja sigui absoluta o relativa. si li passo el comando a secas, la ruta relativa es ./comando, busca el comando a la carpeta que jo estic
+//quan jo li entro a secas un comando la terminal enten que es una ruta relativa a la propia carpeta. En el cas de que no ho trobi, ho busca en els diferents del enviroment i va probant desquerra a dreta fins que troba un valid.
+//si no el troba, llavors ja fica comamand not found.
+
+//Ej: ls esta dintre dels paths, pero si jo creo un programa que es diu ls que li dic que quan sexecuti escrigui hola a la terminal i el deixo a la carpeta en el que estic, quan escrigui ls posara hola, perque abans de mirar els paths ha trobat un programa qu ees diu ls dins de la propia carpeta
+
+//com per comprobar que esta a la propia carpeta he de construir una ruta absoluta, ja que la he construit la puc utilitzar per passarli al execve. em servira tant passarli el comando a secas o aquesta ruta absoluta.
+
+
+
+//SI LE PASO A MINISHELL /bin/ls, PERO EN REALIDAD ESE PATH ESTA INCOMPLETO.... Y ME LO HACE BIEN
+
 
 
 int count_commands(t_general *data)
@@ -99,74 +90,69 @@ int count_commands(t_general *data)
 	return (n);
 }
 
-void	get_children(t_general *data)
+
+int	get_children(t_general *data)
 {
-	//int		i;
+	int			i;
 	int 		n;
 	pid_t		pid;
-	t_command 	cmd;
-	t_file		file;
-	t_token 	tkn;
+	t_token 	*tkn;
+	/*BORRAR*/ char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "no_separator"};
 
-	printf ("# Get children:\n");
-	//i = 0;
-	n = count_commands(data);
-	printf ("el valor de n es: %d\n", n);
+	printf ("\n# Get children:\n");
+	i = 0;
+	n = count_commands(data); //no_separator_tokens
+	printf ("   La cantidad de hijos es: %d\n", n);
 
 	tkn = data->first_token;
-	file = data->first_file; //FALTA INICIALIZAR Y VER EL CONJUNTO DE ESTAS TRES VARIABLES
-	cmd = data->first_command;
-	
+	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
 	while (i < n)
 	{
+		printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
+		if (tkn->type != NO_SEPARATOR) // !!!! ESTO EN REALIDAD NO SERA ASI, PORQUE CUANDO ENCUENTRE UN SEPARADOR TENDRE QUE HACER COSAS, NO SOLO PASAR ADELANTE
+		{
+			tkn = tkn->next;
+			printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
+		}
 		pid = fork();
 		if (pid == -1)
 		{
 			perror_message(NULL, "Fork");
-			exit(1); //PORQUE 1???? Es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
-			//PORQUE EXIT Y NO RETURN? QUE PASA CUANDO HAGO RETURN 0?
+			return (0); 
 		}
-		else
+		tkn->pid = pid;
+		if (pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
 		{
-			if (tkn->type != NO_SEPARATOR)
-				tkn = tkn->next;
-			if (tkn->type == NO_SEPARATOR)
-			{
-				if (tkn->back == NULL && (tkn->next == NULL || tkn->next->type == PIPE))
-				{
-					cmd->pid = pid; //aqui estoy metiendo informacion en el comando pero ya es dentro del hijo, cuando muera esa info se pierde? No la he modificado en el padre en teoria, no?
-					cmd = cmd->next;
-				}
-				else 
-				{
-					file->pid = pid; //aqui estoy metiendo informacion en el comando pero ya es dentro del hijo, cuando muera esa info se pierde? No la he modificado en el padre en teoria, no?
-					file = file->next;
-				}
-			}
-			
+			//tkn->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
+			create_child(data, tkn);
 		}
-		if (pid == 0)
-			create_child(data, tkn); //Entiendo que en el momento que se crea el fork se activa ese proceso, pero como sabe que lo que tiene que hacer es en ese proceso y no se mezclan?
 		tkn = tkn->next;
 		i++;
 	}
+	return (1);
 }
 
+
+//Cuando en pipex poniamos exit (1), es 1 porque es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
+//En el return del main hacemos lo mismo
 
 int executor (t_general *data)
 {
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
+	
+	if (get_matrix_env (data, data->env_lst) == 0)
+		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
-		return (0); // salimos del programa o al siguiente readline??????? Seria return para no machacar el perror, no?
-	get_children(data);
-	//get_children(data, data->first_command);
-	// father_status(&data, &cmd1, &cmd2);
-	// free_before_end(data.paths);
+		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
+	if (get_children(data) == 0)
+		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
+	father_status(data);
+	free_data_paths (data->paths); //Creo unos paths con malloc, y al acabar los tengo que eliminar, independientemente de que el comando exista o no. Lo hago en el padre porque lo creo en el padre, el hijo tiene una copia, no tiene que destruirlo.
 	return (1);
 }
 
-//CUANTOS COMANDOS HAY? -- EL MISMO QUE TOKENS DE TIPO NO_SEPARATOR
-//
+//Para contar cuantos hijos tiene que haber: El mismo que tokens tipo no separator
+
 
 
 //los builtins que modifican las variables de entorno tienen que 
@@ -176,3 +162,4 @@ int executor (t_general *data)
 //builtins trabajen con doble puntero para que el executer ejecute como 
 //tal o lo mande a builtins si hace falta, que pueda hacerlo con strncmp 
 //sin tener que reconvertir variables 
+

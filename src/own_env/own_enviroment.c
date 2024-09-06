@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:41:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:05:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	get_own_env(t_general *data, char **env)
 	int		i;
 
 	i = -1;
+	if (!env)
+		return (0); //Primero asegurarse de que hay env, antes de intentar recorrerlo
 	while (env[++i])
 	{
 		s_env = malloc(sizeof(t_env));

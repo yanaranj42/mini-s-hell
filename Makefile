@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/29 20:42:39 by mfontser         ###   ########.fr        #
+#    Updated: 2024/09/04 21:58:17 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ FILES += lexer/lexer.c
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
-FILES += executor/pseudoexecutor.c  executor/executor.c executor/get_env_paths.c
+FILES += executor/pseudoexecutor.c executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
 
 FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
 
