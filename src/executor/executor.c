@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/06 18:46:43 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:47:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,71 @@
 
 // En el caso de que el token sea < infile cat, dejar que se ejecute el < infile, y luego reconvertir el token a cat (lo machaco)
 
+
+
+// if (dup2(fdata->infile_fd, 0) == -1)
+// 	{
+// 		perror_message(NULL, "Problem with dup2 of std_input in 1st command");
+// 		exit(1);
+// 	}
+// 	close(fdata->infile_fd);
+// 	if (dup2(data->pipe_fd[1], 1) == -1)
+// 	{
+// 		perror_message(NULL, "Problem with dup2 of std_output in 1st command");
+// 		exit(1);
+// 	}
+// 	close(data->pipe_fd[0]);
+// 	close(data->pipe_fd[1]);
+
+
+
+// if (dup2(fdata->outfile_fd, 1) == -1)
+// 	{
+// 		perror_message(NULL, "Problem with dup2 of std_output in 2nd command");
+// 		exit(1);
+// 	}
+// 	close(fdata->outfile_fd);
+// 	if (dup2(data->pipe_fd[0], 0) == -1)
+// 	{
+// 		perror_message(NULL, "Problem with dup2 of std_input in 2nd command");
+// 		exit(1);
+// 	}
+// 	close(data->pipe_fd[0]);
+// 	close(data->pipe_fd[1]);
+
+
+void create_pipe(t_general *data)
+{
+	if (pipe(data->pipe_fd) == -1)
+	{
+		perror_message(NULL, "Pipe");
+		exit (1);
+	}
+}
+
+
+void prepare_1st_command_pipe(t_general *data)
+{
+	//De momento solo pongo comandos, como no hay archivos de los que leer no tengo que cambiar el stdin, leera de la linea de comandos y se guardara el resultado
+	if (dup2(data->pipe_fd[1], 1) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of std_output");
+		exit(1);
+	}
+	close(data->pipe_fd[0]);
+	close(data->pipe_fd[1]);
+}
+
+void prepare_2nd_command_pipe(t_general *data)
+{
+	if (dup2(data->pipe_fd[0], 0) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of std_input in 2nd command");
+		exit(1);
+	}
+	close(data->pipe_fd[0]);
+	close(data->pipe_fd[1]);
+}
 
 int	create_child(t_general *data, t_token *tkn)
 {
@@ -41,6 +106,14 @@ int	create_child(t_general *data, t_token *tkn)
 	check_cmd(tkn, data->paths);
 	printf ("\n");
 	printf ("   >>> Token path antes del execve: %s\n", tkn->path);
+	if (tkn->next && tkn->next->type == PIPE)
+	{
+		
+		prepare_1st_command_pipe(data); // redirecciono el output del comando hacia el fd 1 de la pipe
+	}
+	if (tkn->back->type == PIPE)
+		prepare_2nd_command_pipe(data); // le digo que el infile del comando sea el fd 0 de la pipe 
+
 	printf(PURPLE"\n# Excecve:\n"END);
 	printf ("\n");
 	if (execve(tkn->path, tkn->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
@@ -83,11 +156,11 @@ int count_commands(t_general *data)
 	tmp = data->first_token;
 	while (tmp)
 	{
-		if (tmp->type == NO_SEPARATOR)
+		if (tmp->type == PIPE)
 			n++;
 		tmp = tmp->next;
 	}
-	return (n);
+	return (n + 1);
 }
 
 
@@ -101,7 +174,7 @@ int	get_children(t_general *data)
 
 	printf ("\n# Get children:\n");
 	i = 0;
-	n = count_commands(data); //no_separator_tokens
+	n = count_commands(data); // = numero de pipes + 1
 	printf ("   La cantidad de hijos es: %d\n", n);
 
 	tkn = data->first_token;
@@ -114,20 +187,25 @@ int	get_children(t_general *data)
 			tkn = tkn->next;
 			printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
 		}
+		if (n > 1)
+			create_pipe(data); //genero los fd de la pipe
+		create_pipe(data); //genero los fd de la pipe
 		pid = fork();
 		if (pid == -1)
 		{
 			perror_message(NULL, "Fork");
 			return (0); 
 		}
-		tkn->pid = pid;
+		tkn->pid = pid; // hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
 		if (pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
 		{
 			//tkn->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
 			create_child(data, tkn);
 		}
+		data->reading_pipe_fd = data->pipe_fd[0];
 		tkn = tkn->next;
 		i++;
+
 	}
 	return (1);
 }

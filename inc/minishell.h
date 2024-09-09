@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/06 21:15:24 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:27:15 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <readline/history.h>
 # include <limits.h>
 # include <sys/wait.h>
+# include <fcntl.h>
+
 
 /*COLORS*/
 #define END		"\x1b[0m"
@@ -92,6 +94,7 @@ typedef struct s_general
 	char		**paths;
 	char 		**env_matrix;
 	int 		exit_status;
+	int			pipe_fd[2];
 
 
 
