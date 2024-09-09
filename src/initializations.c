@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/04 01:02:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:15:43 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_data_values(t_general *data)
 	data->env_lst = NULL;
 	data->first_token = NULL;
 	data->ret_exit = 0;
+	data->paths = NULL;
 	data->env_matrix = NULL;
 	data->exit_status = 0;
 

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/06 21:16:06 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:41:08 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,12 +176,14 @@ void	check_cmd(t_token *cmd, char **paths)
 		{
 			printf ("     NO\n");
 			cmd->path = check_cmd_absolut_path(cmd->argv[0]);
-			// if (cmd->path == NULL)
-			// 	command_not_found (cmd->argv[0]);
+			if (cmd->path == NULL)
+				command_not_found (cmd->argv[0]);
 		}
 		else
 		{
 			printf ("     SI:\n");
+			printf ("%p\n", paths);
+			printf ("%p\n", *paths);
 			while (paths[i]) //BORRAR
 			{
 				printf("        %s\n", paths [i]);
