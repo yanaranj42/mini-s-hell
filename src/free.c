@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/04 20:47:00 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 02:24:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,16 @@ void free_tokens_list(t_general *data)
 	{
 		i = 0;
 		tmp_token = data->first_token->next;
-		printf ("token actual es = %p\n", data->first_token);
-		while (data->first_token->argv && data->first_token->argv[i]) 
-		{
-			printf("limpio argv[%d] = %s\n", i, data->first_token->argv[i]);
-			free(data->first_token->argv[i]);
-			i++;
-		}
-		free(data->first_token->argv); //me cargo el argv del token
+		// printf ("token actual es = %p\n", data->first_token);
+		// while (data->first_token->argv && data->first_token->argv[i]) 
+		// {
+		// 	printf("limpio argv[%d] = %s\n", i, data->first_token->argv[i]);
+		// 	free(data->first_token->argv[i]);
+		// 	i++;
+		// }
+		// free(data->first_token->argv); //me cargo el argv del token
+		printf("limpio el contenido del token = %s\n", data->first_token->content);
+		free(data->first_token->content); //SI?????????????????????//me cargo el contenido del token
 		free(data->first_token); //mato el token actual
 		data->first_token = tmp_token;
 		printf("next token es = %p\n\n", data->first_token);
@@ -87,6 +89,17 @@ void free_tokens_list(t_general *data)
 }
 
 
+void 	free_pretoken_argv (char **argv)
+{
+	int i;
+	i = 0;
+		while (argv && argv[i]) // SI??????????
+		{
+			free(argv[i]);
+			i++;
+		}
+		free(argv); // SI??????????
+}
 void	free_matrix_env(t_general *data)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 18:34:31 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 00:36:23 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,22 @@
 
 int	pseudoexecutor(t_general *data)
 {
-		if (ft_strncmp("echo", data->first_token->argv[0], 4)  == 0)
-			ft_echo(data->first_token->argv);
-		else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
+		if (ft_strncmp("echo", data->first_token->content, 4)  == 0)
+			ft_echo(data->first_token->argv[0]);
+		else if (ft_strncmp("cd", data->first_token->content, 2) == 0)
 			ft_cd(data);
-		else if (ft_strncmp("pwd", data->first_token->argv[0], 2)  == 0)
+		else if (ft_strncmp("pwd", data->first_token->content, 2)  == 0)
 			ft_pwd();
-		else if (ft_strncmp("export", data->first_token->argv[0], 6) == 0)
+		else if (ft_strncmp("export", data->first_token->content, 6) == 0)
 			return (4);
-		else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
+		else if (ft_strncmp("unset", data->first_token->content, 5) == 0)
 			return (5);
-		else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
+		else if (ft_strncmp("env", data->first_token->content, 3) == 0)
 			ft_env(data->env_lst);
-		else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
+		else if (ft_strncmp("exit", data->first_token->content, 4) == 0)
 			ft_exit(data);
-		else
-			printf(BLUE"%s: command not found\n"END, data->first_token->argv[0]);
+		// else
+		// 	printf(BLUE"%s: command not found\n"END, data->first_token->content);
 	return (0);
 	//return (SUCCESS)
 }

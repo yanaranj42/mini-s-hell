@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/09 18:27:15 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:08:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@
 #define STDIN_DOUBLE_REDIRECTION 3
 #define STDOUT_REDIRECTION 4
 #define STDOUT_DOUBLE_REDIRECTION 5
-#define NO_SEPARATOR 6
+#define FILE 6
+#define CMD 7
+
 
 
 /*OTROS
@@ -72,14 +74,41 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	char 		**argv;
-	int 		argc;
+	//char 		**argv;
+	//int 		argc;
+	char 		*content;
 	struct 		s_token *back;
 	struct 		s_token *next;
 	int 		type;
 	char		*path;
-	pid_t		pid;
+	
 }				t_token;			
+
+typedef struct s_cmd
+{
+	char		**argv;
+ 	char		*path;
+	pid_t		pid;
+//	int		fd_in; // para las redirs de input
+//	int		fd_out; // para las redirs de output
+//(se van actualizando prq los voy sobreescribiendo)
+	t_redir		*first_redir;
+	int			indx; // cuál comando es
+	struct 		s_cmd *next;
+}			t_cmd;
+
+
+typedef struct s_redir
+{
+	t_type	type;
+	char	*file_name;
+	//int		fd; // Esto se necesitara para los heredocs, pero ya vere donde lo necesito y de donde lo saco
+	struct s_redir		*next;
+} 	t_redir;
+
+
+
+
 
 typedef struct s_general
 {
@@ -93,8 +122,10 @@ typedef struct s_general
 	t_token		*first_token; 
 	char		**paths;
 	char 		**env_matrix;
+	t_cmd		*first_cmd;
 	int 		exit_status;
 	int			pipe_fd[2];
+	int 		reading_pipe_fd;
 
 
 
@@ -144,7 +175,7 @@ int 	is_real_separator(char c, t_general *data);
 int 	take_pretoken (t_general *data, int *i);
 t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);
-t_token *create_token_content (t_general *data, t_token *new_token);
+//t_token *create_token_content (t_general *data, t_token *new_token);
 void 	classify_token_type (t_token *new_token);
 void 	debug_token(t_token *token, int num); // BORRAR
 char	**ft_token_split(char const *s, char del, t_general *data);
@@ -169,6 +200,7 @@ int 	env_matrix_base (t_env *env_lst);
 void 	print_matrix_env(char **matrix_env); //borrar
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
+
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
 int		create_child(t_general *data, t_token *tkn);
@@ -209,6 +241,7 @@ void	free_data_paths (char **paths);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
+void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
 
 

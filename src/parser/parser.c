@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:37:42 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:48:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,11 @@
 void debug_token(t_token *token, int num)
 {
 	int i;
-	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "no_separator"};
+	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "file", "command"};
 
 	i = 0;
 	printf("\n  >> Contenido del token %d:\n", num);
-	printf("     argc = %d\n", token->argc);
-	while (token->argv[i])
-	{
-		printf("     argv[%d] = |%s|\n", i, token->argv[i]);
-		i++;
-	}
+	printf("     contenido = |%s|\n", token->content);
 	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);
 	printf("     token actual: %p\n", token);
 	printf("     next apunta a %p\n", token->next);
@@ -163,6 +158,7 @@ int is_real_separator(char c, t_general *data)
 	return (0);
 }
 
+
 int take_pretoken (t_general *data, int *i)
 {
 
@@ -206,13 +202,13 @@ int take_pretoken (t_general *data, int *i)
 	return (1);
 }
 
-// asdf asdf | asf " asdf<aasdf" asd
+// probar: asdf asdf | asf " asdf<aasdf" asd
 
 
 t_token *create_token (t_general *data)
 {
 	t_token *new_token;
-
+	
 	new_token = malloc (sizeof(t_token) * 1); //aqui estoy creando un token, lo que me devuelve el malloc es la direccion de memoria, que la guardo en first token (que antes era null). first token ya esta creado desde el momento que creo data, pero first token no es un token, es solo un puntero que almacenara una direccion de memoria
 	if (!new_token)
 	{
@@ -227,7 +223,7 @@ t_token *create_token (t_general *data)
 	return (new_token);
 }
 
-void put_new_list_node (t_general *data, t_token *new_token)
+void put_new_list_token_node (t_general *data, t_token *new_token)
 {
 	t_token *tmp_token;
 
@@ -249,55 +245,31 @@ void put_new_list_node (t_general *data, t_token *new_token)
 	}
 }
 
-
-t_token *create_token_content (t_general *data, t_token *new_token)
-{
-	int i;
-	int count;
-
-	new_token->argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
-	//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
-	//dentro del split tengo que controlar que no haya comillas abiertas o cerradas cuando evaluo el espacio.
-	//contar palabras teniendo en cuenta que todo lo de dentro de las comillas es una sola.
-	if (!new_token->argv)
-	{
-		printf("Error: There have been problems doing the argv token split\n");
-		free(data->pretoken);
-		free_tokens_list(data);
-		return (NULL);
-	}
-	count = 0;
-	i = 0;
-	while (new_token->argv[i])
-	{
-		i++;
-		count++;
-	}
-	new_token->argc = count;
-	return (new_token);
-}
-
 void classify_token_type (t_token *new_token)
 {
-	if (ft_strncmp ("|", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+	if (ft_strncmp ("|", new_token->content, 2) == 0)
 		new_token->type = PIPE;
-	else if (ft_strncmp ("<", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+	else if (ft_strncmp ("<", new_token->content, 2) == 0)
 		new_token->type = STDIN_REDIRECTION;
-	else if (ft_strncmp ("<<", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+	else if (ft_strncmp ("<<", new_token->content, 3) == 0)
 		new_token->type = STDIN_DOUBLE_REDIRECTION;
-	else if (ft_strncmp (">", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+	else if (ft_strncmp (">", new_token->content, 2) == 0)
 		new_token->type = STDOUT_REDIRECTION;
-	else if (ft_strncmp (">>", new_token->argv[0], 3) == 0 && new_token->argc == 1)
+	else if (ft_strncmp (">>", new_token->content, 3) == 0)
 		new_token->type = STDOUT_DOUBLE_REDIRECTION;
+	else if (new_token->back && (new_token->back->type == STDIN_REDIRECTION || new_token->back->type == STDIN_DOUBLE_REDIRECTION || new_token->back->type == STDOUT_REDIRECTION || new_token->back->type == STDOUT_DOUBLE_REDIRECTION || new_token->back->type == CMD))
+		new_token->type = FILE;
 	else
-		new_token->type = NO_SEPARATOR;
+		new_token->type = CMD;
 }
 
 int parser(t_general *data)
 {
 	int i;
+	int j;
 	t_token *new_token;// voy creando los tokens en esta variable temporal. Una vez creados los guardo donde toquen, si no existe first token lo guardare ahi, sino recorrere la lista hasta el ultimo nodo y lo enlazare ahi
 	int num = 1; //BORRAR
+	char **argv;
 
 //< echo hola que tal | ls -la
 //Opciones de hacerlo:
@@ -318,41 +290,106 @@ int parser(t_general *data)
 		}
 		printf ("  Pretoken final: |%s|\n\n", data->pretoken); 
 		
-		//creo un token
-		new_token = create_token (data);
-		if (!new_token)
+		//subdivido pretoken
+		argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+		//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+		//dentro del split tengo que controlar que no haya comillas abiertas o cerradas cuando evaluo el espacio.
+		//contar palabras teniendo en cuenta que todo lo de dentro de las comillas es una sola.
+		
+		if (!argv)
+		{
+			printf("Error: There have been problems doing the argv token split\n");
+			free(data->pretoken);
+			free_tokens_list(data);
 			return (0);
+		}
 
-		//ubico el nuevo token
-		put_new_list_node (data, new_token);
-		
-		
-		//genero el contenido del token
-
-		//estas dos maneras siguientes me sirven independientemente que en create token content me duevuelva el puntero token o un 0 - 1 de si ha funcionado bien o mal. Teniendo en cuenta que eso puedo hacerlo porque destruyo token dentro de la funcion, sino tendria un leak de memoria, porque me ha entrado un token, ha fallado el argv, pero el token hay que destruirlo, porque ya estaba creado.
-		//manera 1:
-		if(!create_token_content (data, new_token)) //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
-			return (0);
-			//Si me devuelvo la direccion de memoria de new_token despues de pasar por create token content, contara como true. Si me devuelve null contara como false la condicion.
-		
-		//manera 2:
-		// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
-		// if(!new_token)
-		// 	return (0);
-
-		
-		
-		//Esto esta mal, porque si me devuelve nul, intento acceder al argv de null y eso da segfault:
-		// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
-		// if (!new_token->argv)     NULL->argv (no tiene sentido)
-
-		classify_token_type (new_token);
-		debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
-		num++; //BORRAR
+		j = 0;
+		while (argv[j])
+		{
+			//creo un token
+			new_token = create_token (data);
+			if (!new_token)
+			{
+				//REVISAR SI ESTOY HACIENDO DOUBLE FREES
+				free(data->pretoken); // SI??????????
+				free_pretoken_argv (argv); // SI??????????
+				free_tokens_list(data); // SI??????????
+				return (0);
+			}
+			//ubico el nuevo token
+			put_new_list_token_node (data, new_token);
+			//genero el contenido del token
+			new_token->content = strdup (argv[j]);	//Estoy diciendo que apunte al mismo sitio que argv [j], no lo estoy generando de nuevo, ya he hecho el malloc al hacer el split	
+			if (!new_token->content)
+			{
+				free(data->pretoken); // SI??????????
+				free_pretoken_argv (argv); // SI??????????
+				free_tokens_list(data); // SI??????????
+				return (0);
+			}
+			classify_token_type (new_token);
+			debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
+			num++; //BORRAR
+			j++;
+		}
 		//destruyo pretoken para volver a crearlo en la siguiente vuelta
 		free(data->pretoken);
+		free_pretoken_argv (argv); // SI??????????
 		data->pretoken = NULL;
+		argv = NULL; // SI??????????
 	}
-	
 	return (1);
 }
+
+
+
+//ANTES TENIA ESTA FUNCION PARA CREAR EL CONTENIDO DEL TOKEN, PERO AHORA AL DIVIDIR EL PRETOKEN LO HAGO DISTINTO:
+
+// t_token *create_token_content (t_general *data, t_token *new_token)
+// {
+// 	int i;
+// 	int count;
+
+// 	new_token->argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+// 	//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
+// 	//dentro del split tengo que controlar que no haya comillas abiertas o cerradas cuando evaluo el espacio.
+// 	//contar palabras teniendo en cuenta que todo lo de dentro de las comillas es una sola.
+// 	if (!new_token->argv)
+// 	{
+// 		printf("Error: There have been problems doing the argv token split\n");
+// 		free(data->pretoken);
+// 		free_tokens_list(data);
+// 		return (NULL);
+// 	}
+// 	count = 0;
+// 	i = 0;
+// 	while (new_token->argv[i])
+// 	{
+// 		i++;
+// 		count++;
+// 	}
+// 	new_token->argc = count;
+// 	return (new_token);
+// }
+
+
+//genero el contenido del token
+
+//estas dos maneras siguientes me sirven independientemente que en create token content me duevuelva el puntero token o un 0 - 1 de si ha funcionado bien o mal. Teniendo en cuenta que eso puedo hacerlo porque destruyo token dentro de la funcion, sino tendria un leak de memoria, porque me ha entrado un token, ha fallado el argv, pero el token hay que destruirlo, porque ya estaba creado.
+			//manera 1:
+
+// if(!create_token_content (data, new_token))
+// 				return (0);
+				//Si me devuelvo la direccion de memoria de new_token despues de pasar por create token content, contara como true. Si me devuelve null contara como false la condicion.
+			
+			//manera 2:
+			// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
+			// if(!new_token)
+			// 	return (0);
+
+			
+			
+			//Esto esta mal, porque si me devuelve nul, intento acceder al argv de null y eso da segfault:
+			// new_token = create_token_content (data, new_token); //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
+			// if (!new_token->argv)     NULL->argv (no tiene sentido)

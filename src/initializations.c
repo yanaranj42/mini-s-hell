@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/09 19:40:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:00:10 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	init_data_values(t_general *data)
 	data->ret_exit = 0;
 	data->paths = NULL;
 	data->env_matrix = NULL;
+	data->first_cmd = NULL;
 	data->exit_status = 0;
 	data->pipe_fd[0] = 0;
 	data->reading_pipe_fd = 0;

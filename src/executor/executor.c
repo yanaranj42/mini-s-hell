@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/09 19:47:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:12:19 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,32 @@
 // 	}
 // 	close(data->pipe_fd[0]);
 // 	close(data->pipe_fd[1]);
+
+
+
+// //FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
+// void debug_token(t_token *token, int num)
+// {
+// 	int i;
+// 	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "WORD"};
+
+// 	i = 0;
+// 	printf("\n  >> Contenido del token %d:\n", num);
+// 	printf("     argc = %d\n", token->argc);
+// 	while (token->argv[i])
+// 	{
+// 		printf("     argv[%d] = |%s|\n", i, token->argv[i]);
+// 		i++;
+// 	}
+// 	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);
+// 	printf("     token actual: %p\n", token);
+// 	printf("     next apunta a %p\n", token->next);
+// 	printf("     back apunta a %p\n\n", token->back);
+// }
+
+
+
+
 
 
 void create_pipe(t_general *data)
@@ -170,7 +196,7 @@ int	get_children(t_general *data)
 	int 		n;
 	pid_t		pid;
 	t_token 	*tkn;
-	/*BORRAR*/ char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "no_separator"};
+	/*BORRAR*/ char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "file" "cmd"};
 
 	printf ("\n# Get children:\n");
 	i = 0;
@@ -182,7 +208,7 @@ int	get_children(t_general *data)
 	while (i < n)
 	{
 		printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
-		if (tkn->type != NO_SEPARATOR) // !!!! ESTO EN REALIDAD NO SERA ASI, PORQUE CUANDO ENCUENTRE UN SEPARADOR TENDRE QUE HACER COSAS, NO SOLO PASAR ADELANTE
+		if (tkn->type != FILE && tkn->type != CMD ) // !!!! ESTO EN REALIDAD NO SERA ASI, PORQUE CUANDO ENCUENTRE UN SEPARADOR TENDRE QUE HACER COSAS, NO SOLO PASAR ADELANTE
 		{
 			tkn = tkn->next;
 			printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
@@ -210,6 +236,174 @@ int	get_children(t_general *data)
 	return (1);
 }
 
+t_command *create_command (t_general *data)
+{
+	t_cmd 	*new_cmd;
+
+	new_cmd = malloc (sizeof(t_cmd) * 1);
+	if (!new_cmd)
+	{
+		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+		return (NULL);
+	}
+	return (new_cmd);
+
+}
+
+void put_new_list_cmd_node (t_general *data, t_command *new_cmd)
+{
+	t_cmd  *tmp_cmd;
+
+	if (!data->first_cmd)
+	{
+		data->first_cmd = new_cmd;
+		//data->first_cmd->back = NULL; CREO QUE NO LO NECESITO
+		data->first_cmd->next = NULL;
+	}
+	else
+	{
+	//	(addback)
+		tmp_cmd = data->first_cmd;
+		while (tmp_cmd && tmp_cmd->next)
+			tmp_cmd = tmp_cmd->next;
+		tmp_cmd->next = new_cmd;
+		//new_cmd->back = tmp_cmd; CREO QUE NO LO NECESITO
+		new_cmd->next = NULL;
+	}
+}
+
+t_redir *create_redir (t_general *data)
+{
+	t_redir 	*new_redir;
+
+	new_redir = malloc (sizeof(t_redir) * 1);
+	if (!new_redir)
+	{
+		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+		return (NULL);
+	}
+	return (new_redir);
+
+}
+
+void put_new_list_redir_node (t_general *data, t_redir *new_redir)
+{
+	t_redir  *tmp_redir;
+
+	if (!data->first_redir)
+	{
+		data->first_redir = new_redir;
+		//data->first_redir->back = NULL; CREO QUE NO LO NECESITO
+		data->first_redir->next = NULL;
+	}
+	else
+	{
+	//	(addback)
+		tmp_redir = data->first_redir;
+		while (tmp_redir && tmp_redir->next)
+			tmp_redir = tmp_redir->next;
+		tmp_redir->next = new_redir;
+		//new_redir->back = tmp_redir; CREO QUE NO LO NECESITO
+		new_redir->next = NULL;
+	}
+}
+
+int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
+{
+	t_token *count_tkn;
+	t_token *tmp_tkn;
+	t_cmd 	*new_cmd;
+	t_redir *new_redir;
+	int  	count;
+	int i;
+
+	count_tkn = first_token;
+	tmp_tkn = first_token;
+	count = 0;
+	i = 0;
+	while (tmp_tkn)
+	{
+		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
+		
+		//crear un cmd 
+		new_cmd = create_command (data);
+		if (!new_cmd)
+		{
+			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+			//CUIDADO NO HACER DOUBLE FREE
+			return (0);
+		}
+		
+		//ubico el nuevo cmd
+		put_new_list_cmd_node (data, new_token);
+		
+		//contar cuantos argumentos tiene el comando 
+		while (count_tkn && count_tkn->type != PIPE)
+		{
+			if (count_tkn->back && (count_tkn->back->type == PIPE || count_tkn->back->type == CMD || count_tkn->back->type == FILE))
+				count++;
+			count_tkn = count_tkn->next;
+		}
+				
+		//crear el malloc para los argumentos
+		if (count != 0)
+		{
+			new_cmd->argv = malloc (sizeof (char *) * (count + 1));
+			if (!new_cmd->argv) 
+				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+				return (0)
+		}
+		
+		//rellenar contenido del comando en si (argumentos y redirecciones)
+		while (tmp_tkn->type != PIPE)
+		{
+			
+			if (tmp_tkn && tmp_tkn->type == CMD)
+			{
+				new_cmd->argv[i] = ft_strdup (tmp_tkn->content)
+				if (!new_cmd->argv[i])
+				{
+					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+					return (0);
+				}
+				i++;
+			}
+			if (tmp_tkn && tmp_tkn->type == FILE)
+				continue;
+			else
+			{
+				//crear un nodo redireccion 
+				new_redir = create_redir (data);
+				if (!new_redir)
+				{
+					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+					//CUIDADO NO HACER DOUBLE FREE
+					return (0);
+				}
+				
+				//ubico el nuevo nodo
+				put_new_list_redir_node (data, new_redir); // SE PUEDE OPTIMIZAR PASANDO UN PUNTERO VOID Y ASI USAR LA MISMA FUNCION? O PASO? TENGO LA MISMA FUNCION 3 VECES CON DIFERENTES ESTRUCTURAS
+
+				//rellenar nuevo nodo
+				new_redir->type = tmp_tkn->type;
+				new_redir->file_name = ft_strdup(tmp_tkn->next->content);
+				if (!new_redir->file_name)
+				{
+					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+					return (0);
+				}
+			}
+			tmp_tkn = tmp_tkn->next;
+		}
+		count_tkn = count_tkn->next;
+		tmp_tkn = tmp_tkn->next;
+	}
+
+
+
+
+
+
 
 //Cuando en pipex poniamos exit (1), es 1 porque es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
 //En el return del main hacemos lo mismo
@@ -222,6 +416,9 @@ int executor (t_general *data)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
+	if (get_command(data, data->first_token, data->first_cmd) == 0)
+		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO 
+// UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA TOKEN, NO????
 	if (get_children(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	father_status(data);
