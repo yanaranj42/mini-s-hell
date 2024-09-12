@@ -6,7 +6,7 @@
 /*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/02 14:50:48 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/11 15:51:59 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_general
 	int			ret_exit;//variable yaja
 	int			flag; 	 //variable yaja
 	t_env		*env_lst;//variable yaja
+	char		**env;
 
 	char 		*line;
 	char 		*pretoken;
@@ -97,6 +98,11 @@ typedef struct s_general
 int		get_own_env(t_general *data, char **env);
 void	env_to_lst(t_general *data, t_env *new_env);
 
+//ENV LIST
+void	unset_free(t_env *env);
+char	*find_env_var(t_general *data, char *var_name);
+int		env_add_last(t_general *data, char *name, char *value, int val);
+int		add_upd_env(t_general *data, char *name, char *value);
 
 //INITIALITATIONS
 void 	init_data_values(t_general *data);
@@ -151,23 +157,28 @@ int 	pseudoexecutor(t_general *data);
 	void	ft_exit(t_general *data);
 
 	int		ft_export(t_general *data);
+	int		handle_args(t_general *data, char *argv);
 	/*export utils*/
-	int		print_export_lst(t_env *own_env);
 	void	print_env(t_env *tmp);
+	void	print_sort(t_env *own_env);
+	int		print_export_lst(t_env *own_env);
 	int		export_opt(char *name);
+	void	export_plus_var(t_general *data, char *name, char *value);
 
 
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
 int		error_opt(char *s1, char *s2, char **arr);
+int		error_brk(t_general *data, char *msg, char *name, int flag);
 
 //FREE
 void	free_exit(t_general *data);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
-char	**arr_clean(char **arr, int flag);
+char	**arr_clean(char **arr);
+void	*ft_memdel(void *ptr);
 
 
 #endif

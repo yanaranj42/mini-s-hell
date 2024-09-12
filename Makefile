@@ -6,7 +6,7 @@
 #    By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/02 12:06:03 by yaja             ###   ########.fr        #
+#    Updated: 2024/09/05 14:04:06 by yaja             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ YELLOW = \e[1;93m
 
 FILES = minishell.c initializations.c error_messages.c lexer_parser_utils.c free.c
 
-FILES += own_env/own_enviroment.c
+FILES += own_env/own_enviroment.c own_env/env_list.c
 
 FILES += lexer/lexer.c 
 

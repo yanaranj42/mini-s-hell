@@ -6,7 +6,7 @@
 /*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/02 14:54:13 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/12 12:43:28 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ void free_tokens_list(t_general *data)
 * hay que rehacer el arr_clean, porque seguro lo usamos en otras partes y no tenemos la funcion de memdel
 * quiero mirar como hacer directamente con el free (un swap quiza? esta por verse) 
 */
-static void	*ft_memdel(void *ptr)
+void	*ft_memdel(void *ptr)
 {
 	if (ptr)
 		free(ptr);
 	return (NULL);
 }
 
-char	**arr_clean(char **arr, int flag)
+char	**arr_clean(char **arr)
 {
 	int		i;
 
@@ -107,10 +107,8 @@ char	**arr_clean(char **arr, int flag)
 		return (NULL);
 	while (arr && arr[i])
 	{
-		if (!flag)
-			arr[i] = ft_memdel(arr[i]);
-		else
-			arr[i] = NULL;
+		printf(RED"ARR CLEAN: %s\n"END, arr[i]);
+		arr[i] = ft_memdel(arr[i]);
 		i++;
 	}
 	arr = ft_memdel(arr);
