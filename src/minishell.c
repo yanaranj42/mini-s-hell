@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 21:12:59 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:55:16 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int main(int argc, char **argv, char **env)
 		//funcion final:
 		free_tokens_list(&data);
 		free_matrix_env(&data);
+		free_cmd(&data);
 		free(data.line);
 	}
 	free_before_end(&data);
@@ -89,7 +90,7 @@ int main(int argc, char **argv, char **env)
 }
 
 
-//Cuando haces un EOF (end-of-file, osease un control D), le estas mandando un NULL, osea line sera  igual a NULL. Como ahora hago un strncmp de line sin protegerlo, al mandarle un NULL me da segfault
+//Cuando haces un EOF (end-of-FILE_REDIRECTION, osease un control D), le estas mandando un NULL, osea line sera  igual a NULL. Como ahora hago un strncmp de line sin protegerlo, al mandarle un NULL me da segfault
 //Unset PATH -> borra el path
 
 //Creo la copia del enviroment al principio y luego trabajo con la copia, por eso esa funcion esta fuera del while, solo lo hago una vez

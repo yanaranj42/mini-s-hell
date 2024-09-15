@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 19:48:18 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:02:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void debug_token(t_token *token, int num)
 {
 	int i;
-	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "file", "command"};
+	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
 	i = 0;
 	printf("\n  >> Contenido del token %d:\n", num);
@@ -250,17 +250,23 @@ void classify_token_type (t_token *new_token)
 	if (ft_strncmp ("|", new_token->content, 2) == 0)
 		new_token->type = PIPE;
 	else if (ft_strncmp ("<", new_token->content, 2) == 0)
-		new_token->type = STDIN_REDIRECTION;
+		new_token->type = INPUT;
 	else if (ft_strncmp ("<<", new_token->content, 3) == 0)
-		new_token->type = STDIN_DOUBLE_REDIRECTION;
+		new_token->type = HEREDOC;
 	else if (ft_strncmp (">", new_token->content, 2) == 0)
-		new_token->type = STDOUT_REDIRECTION;
+		new_token->type = OUTPUT;
 	else if (ft_strncmp (">>", new_token->content, 3) == 0)
-		new_token->type = STDOUT_DOUBLE_REDIRECTION;
-	else if (new_token->back && (new_token->back->type == STDIN_REDIRECTION || new_token->back->type == STDIN_DOUBLE_REDIRECTION || new_token->back->type == STDOUT_REDIRECTION || new_token->back->type == STDOUT_DOUBLE_REDIRECTION || new_token->back->type == CMD))
-		new_token->type = FILE;
+		new_token->type = APPEND;
+	else if (new_token->back && (new_token->back->type == INPUT || new_token->back->type == HEREDOC || new_token->back->type == OUTPUT || new_token->back->type == APPEND ))
+		new_token->type = FILE_REDIRECTION;
 	else
-		new_token->type = CMD;
+		new_token->type = CMD_ARGV;
+
+
+	// else if (new_token->back && (new_token->back->type == INPUT || new_token->back->type == HEREDOC || new_token->back->type == OUTPUT || new_token->back->type == APPEND || new_token->back->type == FILE_REDIRECTION || (new_token->back->type == CMD_ARGV && ft_strncmp ("-", new_token->content, 1) != 0)))
+	// 	new_token->type = FILE_REDIRECTION;
+	// else
+	// 	new_token->type = CMD_ARGV;
 }
 
 int parser(t_general *data)

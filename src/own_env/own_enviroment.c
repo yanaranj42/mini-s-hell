@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 02:21:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:33:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	get_own_env(t_general *data, char **env)
 			//FALTARIA EL MENSAJE DE ERROR, NO?
 	}
 	//borrar:
-	//ft_env(data->env_lst); //REACTIVAR
+	ft_env(data->env_lst); 
 	printf("\n");
 	return (1);
 }

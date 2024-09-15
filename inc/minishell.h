@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 21:08:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/15 17:59:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,12 @@
 
 /*PARSING*/
 #define PIPE 1
-#define STDIN_REDIRECTION 2
-#define STDIN_DOUBLE_REDIRECTION 3
-#define STDOUT_REDIRECTION 4
-#define STDOUT_DOUBLE_REDIRECTION 5
-#define FILE 6
-#define CMD 7
-
-
+#define INPUT 2  // < STDIN_REDIRECTION
+#define HEREDOC 3 // << STDIN_DOUBLE_REDIRECTION 
+#define OUTPUT 4 // > STDOUT_REDIRECTION
+#define APPEND 5 // >>  STDOUT_DOUBLE_REDIRECTION
+#define FILE_REDIRECTION 6
+#define CMD_ARGV 7
 
 /*OTROS
 #define LONG_MIN "-9223372036854775807"
@@ -80,33 +78,34 @@ typedef struct s_token
 	struct 		s_token *back;
 	struct 		s_token *next;
 	int 		type;
-	char		*path;
 	
 }				t_token;			
+
+
+
+typedef struct s_redir
+{
+	int		type;
+	char	*file_name;
+	//int		fd; // Esto se necesitara para los heredocs, pero ya vere donde lo necesito y de donde lo saco
+	struct 	s_redir	*next;
+} 			t_redir;
+
 
 typedef struct s_cmd
 {
 	char		**argv;
  	char		*path;
 	pid_t		pid;
+	t_redir		*first_redir;
+	struct 		s_cmd *next;
 //	int		fd_in; // para las redirs de input
 //	int		fd_out; // para las redirs de output
 //(se van actualizando prq los voy sobreescribiendo)
-	t_redir		*first_redir;
-	int			indx; // cuál comando es
-	struct 		s_cmd *next;
-}			t_cmd;
+	
+	//int			indx; // cuál comando es
 
-
-typedef struct s_redir
-{
-	t_type	type;
-	char	*file_name;
-	//int		fd; // Esto se necesitara para los heredocs, pero ya vere donde lo necesito y de donde lo saco
-	struct s_redir		*next;
-} 	t_redir;
-
-
+}				t_cmd;
 
 
 
@@ -125,9 +124,7 @@ typedef struct s_general
 	t_cmd		*first_cmd;
 	int 		exit_status;
 	int			pipe_fd[2];
-	int 		reading_pipe_fd;
-
-
+	int 		next_cmd_input_fd;
 
 }				t_general;
 
@@ -203,8 +200,8 @@ t_env 	*there_is_path(t_env	*env_lst);
 
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
-int		create_child(t_general *data, t_token *tkn);
-void	check_cmd(t_token *cmd, char **paths);
+int		create_child(t_general *data, t_cmd *cmd, int i, int n);
+void	check_cmd(t_cmd *cmd, char **paths);
 char	*check_cmd_access(char **paths, char *cmd_argv);
 char 	*check_cmd_current_directory(char *cmd_argv);
 char	*check_cmd_absolut_path(char *cmd_argv);
@@ -243,6 +240,7 @@ void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
+void free_cmd(t_general *data);
 
 
 #endif

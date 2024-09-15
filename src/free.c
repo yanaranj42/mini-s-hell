@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 02:24:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:41:08 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,44 @@ void	free_matrix_env(t_general *data)
 	//Cuando libero, libero la memoria, pero el puntero sigue apuntando a ese espacio. Al ponerlo a NULL lo que hago es que el puntero ya no apunte a ninguna parte.
 }
 
+
+void free_cmd(t_general *data)
+{
+	int i;
+	t_cmd 		*tmp_cmd;
+	t_redir 	*tmp_redir;
+	
+ 	while (data->first_cmd)
+	{
+		i = 0;
+		tmp_cmd = data->first_cmd->next;
+		printf ("cmd actual es = %p\n", data->first_cmd);
+		while (data->first_cmd->argv && data->first_cmd->argv[i]) 
+		{
+			printf("limpio argv[%d] = %s\n", i, data->first_cmd->argv[i]);
+			free(data->first_cmd->argv[i]);
+			i++;
+		}
+		free(data->first_cmd->argv); //me cargo el argv del cmd
+		// printf("limpio el path = %s\n", data->first_cmd->path);
+		// free(data->first_cmd->path); No tengo que liberar path porque no lo tengo,lo obtengo en el hijo y el padre no lo tiene, por lo que si intento liberarlo me da segfault. En el hijo se autolibera porque sale haciendo exit
+		if (data->first_cmd->first_redir)
+			tmp_redir = data->first_cmd->first_redir->next;
+		printf("limpio las redirecciones\n");
+		while (data->first_cmd->first_redir)
+		{
+
+			free (data->first_cmd->first_redir->file_name);
+			free (data->first_cmd->first_redir);
+			data->first_cmd->first_redir = tmp_redir;
+		}
+		
+		
+		free(data->first_cmd); //mato el cmd actual
+		data->first_cmd = tmp_cmd;
+		printf("next token es = %p\n\n", data->first_token);
+	}
+}
 
 // void free_token(t_token *token) // esta funcion solo limpia un nodo de la lista, un token
 // {

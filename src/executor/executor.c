@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 21:12:19 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:51:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,63 +21,41 @@
 	// Hacer redicrecciones a la izquierda < <<
 
 
-// En el caso de que el token sea < infile cat, dejar que se ejecute el < infile, y luego reconvertir el token a cat (lo machaco)
+// En el caso de que el token sea < inFILE_REDIRECTION cat, dejar que se ejecute el < inFILE_REDIRECTION, y luego reconvertir el token a cat (lo machaco)
 
 
 
-// if (dup2(fdata->infile_fd, 0) == -1)
-// 	{
-// 		perror_message(NULL, "Problem with dup2 of std_input in 1st command");
-// 		exit(1);
-// 	}
-// 	close(fdata->infile_fd);
-// 	if (dup2(data->pipe_fd[1], 1) == -1)
-// 	{
-// 		perror_message(NULL, "Problem with dup2 of std_output in 1st command");
-// 		exit(1);
-// 	}
-// 	close(data->pipe_fd[0]);
-// 	close(data->pipe_fd[1]);
+//FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
+void debug_cmd(t_cmd *cmd, int num)
+{
+	int i;
+	t_redir *redir = cmd->first_redir;
+	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
+	i = 0;
+	
+	printf("\n    >> Contenido del comando %d:\n", num);
+	while (cmd->argv[i])
+	{
+		printf("        argv[%d] = |%s|\n", i, cmd->argv[i]);
+		i++;
+	}
+	printf("\n");
+	if (cmd->first_redir == NULL)
+		printf("        No hay redirecciones\n");
+	else
+	{
+		i = 0;
+		while (redir)
+		{
+			printf("        redir[%d] es de tipo = |%s|\n", i, type[redir->type]);
+			printf("        nombre del archivo = |%s|\n", redir->file_name);
+			i++;
+			redir = redir->next;
+		}
+	}
 
-
-// if (dup2(fdata->outfile_fd, 1) == -1)
-// 	{
-// 		perror_message(NULL, "Problem with dup2 of std_output in 2nd command");
-// 		exit(1);
-// 	}
-// 	close(fdata->outfile_fd);
-// 	if (dup2(data->pipe_fd[0], 0) == -1)
-// 	{
-// 		perror_message(NULL, "Problem with dup2 of std_input in 2nd command");
-// 		exit(1);
-// 	}
-// 	close(data->pipe_fd[0]);
-// 	close(data->pipe_fd[1]);
-
-
-
-// //FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
-// void debug_token(t_token *token, int num)
-// {
-// 	int i;
-// 	char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "WORD"};
-
-// 	i = 0;
-// 	printf("\n  >> Contenido del token %d:\n", num);
-// 	printf("     argc = %d\n", token->argc);
-// 	while (token->argv[i])
-// 	{
-// 		printf("     argv[%d] = |%s|\n", i, token->argv[i]);
-// 		i++;
-// 	}
-// 	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);
-// 	printf("     token actual: %p\n", token);
-// 	printf("     next apunta a %p\n", token->next);
-// 	printf("     back apunta a %p\n\n", token->back);
-// }
-
-
+}
 
 
 
@@ -92,9 +70,10 @@ void create_pipe(t_general *data)
 }
 
 
-void prepare_1st_command_pipe(t_general *data)
+void prepare_output_pipe(t_general *data)
 {
 	//De momento solo pongo comandos, como no hay archivos de los que leer no tengo que cambiar el stdin, leera de la linea de comandos y se guardara el resultado
+	printf("dup2 output fd %d\n", data->pipe_fd[1]);
 	if (dup2(data->pipe_fd[1], 1) == -1)
 	{
 		perror_message(NULL, "Problem with dup2 of std_output");
@@ -104,18 +83,18 @@ void prepare_1st_command_pipe(t_general *data)
 	close(data->pipe_fd[1]);
 }
 
-void prepare_2nd_command_pipe(t_general *data)
+void prepare_input_pipe(t_general *data)
 {
-	if (dup2(data->pipe_fd[0], 0) == -1)
+	printf("dup2 input fd %d\n", data->next_cmd_input_fd);
+	if (dup2(data->next_cmd_input_fd, 0) == -1)
 	{
-		perror_message(NULL, "Problem with dup2 of std_input in 2nd command");
+		perror_message(NULL, "Problem with dup2 of std_input");
 		exit(1);
 	}
-	close(data->pipe_fd[0]);
-	close(data->pipe_fd[1]);
+	close(data->next_cmd_input_fd);
 }
 
-int	create_child(t_general *data, t_token *tkn)
+int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
 
 	//COMO SABER SI EL HIJO TIENE QUE PODER LEER O ESCRIBIR? Por el toquen que tiene a izquierda o derecha
@@ -129,20 +108,16 @@ int	create_child(t_general *data, t_token *tkn)
 	write(1, "\n# Checkear comandos:\n", 22); // BORRAR
 	write(2, END, ft_strlen(END)); // BORRAR
 	//si no hago esperar al padre mientras el hijo hace cosas, el padre sigue y me aparece el siguiente readline en medio, por eso cuando el hijo acaba no me aparece el prompt, porque ya estoy ahi
-	check_cmd(tkn, data->paths);
+	check_cmd(cmd, data->paths);
 	printf ("\n");
-	printf ("   >>> Token path antes del execve: %s\n", tkn->path);
-	if (tkn->next && tkn->next->type == PIPE)
-	{
-		
-		prepare_1st_command_pipe(data); // redirecciono el output del comando hacia el fd 1 de la pipe
-	}
-	if (tkn->back->type == PIPE)
-		prepare_2nd_command_pipe(data); // le digo que el infile del comando sea el fd 0 de la pipe 
-
-	printf(PURPLE"\n# Excecve:\n"END);
-	printf ("\n");
-	if (execve(tkn->path, tkn->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
+	printf ("valor de i: %d\n", i);
+	printf ("   >>> Cmd path antes del execve: %s\n", cmd->path);
+	if (n > 1 && i != 0) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
+		prepare_input_pipe(data); // le digo que el input del comando sea el fd 0 de la pipe 
+	if (n > 1 && i < (n - 1)) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
+		prepare_output_pipe(data); // redirecciono el output del comando hacia el fd 1 de la pipe
+	printf(PURPLE"\n# Excecve:\n"END"\n");
+	if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 	{
 		perror_message(NULL, "Execve failed");
 		exit(1);
@@ -153,7 +128,7 @@ int	create_child(t_general *data, t_token *tkn)
 //!!!REVISAR:
 // EL PERROR, LO UNICO QUE NO GESTIONA ES EL COMMAND NOT FOUND, HAY QUE HARDCODEARLO. SI NO ENCUENTRA EL COMANDO EN EL PATH, COMMAND NOT FOUND
 // AHORA ESTOY DICIENDO QUE SI NO ENCUENTRA EL PATH O NO EXISTE, QUE EL PATH ES EL PROPIO COMANDO Y LO INTENTE IGUAL, Y ME DICE ARCHIVO NO ENCONTRADO, PERO ESO ESTA MAL.
-// ESO TENGO QUE HACERLO ASI SOLO SI ME PASAN EL COMANDO CON LA RUTA ABSOLUTA, SI HAY UNA / EN EL COMANDO (QUE SIGNIFICA QUE ESTOY PASANDO UNA RUTA ABSOLUTA, O INTENTANDOLO). EN ESE MOMENTO SI QUE INDEPENDIENTEMENTE DE QUE NO LO ENCUENTRE SE LO TENGO QUE PASAR AL PERROR PARA QUE ME PASE EL ERROR DE FILE NOT FOUND
+// ESO TENGO QUE HACERLO ASI SOLO SI ME PASAN EL COMANDO CON LA RUTA ABSOLUTA, SI HAY UNA / EN EL COMANDO (QUE SIGNIFICA QUE ESTOY PASANDO UNA RUTA ABSOLUTA, O INTENTANDOLO). EN ESE MOMENTO SI QUE INDEPENDIENTEMENTE DE QUE NO LO ENCUENTRE SE LO TENGO QUE PASAR AL PERROR PARA QUE ME PASE EL ERROR DE FILE_REDIRECTION NOT FOUND
 
 
 //El execve solo ejecuta comandos de los que tiene el path. Aunque haya path, comandos del sistema como cd, export o unset, no los encuentra como el resto, por lo tanto tampoco los puede ejecutar.
@@ -172,71 +147,92 @@ int	create_child(t_general *data, t_token *tkn)
 //SI LE PASO A MINISHELL /bin/ls, PERO EN REALIDAD ESE PATH ESTA INCOMPLETO.... Y ME LO HACE BIEN
 
 
+// //Como lo hacia antes:
+// int count_commands(t_general *data)
+// {
+// 	int n;
+// 	t_token *tmp;
+
+// 	n = 0;
+// 	tmp = data->first_token;
+// 	while (tmp)
+// 	{
+// 		if (tmp->type == PIPE)
+// 			n++;
+// 		tmp = tmp->next;
+// 	}
+// 	return (n + 1);
+// }
+
 
 int count_commands(t_general *data)
 {
 	int n;
-	t_token *tmp;
+	t_cmd *tmp;
 
 	n = 0;
-	tmp = data->first_token;
+	tmp = data->first_cmd;
 	while (tmp)
 	{
-		if (tmp->type == PIPE)
-			n++;
+		n++;
+		printf ("comando %d\n: %s\n", n, tmp->argv[0]);
 		tmp = tmp->next;
 	}
-	return (n + 1);
+	return (n);
 }
-
 
 int	get_children(t_general *data)
 {
 	int			i;
 	int 		n;
 	pid_t		pid;
-	t_token 	*tkn;
-	/*BORRAR*/ char *type[] = {"null", "pipe", "stdin_redirection", "stdin_double_redirection", "stdout_redirection", "stdout_double_redirection", "file" "cmd"};
+	t_cmd 		*cmd;
 
 	printf ("\n# Get children:\n");
 	i = 0;
-	n = count_commands(data); // = numero de pipes + 1
+	//n = count_commands(data); // = numero de pipes + 1
+	n = count_commands(data);
+	
 	printf ("   La cantidad de hijos es: %d\n", n);
 
-	tkn = data->first_token;
+	cmd = data->first_cmd;
 	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
 	while (i < n)
 	{
-		printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
-		if (tkn->type != FILE && tkn->type != CMD ) // !!!! ESTO EN REALIDAD NO SERA ASI, PORQUE CUANDO ENCUENTRE UN SEPARADOR TENDRE QUE HACER COSAS, NO SOLO PASAR ADELANTE
+		if (data->pipe_fd[0] != 0)
 		{
-			tkn = tkn->next;
-			printf("   Tipo de token: %d (%s)\n", tkn->type, type[tkn->type]); 
+				data->next_cmd_input_fd = data->pipe_fd [0]; // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura.
+				close(data->pipe_fd[1]); // si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
 		}
-		if (n > 1)
+				
+		if (n > 1 && i < (n - 1))
+		{
 			create_pipe(data); //genero los fd de la pipe
-		create_pipe(data); //genero los fd de la pipe
+			printf ("Los fd de la pipe %d son:\n   *%d\n   *%d\n", i, data->pipe_fd[0], data->pipe_fd[1]);
+			//fd [0] = lectura
+			//fd [1] = escritura
+		}
 		pid = fork();
 		if (pid == -1)
 		{
 			perror_message(NULL, "Fork");
 			return (0); 
 		}
-		tkn->pid = pid; // hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
+		cmd->pid = pid; // hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
+	
 		if (pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
 		{
-			//tkn->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
-			create_child(data, tkn);
+			//cmd->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
+			create_child(data, cmd, i, n);
 		}
-		data->reading_pipe_fd = data->pipe_fd[0];
-		tkn = tkn->next;
+		cmd = cmd->next;
 		i++;
 
 	}
 	return (1);
 }
 
-t_command *create_command (t_general *data)
+t_cmd *create_command (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
 {
 	t_cmd 	*new_cmd;
 
@@ -250,7 +246,7 @@ t_command *create_command (t_general *data)
 
 }
 
-void put_new_list_cmd_node (t_general *data, t_command *new_cmd)
+void put_new_list_cmd_node (t_general *data, t_cmd *new_cmd)
 {
 	t_cmd  *tmp_cmd;
 
@@ -272,7 +268,7 @@ void put_new_list_cmd_node (t_general *data, t_command *new_cmd)
 	}
 }
 
-t_redir *create_redir (t_general *data)
+t_redir *create_redir (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
 {
 	t_redir 	*new_redir;
 
@@ -286,20 +282,20 @@ t_redir *create_redir (t_general *data)
 
 }
 
-void put_new_list_redir_node (t_general *data, t_redir *new_redir)
+void put_new_list_redir_node (t_cmd *new_cmd, t_redir *new_redir)
 {
 	t_redir  *tmp_redir;
 
-	if (!data->first_redir)
+	if (!new_cmd->first_redir)
 	{
-		data->first_redir = new_redir;
-		//data->first_redir->back = NULL; CREO QUE NO LO NECESITO
-		data->first_redir->next = NULL;
+		new_cmd->first_redir = new_redir;
+		//new_cmd->first_redir->back = NULL; CREO QUE NO LO NECESITO
+		new_cmd->first_redir->next = NULL;
 	}
 	else
 	{
 	//	(addback)
-		tmp_redir = data->first_redir;
+		tmp_redir = new_cmd->first_redir;
 		while (tmp_redir && tmp_redir->next)
 			tmp_redir = tmp_redir->next;
 		tmp_redir->next = new_redir;
@@ -308,7 +304,7 @@ void put_new_list_redir_node (t_general *data, t_redir *new_redir)
 	}
 }
 
-int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
+int get_command (t_general *data, t_token *first_token)
 {
 	t_token *count_tkn;
 	t_token *tmp_tkn;
@@ -316,17 +312,19 @@ int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
 	t_redir *new_redir;
 	int  	count;
 	int i;
+	// char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"}; // BORRAR
+	int num; //borrar
 
 	count_tkn = first_token;
 	tmp_tkn = first_token;
-	count = 0;
-	i = 0;
+	num = 1; // borrar
+	printf("\n# Get commands\n");
 	while (tmp_tkn)
 	{
 		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
 		
 		//crear un cmd 
-		new_cmd = create_command (data);
+		new_cmd = create_command (); //(data);
 		if (!new_cmd)
 		{
 			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
@@ -335,32 +333,38 @@ int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
 		}
 		
 		//ubico el nuevo cmd
-		put_new_list_cmd_node (data, new_token);
+		put_new_list_cmd_node (data, new_cmd);
 		
 		//contar cuantos argumentos tiene el comando 
+		
+		count = 0;
+		// printf ("\n Argumentos del comando %d:\n", num);
 		while (count_tkn && count_tkn->type != PIPE)
 		{
-			if (count_tkn->back && (count_tkn->back->type == PIPE || count_tkn->back->type == CMD || count_tkn->back->type == FILE))
+			if (count_tkn->type == CMD_ARGV)
 				count++;
+			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
 			count_tkn = count_tkn->next;
 		}
-				
+		// printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
+		
 		//crear el malloc para los argumentos
 		if (count != 0)
 		{
 			new_cmd->argv = malloc (sizeof (char *) * (count + 1));
 			if (!new_cmd->argv) 
 				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-				return (0)
+				return (0);
 		}
-		
+
 		//rellenar contenido del comando en si (argumentos y redirecciones)
-		while (tmp_tkn->type != PIPE)
+		new_cmd->first_redir = NULL; // PARA INICIALIZAR EN CADA NODO, NO?
+		i = 0;
+		while (tmp_tkn && tmp_tkn->type != PIPE)
 		{
-			
-			if (tmp_tkn && tmp_tkn->type == CMD)
+			if (tmp_tkn && tmp_tkn->type == CMD_ARGV)
 			{
-				new_cmd->argv[i] = ft_strdup (tmp_tkn->content)
+				new_cmd->argv[i] = ft_strdup (tmp_tkn->content);
 				if (!new_cmd->argv[i])
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
@@ -368,12 +372,13 @@ int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
 				}
 				i++;
 			}
-			if (tmp_tkn && tmp_tkn->type == FILE)
-				continue;
+			
+			// else if (tmp_tkn && tmp_tkn->type == FILE_REDIRECTION)
+			// 	continue;
 			else
 			{
 				//crear un nodo redireccion 
-				new_redir = create_redir (data);
+				new_redir = create_redir (); //(data);
 				if (!new_redir)
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
@@ -382,7 +387,7 @@ int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
 				}
 				
 				//ubico el nuevo nodo
-				put_new_list_redir_node (data, new_redir); // SE PUEDE OPTIMIZAR PASANDO UN PUNTERO VOID Y ASI USAR LA MISMA FUNCION? O PASO? TENGO LA MISMA FUNCION 3 VECES CON DIFERENTES ESTRUCTURAS
+				put_new_list_redir_node (new_cmd, new_redir); // SE PUEDE OPTIMIZAR PASANDO UN PUNTERO VOID Y ASI USAR LA MISMA FUNCION? O PASO? TENGO LA MISMA FUNCION 3 VECES CON DIFERENTES ESTRUCTURAS
 
 				//rellenar nuevo nodo
 				new_redir->type = tmp_tkn->type;
@@ -393,11 +398,19 @@ int get_command (t_general *data, t_token *first_token, t_cmd *first_cmd)
 					return (0);
 				}
 			}
-			tmp_tkn = tmp_tkn->next;
+			if (tmp_tkn)
+				tmp_tkn = tmp_tkn->next;
 		}
-		count_tkn = count_tkn->next;
-		tmp_tkn = tmp_tkn->next;
+		new_cmd->argv[i] = NULL;
+		debug_cmd(new_cmd, num); // PARA CHECKEAR, LUEGO BORRAR
+		num++;
+		if (count_tkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
+			count_tkn = count_tkn->next;
+		if (tmp_tkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
+			tmp_tkn = tmp_tkn->next;
 	}
+	return (1);
+}
 
 
 
@@ -416,7 +429,7 @@ int executor (t_general *data)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
-	if (get_command(data, data->first_token, data->first_cmd) == 0)
+	if (get_command(data, data->first_token) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO 
 // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA TOKEN, NO????
 	if (get_children(data) == 0)

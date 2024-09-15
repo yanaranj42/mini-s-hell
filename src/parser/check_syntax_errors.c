@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/03 21:22:02 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:52:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int check_pipe (t_general *data, t_token *token)
 }
 
 	
-int check_stdin_redirection (t_general *data, t_token *token) // <
+int check_INPUT (t_general *data, t_token *token) // <
 {
 	if (!token->next) // acaba por <
 		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de < viene una pipe
 		unexpected_token_message("`|'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_REDIRECTION) // despues de < viene un <
+	else if (token->next->type == INPUT) // despues de < viene un <
 		unexpected_token_message("`<'"); //error de salida 2:command not found
 	else
 		return (1);
@@ -52,19 +52,19 @@ int check_stdin_redirection (t_general *data, t_token *token) // <
 	return (0);
 }
 
-int check_stdin_double_redirection (t_general *data, t_token *token) // <<
+int check_HEREDOC (t_general *data, t_token *token) // <<
 {
 	if (!token->next) // acaba por <<
 		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de << viene una pipe
 		unexpected_token_message("`|'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_REDIRECTION) // despues de << viene un <
+	else if (token->next->type == INPUT) // despues de << viene un <
 		unexpected_token_message("`<'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de << viene un <<
+	else if (token->next->type == HEREDOC) // despues de << viene un <<
 		unexpected_token_message("`<<'"); //error de salida 2:command not found
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de << viene un >
+	else if (token->next->type == OUTPUT) // despues de << viene un >
 		unexpected_token_message("`>'"); //error de salida 2:command not found
-	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de << viene un >>
+	else if (token->next->type == APPEND) // despues de << viene un >>
 		unexpected_token_message("`>>'"); //error de salida 2:command not found
 	else
 		return (1);
@@ -73,15 +73,15 @@ int check_stdin_double_redirection (t_general *data, t_token *token) // <<
 	return (0);
 }
 
-int check_stdout_redirection (t_general *data, t_token *token) // >
+int check_OUTPUT (t_general *data, t_token *token) // >
 {
 	if (!token->next) // acaba por >
 		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de > viene una pipe
 		unexpected_token_message("`|'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_REDIRECTION) // despues de > viene un <
+	else if (token->next->type == INPUT) // despues de > viene un <
 		unexpected_token_message("`<'"); //error de salida 2:command not found
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de > viene un >
+	else if (token->next->type == OUTPUT) // despues de > viene un >
 		unexpected_token_message("`>'"); //error de salida 2:command not found
 	else
 		return (1);
@@ -90,19 +90,19 @@ int check_stdout_redirection (t_general *data, t_token *token) // >
 	return (0);
 }
 
-int check_stdout_double_redirection (t_general *data, t_token *token) // >>
+int check_APPEND (t_general *data, t_token *token) // >>
 {
 	if (!token->next) // acaba por >>
 		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de >> viene una pipe
 		unexpected_token_message("`|'"); //error de salida 2:command not found
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de >> viene un >
+	else if (token->next->type == OUTPUT) // despues de >> viene un >
 		unexpected_token_message("`>'"); //error de salida 2:command not found
-	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de >> viene un >>
+	else if (token->next->type == APPEND) // despues de >> viene un >>
 		unexpected_token_message("`>>'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_REDIRECTION) // despues de >> viene un <
+	else if (token->next->type == INPUT) // despues de >> viene un <
 		unexpected_token_message("`<'"); //error de salida 2:command not found
-	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de >> viene un <<
+	else if (token->next->type == HEREDOC) // despues de >> viene un <<
 		unexpected_token_message("`<<'"); //error de salida 2:command not found
 	else
 		return (1);
@@ -123,24 +123,24 @@ int check_syntax_errors (t_general *data)
 			if (check_pipe (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDIN_REDIRECTION)
+		if (tmp1_token->type == INPUT)
 		{
-			if (check_stdin_redirection (data, tmp1_token) == 0)
+			if (check_INPUT (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDIN_DOUBLE_REDIRECTION)
+		if (tmp1_token->type == HEREDOC)
 		{
-			if (check_stdin_double_redirection (data, tmp1_token) == 0)
+			if (check_HEREDOC (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDOUT_REDIRECTION)
+		if (tmp1_token->type == OUTPUT)
 		{
-			if (check_stdout_redirection (data, tmp1_token) == 0)
+			if (check_OUTPUT (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDOUT_DOUBLE_REDIRECTION)
+		if (tmp1_token->type == APPEND)
 		{
-			if (check_stdout_double_redirection (data, tmp1_token) == 0)
+			if (check_APPEND (data, tmp1_token) == 0)
 				return (0);
 		}
 		tmp1_token = tmp1_token->next;

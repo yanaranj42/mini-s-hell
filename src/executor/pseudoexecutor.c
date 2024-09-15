@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 00:36:23 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:53:02 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 //el executor llamara a los builins como si fueran comandos, pero en vez de hacer un execve, los llama directamente
 
 //luego ampliaremos, ahora es para empezar a jugar con los builtins
-//el pseudo executor en el futuro iterara sobre los tokens, y abrira pipes y redirecciones si toca, luego mirara el comando a ejecutar y lo ejecutara (executor builtin, executor cmd), y luego cerrara redirecciones y pipes si tiene que hacerlo
+//el pseudo executor en el futuro iterara sobre los tokens, y abrira pipes y redirecciones si toca, luego mirara el comando a ejecutar y lo ejecutara (executor builtin, executor CMD), y luego cerrara redirecciones y pipes si tiene que hacerlo
 
 
 int	pseudoexecutor(t_general *data)

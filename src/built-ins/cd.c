@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/28 19:50:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:52:48 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	go_to_path(int opt, t_general *data)
 	return (ret);
 }
 
-/*este argv sera el cmd que recibamos*/
+/*este argv sera el CMD que recibamos*/
 int	ft_cd(t_general *data)
 {
 	int		cd_ret;

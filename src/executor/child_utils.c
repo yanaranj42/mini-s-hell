@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/09 14:41:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:06:12 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de com
 		else if (access(cmd_argv, X_OK) == 0)
 		{
 			printf ("         ...Y EXISTE EL PATH Y SE PUEDE EJECUTAR!!!\n");
+			cmd_argv = ft_strdup(cmd_argv);
+			if (!cmd_argv)
+			{
+				//MIRAR SI TENGO QUE LIBERAR ALGO MAS
+				return (NULL);
+			}
 			return (cmd_argv);
 		}
 		else
@@ -165,7 +171,7 @@ char	*check_cmd_access(char **paths, char *cmd_argv)
 }
 
 
-void	check_cmd(t_token *cmd, char **paths)
+void	check_cmd(t_cmd *cmd, char **paths)
 {
 	int i = 0; //BORRAR
 	cmd->path = check_cmd_current_directory(cmd->argv[0]);
