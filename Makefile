@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+         #
+#    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/05 14:04:06 by yaja             ###   ########.fr        #
+#    Updated: 2024/09/14 13:32:57 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
 FILES += executor/pseudoexecutor.c 
 
-FILES += built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c 
+FILES += built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export2.c built-ins/export_utils.c 
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))

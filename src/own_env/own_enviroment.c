@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:10:31 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:13:15 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	env_to_lst(t_general *data, t_env *my_env)
 {
 	t_env	*head;
 	t_env	*tmp;
-
+	
 	head = data->env_lst;
 	tmp = head;
 	if (my_env == NULL)
 		return ;
 	if (head == NULL)
-	{
+	{ 
 		data->env_lst = my_env;
 		return ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/12 12:43:28 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/17 15:41:47 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,12 @@ char	**arr_clean(char **arr)
 {
 	int		i;
 
-	i = 0;
+	
+	i=0;
 	if (!arr)
 		return (NULL);
-	while (arr && arr[i])
+	while (arr && arr[i] != NULL)
 	{
-		printf(RED"ARR CLEAN: %s\n"END, arr[i]);
 		arr[i] = ft_memdel(arr[i]);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/12 12:42:25 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/14 13:56:37 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	perror_message(char *start, char *message)
 	perror(message);
 }
 //podemos poner directamente con el arr sin necesidad de pasar los otros dos
-int	error_opt(char *s1, char *s2, char **arr)
+int	error_opt(char *s1, char *s2, char **arr, char *argv)
 {
 	ft_putstr_fd("minishell: export: `", STDOUT);
 	ft_putstr_fd(s1, STDOUT);
-	ft_putstr_fd("=", STDOUT);
+	if (ft_strchr(argv, '='))
+		ft_putstr_fd("=", STDOUT);
 	if (!s2)
 		s2 = ft_strdup("");
 	ft_putstr_fd(s2, STDOUT);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/11 15:51:59 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/17 12:49:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_env
 typedef struct s_general
 {
 	int			ret_exit;//variable yaja
+	int			equal;//variable yaja. Para saber si imprimir o no la variable NULL
 	int			flag; 	 //variable yaja
 	t_env		*env_lst;//variable yaja
 	char		**env;
@@ -96,12 +97,12 @@ typedef struct s_general
 
 //CREATE OWN ENVIROMENT
 int		get_own_env(t_general *data, char **env);
-void	env_to_lst(t_general *data, t_env *new_env);
+void	env_to_lst(t_general *data, t_env *new_env);//MODIFF
 
 //ENV LIST
 void	unset_free(t_env *env);
 char	*find_env_var(t_general *data, char *var_name);
-int		env_add_last(t_general *data, char *name, char *value, int val);
+int		env_add_last(t_general *data, char *name, char *value);
 int		add_upd_env(t_general *data, char *name, char *value);
 
 //INITIALITATIONS
@@ -156,20 +157,20 @@ int 	pseudoexecutor(t_general *data);
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
 
-	int		ft_export(t_general *data);
+	void	ft_export(t_general *data);
 	int		handle_args(t_general *data, char *argv);
 	/*export utils*/
-	void	print_env(t_env *tmp);
+	void	print_env(t_general *data, t_env *tmp);//MODIFF
 	void	print_sort(t_env *own_env);
-	int		print_export_lst(t_env *own_env);
-	int		export_opt(char *name);
+	int		print_export_lst(t_general *data, t_env *own_env);//inicia con la flag en 1
+	int		export_opt(char *name, char *argv);
 	void	export_plus_var(t_general *data, char *name, char *value);
 
 
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
-int		error_opt(char *s1, char *s2, char **arr);
+int		error_opt(char *s1, char *s2, char **arr, char *argv);
 int		error_brk(t_general *data, char *msg, char *name, int flag);
 
 //FREE
