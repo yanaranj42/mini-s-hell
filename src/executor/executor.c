@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/15 21:01:38 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:42:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void debug_cmd(t_cmd *cmd, int num)
 }
 
 
-
-
 void create_pipe(t_general *data)
 {
 	if (pipe(data->pipe_fd) == -1)
@@ -76,7 +74,7 @@ void prepare_output_pipe(t_general *data)
 	printf("dup2 output fd %d\n", data->pipe_fd[1]);
 	if (dup2(data->pipe_fd[1], 1) == -1)
 	{
-		perror_message(NULL, "Problem with dup2 of std_output");
+		perror_message(NULL, "Problem with dup2 of cmd std_output");
 		exit(1);
 	}
 	close(data->pipe_fd[0]);
@@ -88,20 +86,72 @@ void prepare_input_pipe(t_general *data)
 	printf("dup2 input fd %d\n", data->next_cmd_input_fd);
 	if (dup2(data->next_cmd_input_fd, 0) == -1)
 	{
-		perror_message(NULL, "Problem with dup2 of std_input");
+		perror_message(NULL, "Problem with dup2 of cmd std_input");
 		exit(1);
 	}
 	close(data->next_cmd_input_fd);
 }
 
+int	check_write_file(t_cmd *cmd, t_redir *redir)
+{
+	int		flags;
+	mode_t	mode;
+
+	flags = O_CREAT | O_TRUNC | O_WRONLY;
+	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	cmd->fd_out = open(redir->file_name, flags, mode);
+	if (cmd->fd_out < 0)
+	{
+		perror_message(redir->file_name, "");
+		return (0);
+	}
+	return (1);
+}
+
+void check_output_redir (t_cmd *cmd, t_redir *redir)
+{
+	if (check_write_file(cmd, redir) == 0)
+		exit(1);
+	if (dup2(cmd->fd_out, 1) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of file std_output");
+		exit(1);
+	}
+	close(cmd->fd_out);
+}
+
+
+int	check_read_file(t_cmd *cmd, t_redir *redir)
+{
+	cmd->fd_in = open(redir->file_name, O_RDONLY);
+	if (cmd->fd_in < 0)
+	{
+		perror_message(redir->file_name, "");
+		return (0);
+	}
+	return (1);
+}
+
+void check_input_redir (t_cmd *cmd, t_redir *redir)
+{
+	if (check_read_file(cmd, redir) == 0)
+		exit(1);
+	if (dup2(cmd->fd_in, 0) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of file std_input");
+		exit(1);
+	}
+	close(cmd->fd_in);
+}
+
+
 int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
 
 	//COMO SABER SI EL HIJO TIENE QUE PODER LEER O ESCRIBIR? Por el toquen que tiene a izquierda o derecha
-	//COMO SABER SI TIENE UN ARCHIVO O SOLO UN COMANDO??
 
 	//cada token corresponde a una cosa, no me voy a encontrar que en un toquen hay un archivo, un comando y una flag, o es archivo o es comando, y separados por separadores
-
+	t_redir *redir;
 	
 	write(1, PURPLE, ft_strlen(PURPLE)); // BORRAR
 	write(1, "\nSOY UN HIJO\n", 13); // BORRAR
@@ -116,7 +166,23 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 		prepare_input_pipe(data); // le digo que el input del comando sea el fd 0 de la pipe 
 	if (n > 1 && i < (n - 1)) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
 		prepare_output_pipe(data); // redirecciono el output del comando hacia el fd 1 de la pipe
+	redir = cmd->first_redir;
+	while (redir)
+	{
+		if (redir->type == 4) // >
+			check_output_redir (cmd, redir);
+		// if (cmd->first_redir->type == 5) // >>
+		// {
 
+		// }
+		if (cmd->first_redir->type == 2) // <
+			check_input_redir (cmd, redir);
+		// if (cmd->first_redir->type == 3) // <<
+		// {
+
+		// }
+		redir = redir->next;
+	}
 	printf(PURPLE"\n# Excecve:\n"END"\n");
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
 	//for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
@@ -189,7 +255,6 @@ int	get_children(t_general *data)
 {
 	int			i;
 	int 		n;
-	pid_t		pid;
 	t_cmd 		*cmd;
 
 	printf ("\n# Get children:\n");
@@ -203,32 +268,37 @@ int	get_children(t_general *data)
 	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
 	while (i < n)
 	{
-		if (data->pipe_fd[0] != 0)
+		//fd [0] = lectura
+		//fd [1] = escritura
+		if (data->pipe_fd[0] >= 0)
 		{
-				data->next_cmd_input_fd = data->pipe_fd [0]; // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura.
-				close(data->pipe_fd[1]); // si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
+				data->next_cmd_input_fd = dup(data->pipe_fd [0]); // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura. Con el dup creo una copia del fd, ya que si solo lo igualo hago que los dos apunten al mismo espacio de memoria, y si cierro uno jodo el otro. Asi son dos espacios de memoria distintos
+				close(data->pipe_fd[0]); // tengo que cerrar este fd en el padre, pero despues de hacer la copia
+				
 		}
 				
 		if (n > 1 && i < (n - 1))
 		{
 			create_pipe(data); //genero los fd de la pipe
 			printf ("Los fd de la pipe %d son:\n   *%d\n   *%d\n", i, data->pipe_fd[0], data->pipe_fd[1]);
-			//fd [0] = lectura
-			//fd [1] = escritura
+			
 		}
-		pid = fork();
-		if (pid == -1)
+		cmd->pid = fork();
+		if (cmd->pid == -1)
 		{
+			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
 			perror_message(NULL, "Fork");
 			return (0); 
 		}
-		cmd->pid = pid; // hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
+		// hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
 	
-		if (pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
+		if (cmd->pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
 		{
 			//cmd->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
 			create_child(data, cmd, i, n);
 		}
+		close(data->pipe_fd[1]); // cierro el fd en el padre. Si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
+		close(data->next_cmd_input_fd); // cierro el fd en el padre
 		cmd = cmd->next;
 		i++;
 
@@ -395,12 +465,15 @@ int get_command (t_general *data, t_token *first_token)
 
 				//rellenar nuevo nodo
 				new_redir->type = tmp_tkn->type;
+				printf("tipo de redireccion: %d\n", new_redir->type);
 				new_redir->file_name = ft_strdup(tmp_tkn->next->content);
+				printf("nombre archivo: %s\n", new_redir->file_name);
 				if (!new_redir->file_name)
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
 					return (0);
 				}
+				tmp_tkn = tmp_tkn->next;
 			}
 			if (tmp_tkn)
 				tmp_tkn = tmp_tkn->next;
@@ -415,9 +488,6 @@ int get_command (t_general *data, t_token *first_token)
 	}
 	return (1);
 }
-
-
-
 
 
 

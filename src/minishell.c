@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 20:55:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:57:21 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int main(int argc, char **argv, char **env)
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
+			break;
+		}
+		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
+		{
+			free(data.line);
 			break;
 		}
 		add_history (data.line); // para poder acceder al historial de comandos

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/15 17:59:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/17 19:09:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ typedef struct s_cmd
 	pid_t		pid;
 	t_redir		*first_redir;
 	struct 		s_cmd *next;
-//	int		fd_in; // para las redirs de input
-//	int		fd_out; // para las redirs de output
+	int		fd_in; // para las redirs de input
+	int		fd_out; // para las redirs de output
 //(se van actualizando prq los voy sobreescribiendo)
 	
 	//int			indx; // cuál comando es
