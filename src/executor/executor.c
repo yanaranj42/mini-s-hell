@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/17 19:42:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:02:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void debug_cmd(t_cmd *cmd, int num)
 			redir = redir->next;
 		}
 	}
-
 }
 
 
@@ -92,7 +91,7 @@ void prepare_input_pipe(t_general *data)
 	close(data->next_cmd_input_fd);
 }
 
-int	check_write_file(t_cmd *cmd, t_redir *redir)
+int	check_overwrite_file(t_cmd *cmd, t_redir *redir)
 {
 	int		flags;
 	mode_t	mode;
@@ -106,11 +105,20 @@ int	check_write_file(t_cmd *cmd, t_redir *redir)
 		return (0);
 	}
 	return (1);
+
+
+	//Permisos que indica el mode:
+		//Propietario (usuario): Lectura y escritura. -> S_IRUSR | S_IWUSR
+		//Grupo: Solo lectura. -> S_IRGRP
+		//Otros usuarios: Solo lectura. -> S_IROTH;
+
+	//Estos permisos son equivalentes a la máscara de permisos 0644 en formato octal
+
 }
 
 void check_output_redir (t_cmd *cmd, t_redir *redir)
 {
-	if (check_write_file(cmd, redir) == 0)
+	if (check_overwrite_file(cmd, redir) == 0)
 		exit(1);
 	if (dup2(cmd->fd_out, 1) == -1)
 	{
@@ -145,6 +153,40 @@ void check_input_redir (t_cmd *cmd, t_redir *redir)
 }
 
 
+int	check_write_append_file(t_cmd *cmd, t_redir *redir)
+{
+	int		flags;
+	mode_t	mode;
+
+	flags = O_CREAT | O_APPEND | O_WRONLY;
+	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	cmd->fd_out = open(redir->file_name, flags, mode);
+	if (cmd->fd_out < 0)
+	{
+		perror_message(redir->file_name, "");
+		return (0);
+	}
+	return (1);
+}
+
+void check_append_redir (t_cmd *cmd, t_redir *redir)
+{
+	if (check_write_append_file(cmd, redir) == 0)
+		exit(1);
+	if (dup2(cmd->fd_out, 1) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of file std_output");
+		exit(1);
+	}
+	close(cmd->fd_out);
+}
+
+
+
+
+
+
+
 int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
 
@@ -171,10 +213,8 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	{
 		if (redir->type == 4) // >
 			check_output_redir (cmd, redir);
-		// if (cmd->first_redir->type == 5) // >>
-		// {
-
-		// }
+		if (cmd->first_redir->type == 5) // >>
+			check_append_redir (cmd, redir);
 		if (cmd->first_redir->type == 2) // <
 			check_input_redir (cmd, redir);
 		// if (cmd->first_redir->type == 3) // <<
