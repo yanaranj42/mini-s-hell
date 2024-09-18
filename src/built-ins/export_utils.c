@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/17 15:49:15 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:44:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	print_sort(t_env *own_env)
 int	print_export_lst(t_general *data, t_env *own_env)
 {
 	t_env	*tmp;
-
+	
 	(void)data;
 	if (!own_env)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/17 15:42:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:19:56 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ int	handle_args(t_general *data, char *argv)
 {
 	char	**arr;
 	char	*name;
+
 	if (!ft_strchr(argv, '='))
 		data->equal = KO;
+	else
+		data->equal = OK;
 	arr = ft_split(argv, '=');
 	if (!export_opt(arr[0], argv))
 		return (error_opt(arr[0], arr[1], arr, argv));

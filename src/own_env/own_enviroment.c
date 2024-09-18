@@ -6,13 +6,13 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/16 16:13:15 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:05:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
+//agrega la variable a la lista
 void	env_to_lst(t_general *data, t_env *my_env)
 {
 	t_env	*head;
