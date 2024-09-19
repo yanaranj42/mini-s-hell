@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/18 19:44:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:30:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int	print_export_lst(t_general *data, t_env *own_env)
 		if (tmp->value)
 		{
 			ft_putstr_fd("=", STDOUT);
+			ft_putstr_fd("\"", STDOUT);
 			ft_putstr_fd(tmp->value, STDOUT);
+			ft_putstr_fd("\"", STDOUT);
 		}
 		ft_putstr_fd("\n", STDOUT);
 		tmp = tmp->next;
@@ -81,11 +83,11 @@ int	export_opt(char *name, char *argv)
 {
 	int	i;
 	int	end;
-
-	end = ft_strlen(name) - 1;
+	
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (KO);
 	i = 1;
+	end = ft_strlen(name) - 1;
 	while (name[i] && name[i + 1] != '=')
 	{
 		if (!ft_isalnum(name[i] && name[i] != '_'))

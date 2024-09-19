@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/18 20:19:56 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:40:19 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 	ese caso.
 	Si no tenemos el +, 
 */
+
+//SI EXPORT = --> DA LEAKS
 int	handle_args(t_general *data, char *argv)
 {
 	char	**arr;
@@ -46,8 +48,7 @@ int	handle_args(t_general *data, char *argv)
 		else
 			add_upd_env(data, arr[0], arr[1]);
 	}
-	arr_clean(arr);
-	return (0);
+	return (arr_clean(arr), 0);
 }
 
 void	ft_export(t_general *data)
@@ -70,6 +71,6 @@ void	ft_export(t_general *data)
 			handle_args(data, argv[i]);
 		i++;
 	}
-	printf("%i\n", data->ret_exit);
+	printf("EXPORT EXIT FLAG: %i\n", data->ret_exit);
 	//return (data->ret_exit);//este return sirve para cuando se hace echo $?
 }

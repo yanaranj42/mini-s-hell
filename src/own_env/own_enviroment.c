@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/18 19:05:17 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:06:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,5 @@ int	get_own_env(t_general *data, char **env)
 			return (free_env(data->env_lst), 0);
 			//FALTARIA EL MENSAJE DE ERROR, NO?
 	}
-//	ft_env(data->env_lst);
-//	printf("\n");
 	return (1);
 }

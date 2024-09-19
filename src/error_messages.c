@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 13:56:37 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:11:06 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	error_opt(char *s1, char *s2, char **arr, char *argv)
 	arr_clean(arr);
 	return (KO);
 }
-int	error_brk(t_general *data, char *msg, char *name, int flag)
+void	error_brk(t_general *data, char *msg, char *name, int flag)
 {
 	if (name || msg)
 		ft_putstr_fd("minishell: ", STDERR);
@@ -63,5 +63,5 @@ int	error_brk(t_general *data, char *msg, char *name, int flag)
 		ft_putstr_fd("\n", STDERR);	
 	}
 	data->ret_exit = flag;
-	return (flag);
+	free_exit(data);
 }

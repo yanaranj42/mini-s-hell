@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/18 17:34:00 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:52:52 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	env_to_lst(t_general *data, t_env *new_env);//MODIFF
 void	unset_free(t_env *env);
 char	*find_env_var(t_general *data, char *var_name);
 int		env_add_last(t_general *data, char *name, char *value);
-int		add_upd_env(t_general *data, char *name, char *value);
+void	add_upd_env(t_general *data, char *name, char *value);
 
 //INITIALITATIONS
 void 	init_data_values(t_general *data);
@@ -171,8 +171,7 @@ int 	pseudoexecutor(t_general *data);
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
 int		error_opt(char *s1, char *s2, char **arr, char *argv);
-int		error_brk(t_general *data, char *msg, char *name, int flag);
-
+void	error_brk(t_general *data, char *msg, char *name, int flag);
 //FREE
 void	free_exit(t_general *data);
 void	free_env(t_env *head);
