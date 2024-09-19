@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 16:02:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:58:06 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 //FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
 void debug_token(t_token *token, int num)
 {
-	int i;
 	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
-	i = 0;
 	printf("\n  >> Contenido del token %d:\n", num);
 	printf("     contenido = |%s|\n", token->content);
 	printf("     tipo de token: %d (%s)\n", token->type, type[token->type]);

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/17 11:57:21 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:12:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,23 @@ int main(int argc, char **argv, char **env)
 
 	while (1)
 	{
+		
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
+		//Explicacion:
+			// !data.line == NULL --> punetero null
+			// data.line[0] = '\0' --> contenido con un caracter nulo
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
+			//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
+			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n"END);
 			break;
 		}
+		if (data.line && *data.line)
+		{
 		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
 		{
+			printf (RED"    Fire can't kill a dragon ❤️‍🔥\n"END);
+			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
 			free(data.line);
 			break;
 		}
@@ -66,15 +76,17 @@ int main(int argc, char **argv, char **env)
 
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
-		//pseudoexecutor(&data); 
+		///pseudoexecutor(&data); 
 
+		//EXIT STATUS!!!!!!!!!!!!
 		if (executor (&data)== 0)
 		{
 			free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
 			free (data.line);
+			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
-
+		printf("**************soy la line %s\n", data.line);
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
@@ -89,6 +101,8 @@ int main(int argc, char **argv, char **env)
 		free_matrix_env(&data);
 		free_cmd(&data);
 		free(data.line);
+		data.line = NULL;
+		}
 	}
 	free_before_end(&data);
     return (0);	

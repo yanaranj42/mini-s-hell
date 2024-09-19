@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 23:41:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:57:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,10 @@ void	free_before_end(t_general *data)
 
 void free_tokens_list(t_general *data)
 {
-	int i;
 	t_token *tmp_token;
 	
  	while (data->first_token)
 	{
-		i = 0;
 		tmp_token = data->first_token->next;
 		// printf ("token actual es = %p\n", data->first_token);
 		// while (data->first_token->argv && data->first_token->argv[i]) 
@@ -83,6 +81,7 @@ void free_tokens_list(t_general *data)
 		printf("limpio el contenido del token = %s\n", data->first_token->content);
 		free(data->first_token->content); //SI?????????????????????//me cargo el contenido del token
 		free(data->first_token); //mato el token actual
+		data->first_token = NULL;
 		data->first_token = tmp_token;
 		printf("next token es = %p\n\n", data->first_token);
 	}
@@ -136,6 +135,7 @@ void free_cmd(t_general *data)
 			i++;
 		}
 		free(data->first_cmd->argv); //me cargo el argv del cmd
+		data->first_cmd->argv = NULL;
 		// printf("limpio el path = %s\n", data->first_cmd->path);
 		// free(data->first_cmd->path); No tengo que liberar path porque no lo tengo,lo obtengo en el hijo y el padre no lo tiene, por lo que si intento liberarlo me da segfault. En el hijo se autolibera porque sale haciendo exit
 		if (data->first_cmd->first_redir)
@@ -143,17 +143,17 @@ void free_cmd(t_general *data)
 		printf("limpio las redirecciones\n");
 		while (data->first_cmd->first_redir)
 		{
-
 			free (data->first_cmd->first_redir->file_name);
 			free (data->first_cmd->first_redir);
 			data->first_cmd->first_redir = tmp_redir;
 		}
-		
-		
+		free (data->first_cmd->first_redir);
+		data->first_cmd->first_redir = NULL;
 		free(data->first_cmd); //mato el cmd actual
 		data->first_cmd = tmp_cmd;
 		printf("next token es = %p\n\n", data->first_token);
 	}
+	data->first_cmd = NULL;
 }
 
 // void free_token(t_token *token) // esta funcion solo limpia un nodo de la lista, un token

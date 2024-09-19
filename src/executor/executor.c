@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/17 20:02:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:21:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,31 +128,6 @@ void check_output_redir (t_cmd *cmd, t_redir *redir)
 	close(cmd->fd_out);
 }
 
-
-int	check_read_file(t_cmd *cmd, t_redir *redir)
-{
-	cmd->fd_in = open(redir->file_name, O_RDONLY);
-	if (cmd->fd_in < 0)
-	{
-		perror_message(redir->file_name, "");
-		return (0);
-	}
-	return (1);
-}
-
-void check_input_redir (t_cmd *cmd, t_redir *redir)
-{
-	if (check_read_file(cmd, redir) == 0)
-		exit(1);
-	if (dup2(cmd->fd_in, 0) == -1)
-	{
-		perror_message(NULL, "Problem with dup2 of file std_input");
-		exit(1);
-	}
-	close(cmd->fd_in);
-}
-
-
 int	check_write_append_file(t_cmd *cmd, t_redir *redir)
 {
 	int		flags;
@@ -183,7 +158,41 @@ void check_append_redir (t_cmd *cmd, t_redir *redir)
 
 
 
+int	check_read_file(t_cmd *cmd, t_redir *redir)
+{
+	cmd->fd_in = open(redir->file_name, O_RDONLY);
+	if (cmd->fd_in < 0)
+	{
+		perror_message(redir->file_name, "");
+		return (0);
+	}
+	return (1);
+}
 
+void check_input_redir (t_cmd *cmd, t_redir *redir)
+{
+	if (check_read_file(cmd, redir) == 0)
+		exit(1);
+	if (dup2(cmd->fd_in, 0) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of file std_input");
+		exit(1);
+	}
+	close(cmd->fd_in);
+}
+
+
+void check_heredoc_redir (t_cmd *cmd, t_redir *redir)
+{
+	cmd->fd_in = dup (redir->fd);
+	close (redir->fd);
+	if (dup2(cmd->fd_in, 0) == -1)
+	{
+		perror_message(NULL, "Problem with dup2 of heredoc std_input");
+		exit(1);
+	}
+	close(cmd->fd_in);
+}
 
 
 
@@ -211,22 +220,20 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	redir = cmd->first_redir;
 	while (redir)
 	{
-		if (redir->type == 4) // >
+		if (redir->type == OUTPUT) // >
 			check_output_redir (cmd, redir);
-		if (cmd->first_redir->type == 5) // >>
+		if (cmd->first_redir->type == APPEND) // >>
 			check_append_redir (cmd, redir);
-		if (cmd->first_redir->type == 2) // <
+		if (cmd->first_redir->type == INPUT) // <
 			check_input_redir (cmd, redir);
-		// if (cmd->first_redir->type == 3) // <<
-		// {
-
-		// }
+		if (cmd->first_redir->type == HEREDOC) // <<
+			check_heredoc_redir (cmd, redir);
 		redir = redir->next;
 	}
 	printf(PURPLE"\n# Excecve:\n"END"\n");
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
-	//for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
-	//	close(i);
+	// for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
+	// 	close(i);
 	if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 	{
 		perror_message(NULL, "Execve failed");
@@ -323,7 +330,8 @@ int	get_children(t_general *data)
 			printf ("Los fd de la pipe %d son:\n   *%d\n   *%d\n", i, data->pipe_fd[0], data->pipe_fd[1]);
 			
 		}
-		cmd->pid = fork();
+		if (cmd->argv[0] != NULL)
+			cmd->pid = fork();
 		if (cmd->pid == -1)
 		{
 			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
@@ -337,11 +345,11 @@ int	get_children(t_general *data)
 			//cmd->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
 			create_child(data, cmd, i, n);
 		}
+		//printf("******tengo que ser -1 : %d\n", data->pipe_fd[1]);
 		close(data->pipe_fd[1]); // cierro el fd en el padre. Si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
 		close(data->next_cmd_input_fd); // cierro el fd en el padre
 		cmd = cmd->next;
 		i++;
-
 	}
 	return (1);
 }
@@ -460,16 +468,14 @@ int get_command (t_general *data, t_token *first_token)
 			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
 			count_tkn = count_tkn->next;
 		}
-		// printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
+		printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
 		
 		//crear el malloc para los argumentos
-		if (count != 0)
-		{
-			new_cmd->argv = malloc (sizeof (char *) * (count + 1));
-			if (!new_cmd->argv) 
-				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-				return (0);
-		}
+		
+		new_cmd->argv = malloc (sizeof (char *) * (count + 1));
+		if (!new_cmd->argv) 
+			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+			return (0);
 
 		//rellenar contenido del comando en si (argumentos y redirecciones)
 		new_cmd->first_redir = NULL; // PARA INICIALIZAR EN CADA NODO, NO?
@@ -530,6 +536,56 @@ int get_command (t_general *data, t_token *first_token)
 }
 
 
+int do_heredoc(t_general *data)
+{
+	t_cmd 		*cmd;
+	t_redir 	*redir;
+	int			pipe_fd[2];
+	char 		*line;
+
+	cmd = data->first_cmd;
+	redir = cmd->first_redir;
+	while (cmd)
+	{
+		while (redir)
+		{
+			if (redir->type == HEREDOC)
+			{
+				if (pipe(pipe_fd) == -1)
+				{
+					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+					perror_message(NULL, "Heredoc pipe");
+					return (0);
+				}
+				while (1) // esto es lo que deja abierto el proceso para poder escribir eternamente, hasta que no escriba el limitador el programa no se seguira ejecutando
+ 				{
+					// leo de terminal
+					line =  readline(YELLOW"> "END);
+					// si la linea leida de terminal es = al limitador, cierro el fd de escritura y paro el bucle de lectura
+					if (ft_strncmp(line, redir->file_name, ft_strlen(redir->file_name) + 1) == 0)
+					{
+						free(line);
+						close(pipe_fd[1]);
+						break ;
+					}
+					//escribo la linea en el archivo pipe.txt, por el fd de escritura
+					write(pipe_fd[1], line, ft_strlen(line));
+					write(pipe_fd[1], "\n", 1);
+					redir->fd = dup (pipe_fd[0]);
+					free (line);
+				}
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+	return (1);
+}
+
+
+
+
+
 
 
 //Cuando en pipex poniamos exit (1), es 1 porque es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
@@ -539,13 +595,20 @@ int executor (t_general *data)
 {
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
 	
+	if (data->line)
+		printf("soy la line %s\n", data->line);
+	else
+		printf("soy null :c \n");
 	if (get_matrix_env (data, data->env_lst) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
 	if (get_command(data, data->first_token) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO 
+
 // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA TOKEN, NO????
+	if (do_heredoc(data) == 0)
+		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_children(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	father_status(data);

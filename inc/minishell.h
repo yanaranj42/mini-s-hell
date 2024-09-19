@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/17 19:09:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:09:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_redir
 {
 	int		type;
 	char	*file_name;
-	//int		fd; // Esto se necesitara para los heredocs, pero ya vere donde lo necesito y de donde lo saco
+	int		fd; // Esto lo necesito para los heredocs
 	struct 	s_redir	*next;
 } 			t_redir;
 
