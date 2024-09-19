@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/19 16:40:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:21:26 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	handle_args(t_general *data, char *argv)
 	return (arr_clean(arr), 0);
 }
 
-void	ft_export(t_general *data)
+int	ft_export(t_general *data)
 {
 	t_env	*tmp_env;
 	char	**argv;
@@ -65,12 +65,13 @@ void	ft_export(t_general *data)
 		print_export_lst(data, tmp_env);//add data para la estructura y flag equal
 	while (argv[i])
 	{
+		if (argv[i][0] == '=')
+			error_opt("", "\'", NULL, argv[i]);
 		if (!data->ret_exit)
 			data->ret_exit = handle_args(data, argv[i]);//el argv puede ser: LOG+=hola//LOG//LOG=//LOG$
 		else
 			handle_args(data, argv[i]);
 		i++;
 	}
-	printf("EXPORT EXIT FLAG: %i\n", data->ret_exit);
-	//return (data->ret_exit);//este return sirve para cuando se hace echo $?
+	return (data->ret_exit);//este return sirve para cuando se hace echo $?
 }

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 13:52:52 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:15:13 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int 	pseudoexecutor(t_general *data);
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
 
-	void	ft_export(t_general *data);
+	int	ft_export(t_general *data);
 	int		handle_args(t_general *data, char *argv);
 	/*export utils*/
 	void	print_env(t_general *data, t_env *tmp);//MODIFF
