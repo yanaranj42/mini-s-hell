@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 18:09:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:29:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #define GREEN	"\e[1;92m"
 #define CYAN	"\e[1;96m"
 #define PURPLE 	"\e[1;95m"
+#define ORANGE  "\e[1;38;2;255;128;0m"
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"

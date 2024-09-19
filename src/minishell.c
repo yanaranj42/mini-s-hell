@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 18:12:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:31:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ int main(int argc, char **argv, char **env)
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
 			//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
-			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n"END);
+			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 			break;
 		}
 		if (data.line && *data.line)
 		{
 		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
 		{
-			printf (RED"    Fire can't kill a dragon ❤️‍🔥\n"END);
+			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
 			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
 			free(data.line);
 			break;
