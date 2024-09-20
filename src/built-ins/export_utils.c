@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/19 16:30:54 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/20 12:11:37 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	print_export_lst(t_general *data, t_env *own_env)
 		{
 			ft_putstr_fd("=", STDOUT);
 			ft_putstr_fd("\"", STDOUT);
-			ft_putstr_fd(tmp->value, STDOUT);
+			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)//if value = "", no escribe el dup
+				ft_putstr_fd(tmp->value, STDOUT);
 			ft_putstr_fd("\"", STDOUT);
 		}
 		ft_putstr_fd("\n", STDOUT);
@@ -77,8 +78,7 @@ int	print_export_lst(t_general *data, t_env *own_env)
 	tmp = own_env;
 	return (1);
 }
-//estoy checkando que el nombre de la variable de entorno sea valido y no contenga caracteres raros
-//en end checkeo el ultimo char de name
+
 int	export_opt(char *name, char *argv)
 {
 	int	i;
