@@ -6,23 +6,13 @@
 /*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/20 12:14:31 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/20 12:18:04 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-/*	split: si no encuentra el char limitador, genera igualmente el array, pero
-	de un valor.
-	Primero comprobamos que tenemos bien escrita la variable que queremos
-	modificar o crear. Si hay algo mal, salimos con el msj de bash.
-	Si funciona, comprobamos si tenemos un +. Si es asi, hacemos un export segun
-	ese caso.
-	Si no tenemos el +, 
-*/
-
-//SI EXPORT = --> DA LEAKS
 int	handle_args(t_general *data, char *argv)
 {
 	char	**arr;
