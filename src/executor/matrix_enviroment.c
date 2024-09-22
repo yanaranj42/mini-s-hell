@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/04 20:59:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:50:01 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 		}
 		data->env_matrix[i] = NULL;
 		//borrar
-		printf("# Get matrix enviroment:\n\n");
-		print_matrix_env(data->env_matrix);
-		printf("\n");
+		// printf("# Get matrix enviroment:\n\n");
+		// print_matrix_env(data->env_matrix);
+		// printf("\n");
 	}
 	return (1);
 }

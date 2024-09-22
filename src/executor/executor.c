@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 18:21:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/22 23:12:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ int	check_write_append_file(t_cmd *cmd, t_redir *redir)
 {
 	int		flags;
 	mode_t	mode;
-
 	flags = O_CREAT | O_APPEND | O_WRONLY;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	cmd->fd_out = open(redir->file_name, flags, mode);
@@ -160,7 +159,9 @@ void check_append_redir (t_cmd *cmd, t_redir *redir)
 
 int	check_read_file(t_cmd *cmd, t_redir *redir)
 {
+	printf ("valor del fd: %d\n", cmd->fd_in);
 	cmd->fd_in = open(redir->file_name, O_RDONLY);
+	printf ("valor del fd: %d\n", cmd->fd_in);
 	if (cmd->fd_in < 0)
 	{
 		perror_message(redir->file_name, "");
@@ -209,7 +210,8 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	write(1, "\n# Checkear comandos:\n", 22); // BORRAR
 	write(2, END, ft_strlen(END)); // BORRAR
 	//si no hago esperar al padre mientras el hijo hace cosas, el padre sigue y me aparece el siguiente readline en medio, por eso cuando el hijo acaba no me aparece el prompt, porque ya estoy ahi
-	check_cmd(cmd, data->paths);
+	if (cmd->argv[0])
+		check_cmd(cmd, data->paths);
 	printf ("\n");
 	printf ("valor de i: %d\n", i);
 	printf ("   >>> Cmd path antes del execve: %s\n", cmd->path);
@@ -218,28 +220,34 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	if (n > 1 && i < (n - 1)) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
 		prepare_output_pipe(data); // redirecciono el output del comando hacia el fd 1 de la pipe
 	redir = cmd->first_redir;
+	cmd->fd_in = -1;
+	cmd->fd_out = -1;
 	while (redir)
 	{
 		if (redir->type == OUTPUT) // >
 			check_output_redir (cmd, redir);
-		if (cmd->first_redir->type == APPEND) // >>
+		if (redir->type == APPEND) // >>
 			check_append_redir (cmd, redir);
-		if (cmd->first_redir->type == INPUT) // <
+		if (redir->type == INPUT) // <
 			check_input_redir (cmd, redir);
-		if (cmd->first_redir->type == HEREDOC) // <<
+		if (redir->type == HEREDOC) // <<
 			check_heredoc_redir (cmd, redir);
 		redir = redir->next;
 	}
-	printf(PURPLE"\n# Excecve:\n"END"\n");
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
 	// for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
 	// 	close(i);
-	if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
+	if (cmd->argv[0]) // Y NO ERES BUILTIN
 	{
-		perror_message(NULL, "Execve failed");
-		exit(1);
+		printf(PURPLE"\n# Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
+		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
+		{
+			perror_message(NULL, "Execve failed");
+			exit(1);
+		}
 	}
-	return (1);
+	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
+	exit (0);
 }
 
 //!!!REVISAR:
@@ -292,7 +300,7 @@ int count_commands(t_general *data)
 	while (tmp)
 	{
 		n++;
-		printf ("comando %d\n: %s\n", n, tmp->argv[0]);
+		printf ("comando %d: %s\n", n, tmp->argv[0]);
 		tmp = tmp->next;
 	}
 	return (n);
@@ -313,6 +321,8 @@ int	get_children(t_general *data)
 
 	cmd = data->first_cmd;
 	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
+	data->pipe_fd[0] = -1; 
+	data->pipe_fd[1] = -1; 
 	while (i < n)
 	{
 		//fd [0] = lectura
@@ -330,7 +340,9 @@ int	get_children(t_general *data)
 			printf ("Los fd de la pipe %d son:\n   *%d\n   *%d\n", i, data->pipe_fd[0], data->pipe_fd[1]);
 			
 		}
-		if (cmd->argv[0] != NULL)
+		// if (cmd->argv[0] != NULL) Este if hace que si no hay argumentos, no se cree el fork, por lo tanto no se asigna ningun valor al pid y se le asigna uno random por defecto. Si coincide que es 0, entra en la funcion de crear un hijo, pero como no es un hijo, al salir con un exit mata el programa.
+		// Tengo que crear un if para que el unico caso en el que no entre sea si hay un solo comando y ademas es un builtin. En todo el resto de casos si se deben crear hijos, aunque solo haya redireccion.
+		
 			cmd->pid = fork();
 		if (cmd->pid == -1)
 		{
@@ -346,6 +358,7 @@ int	get_children(t_general *data)
 			create_child(data, cmd, i, n);
 		}
 		//printf("******tengo que ser -1 : %d\n", data->pipe_fd[1]);
+		//Si no lo inicializo, al usarlo le da un valor random y si coincide con el 0 (stdin), al cerrar el fd1 de forma indiscriminada, haya creado pipe o no, cerrare el stdin y en la siguiente vuelta el readline inicial del main no podra acceder a la linea.
 		close(data->pipe_fd[1]); // cierro el fd en el padre. Si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
 		close(data->next_cmd_input_fd); // cierro el fd en el padre
 		cmd = cmd->next;

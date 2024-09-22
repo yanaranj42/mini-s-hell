@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 15:57:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/22 23:04:23 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,11 +138,11 @@ void free_cmd(t_general *data)
 		data->first_cmd->argv = NULL;
 		// printf("limpio el path = %s\n", data->first_cmd->path);
 		// free(data->first_cmd->path); No tengo que liberar path porque no lo tengo,lo obtengo en el hijo y el padre no lo tiene, por lo que si intento liberarlo me da segfault. En el hijo se autolibera porque sale haciendo exit
-		if (data->first_cmd->first_redir)
-			tmp_redir = data->first_cmd->first_redir->next;
 		printf("limpio las redirecciones\n");
 		while (data->first_cmd->first_redir)
 		{
+			printf ("archivo de redireccion: %s\n", data->first_cmd->first_redir->file_name);
+			tmp_redir = data->first_cmd->first_redir->next;
 			free (data->first_cmd->first_redir->file_name);
 			free (data->first_cmd->first_redir);
 			data->first_cmd->first_redir = tmp_redir;

@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/19 15:56:54 by mfontser         ###   ########.fr        #
+#    Updated: 2024/09/22 17:48:50 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ INCLUDES = -I ./libs/Libft -I ./inc
 NAME = minishell
 
 HEADER = inc/minishell.h
-CC = gcc 
+CC = cc 
 RM = rm -rf 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LDFLAGS = -lreadline
