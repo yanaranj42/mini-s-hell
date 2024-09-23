@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/20 12:18:04 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/23 15:16:48 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_export(t_general *data)
 	
 	i = 1;
 	data->ret_exit = 0;
-	argv = data->first_token->argv;
+	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
 		print_export_lst(data, tmp_env);//add data para la estructura y flag equal

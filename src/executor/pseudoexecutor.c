@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/13 13:40:52 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:55:28 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,22 @@
 
 int	pseudoexecutor(t_general *data)
 {
-		if (ft_strncmp("echo", data->first_token->argv[0], 4)  == 0)
-			ft_echo(data->first_token->argv);
-		else if (ft_strncmp("cd", data->first_token->argv[0], 2) == 0)
+		if (ft_strncmp("echo", data->first_cmd->argv[0], 4)  == 0)
+			ft_echo(data->first_cmd->argv);
+		else if (ft_strncmp("cd", data->first_cmd->argv[0], 2) == 0)
 			ft_cd(data);
-		else if (ft_strncmp("pwd", data->first_token->argv[0], 2)  == 0)
+		else if (ft_strncmp("pwd", data->first_cmd->argv[0], 2)  == 0)
 			ft_pwd();
-		else if (ft_strncmp("export", data->first_token->argv[0], 6) == 0)
+		else if (ft_strncmp("export", data->first_cmd->argv[0], 6) == 0)
 			ft_export(data);
-		else if (ft_strncmp("unset", data->first_token->argv[0], 5) == 0)
+		else if (ft_strncmp("unset", data->first_cmd->argv[0], 5) == 0)
 			return (5);
-		else if (ft_strncmp("env", data->first_token->argv[0], 3) == 0)
+		else if (ft_strncmp("env", data->first_cmd->argv[0], 3) == 0)
 			ft_env(data->env_lst);
-		else if (ft_strncmp("exit", data->first_token->argv[0], 4) == 0)
+		else if (ft_strncmp("exit", data->first_cmd->argv[0], 4) == 0)
 			ft_exit(data);
-		else
-			printf(BLUE"%s: command not found\n"END, data->first_token->argv[0]);
+		//else
+		//	printf(BLUE"%s: command not found\n"END, data->first_token->argv[0]);
 	return (OK);
 }
 

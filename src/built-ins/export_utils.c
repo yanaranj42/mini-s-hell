@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/20 12:11:37 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/23 15:18:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	print_export_lst(t_general *data, t_env *own_env)
 		{
 			ft_putstr_fd("=", STDOUT);
 			ft_putstr_fd("\"", STDOUT);
-			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)//if value = "", no escribe el dup
+			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
 				ft_putstr_fd(tmp->value, STDOUT);
 			ft_putstr_fd("\"", STDOUT);
 		}

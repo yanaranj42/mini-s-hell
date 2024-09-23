@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/22 23:04:23 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:45:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,3 +171,27 @@ void free_cmd(t_general *data)
 // }
 
 //ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
+//YAJA:
+void	*ft_memdel(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	return (NULL);
+}
+
+char	**arr_clean(char **arr)
+{
+	int		i;
+
+	
+	i=0;
+	if (!arr)
+		return (NULL);
+	while (arr && arr[i] != NULL)
+	{
+		arr[i] = ft_memdel(arr[i]);
+		i++;
+	}
+	arr = ft_memdel(arr);
+	return (NULL);
+}

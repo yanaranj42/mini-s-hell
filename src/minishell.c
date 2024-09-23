@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/22 13:30:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:57:43 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,6 @@ int main(int argc, char **argv, char **env)
 			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 			break;
 		}
-		if (data.line && *data.line)
-		{
-		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
-		{
-			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
-			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
-			free(data.line);
-			break;
-		}
 		add_history (data.line); // para poder acceder al historial de comandos
 		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
 
@@ -76,16 +67,16 @@ int main(int argc, char **argv, char **env)
 
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
-		///pseudoexecutor(&data); 
 
 		//EXIT STATUS!!!!!!!!!!!!
-		if (executor (&data)== 0)
+		if (executor (&data) == 0)
 		{
 			free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
 			free (data.line);
 			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
+		pseudoexecutor(&data); //HE METIDO AQUI PARA QUE FUNCIONEN LOS BUILTINS
 		printf("**************soy la line %s\n", data.line);
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
@@ -102,11 +93,11 @@ int main(int argc, char **argv, char **env)
 		free_cmd(&data);
 		free(data.line);
 		data.line = NULL;
-		}
 	}
 	free_before_end(&data);
     return (0);	
 }
+
 
 
 //Cuando haces un EOF (end-of-FILE_REDIRECTION, osease un control D), le estas mandando un NULL, osea line sera  igual a NULL. Como ahora hago un strncmp de line sin protegerlo, al mandarle un NULL me da segfault

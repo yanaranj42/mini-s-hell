@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 18:29:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:46:57 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
-#define STDERR	2
-
+#define KO	0
+#define OK	1
 
 #define STDIN	0
 #define STDOUT	1
@@ -52,11 +52,6 @@
 #define APPEND 5 // >>  STDOUT_DOUBLE_REDIRECTION
 #define FILE_REDIRECTION 6
 #define CMD_ARGV 7
-
-/*OTROS
-#define LONG_MIN "-9223372036854775807"
-#define LONG_MAX "9223372036854775807"*/
-
 
 typedef struct s_quotes
 {
@@ -112,9 +107,11 @@ typedef struct s_cmd
 
 typedef struct s_general
 {
-	int			ret_exit;//variable yaja
-	int			flag; 	 //variable yaja
-	t_env		*env_lst;//variable yaja
+	int			ret_exit;
+	int			equal;
+	int			flag;
+	t_env		*env_lst;
+	char		**env;
 
 	char 		*line;
 	char 		*pretoken;
@@ -154,6 +151,11 @@ typedef struct s_general
 int		get_own_env(t_general *data, char **env);
 void	env_to_lst(t_general *data, t_env *new_env);
 
+//ENV LIST
+void	unset_free(t_env *env);
+char	*find_env_var(t_general *data, char *var_name);
+int		env_add_last(t_general *data, char *name, char *value);
+void	add_upd_env(t_general *data, char *name, char *value);
 
 //INITIALITATIONS
 void 	init_data_values(t_general *data);
@@ -191,7 +193,6 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
-//int 	pseudoexecutor(t_general *data);
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
@@ -209,9 +210,7 @@ char	*check_cmd_absolut_path(char *cmd_argv);
 char	*check_cmd_relative_path(char *cmd_argv, char *path);
 void	father_status(t_general *data);
 
-
-
-
+int 	pseudoexecutor(t_general *data);
 	//BUILT-INS
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);
@@ -224,6 +223,15 @@ void	father_status(t_general *data);
 
 	int		ft_echo(char **argv);
 	void	ft_exit(t_general *data);
+	
+	int		ft_export(t_general *data);
+	int		handle_args(t_general *data, char *argv);
+	/*export utils*/
+	void	print_env(t_general *data, t_env *tmp);//MODIFF
+	void	print_sort(t_env *own_env);
+	int		print_export_lst(t_general *data, t_env *own_env);//inicia con la flag en 1
+	int		export_opt(char *name, char *argv);
+	void	export_plus_var(t_general *data, char *name, char *value);
 
 
 //ERROR_MESSAGES
@@ -232,7 +240,9 @@ void	unexpected_token_message(char *message);
 void	command_not_found(char *start);
 void	permission_denied(char *start);
 void	no_such_file_or_directory(char *start);
-
+//ERROR BUILTINS
+int		error_opt(char *s1, char *s2, char **arr, char *argv);
+void	error_brk(t_general *data, char *msg, char *name, int flag);
 //FREE
 void	free_exit(t_general *data);
 void	free_data_paths (char **paths);
@@ -241,7 +251,9 @@ void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
-void free_cmd(t_general *data);
+void	free_cmd(t_general *data);
+char	**arr_clean(char **arr);
+void	*ft_memdel(void *ptr);
 
 
 #endif

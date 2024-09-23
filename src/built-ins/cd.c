@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/02 14:23:38 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/23 15:54:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ int	ft_cd(t_general *data)
 	int		cd_ret;
 	char	**arg;
 
-	arg = data->first_token->argv;
-	//if (!argv[1])
-	if (!arg[1] || arg[1][0] == '~') //HOME
+	arg = data->first_cmd->argv;
+	if (!arg[1] || arg[1][0] == '~')//HOME
 	{
 		printf("%d\n", ft_pwd());
 		return (go_to_path(0, data));
