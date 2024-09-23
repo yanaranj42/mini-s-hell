@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 13:39:24 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/16 06:54:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:37:35 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ int delete_useless_spaces (t_general *data)
 
 int lexer (t_general *data)
 {
-	printf ("\n******************* LEXER *******************\n");
+	printf (GREEN"\n******************* LEXER *******************\n"END);
 	delete_spaces(data);
 	printf ("# Linea de comandos despues de strtrim: |%s|\n", data->line);
 	if (data->line[0] == '\0') // como digo contenido al estar en una estructura????
 		return (0);
-	printf ("# Revision de comillas:\n");
+	printf ("\n# Revision de comillas:\n");
 	if (review_closed_quotes (data) == 0)
 	{
 		printf("Error: The quotes are not closed properly\n"); // pensar si mensaje de error y continue, o no cerrar hasta que ponga comillas 

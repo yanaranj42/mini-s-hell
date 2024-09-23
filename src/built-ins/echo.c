@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:41:00 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/21 23:08:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:49:22 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ int	ft_echo(char **argv)
 		if (n_opt == 0)
 			write(1, "\n", 1);
 	}
-	return (SUCCESS);
+	return (1);
 }

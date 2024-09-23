@@ -6,28 +6,35 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/21 23:02:07 by mfontser         ###   ########.fr        #
+#    Updated: 2024/09/22 17:48:50 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------------------------------------------------COLORS------------------------------------------------------#
+
+NC = \033[0m
 GREEN = \033[1;92m
 RED = \033[1;91m
-NC = \033[0m
 #YELLOW = \033[1;33m
 YELLOW = \e[1;93m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
-FILES = minishell.c initializations.c own_enviroment.c error_messages.c lexer_parser_utils.c free.c
+FILES = minishell.c initializations.c error_messages.c lexer_parser_utils.c free.c
+
+FILES += own_env/own_enviroment.c
 
 FILES += lexer/lexer.c 
 
-FILES += parser/parser.c parser/ft_token_split.c
+FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
-FILES += executor/pseudoexecutor.c 
+#FILES += executor/pseudoexecutor.c
+FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
 
-FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
+
+#FILES += built-ins/builtins.c built-ins/echo.c built-ins/cd.c built-ins/exit.c
+FILES += built-ins/builtins.c
+
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
@@ -42,7 +49,7 @@ NAME = minishell
 HEADER = inc/minishell.h
 CC = cc 
 RM = rm -rf 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LDFLAGS = -lreadline
 
 LIBS = libs/Libft/libft.a -ldl -lglfw -lm

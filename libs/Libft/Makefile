@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mfontser <mfontser@student.42barcel>       +#+  +:+       +#+         #
+#    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:53:26 by mfontser          #+#    #+#              #
-#    Updated: 2024/08/06 13:51:15 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/09/22 17:47:11 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@
 GREEN = \033[1;92m
 RED = \033[1;91m
 NC = \033[0m
-YELLOW= \033[1;33m
+#YELLOW = \033[1;33m
+YELLOW = \e[1;93m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
@@ -35,7 +36,7 @@ OBJSBONUS = ${SRCSBONUS:.c=.o}
 NAME = libft.a
 HEADER = libft.h
 
-CC = gcc
+CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 #comandos para compilar (compilador, flags, borrar)

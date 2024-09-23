@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/21 22:40:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/22 13:30:35 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,42 @@ int main(int argc, char **argv, char **env)
 {
 	t_general	data; 
 
-	(void)argv; // que hacemos con esto???
+	(void)argv; 
 
 	if (argc != 1)
 	{
 		printf("To run the program, no parameters are needed other than the executable itself\n");
-		return (0);
+		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
 	init_data_values(&data); 
-	if (get_own_env(env, &data) == 0)
-		return (0);
-	
+	if (get_own_env(&data, env) == 0)
+		return (1); //cortamos programa?????????? NO, REVISAR PARA QUE LA LISTA SEA VACIA EN VEZ DE SALIR
+	//Si no hay enviroment, crearse una lista vacia, osea poner el puntero first a null. Esto es lo mas correcto, porque aunque no haya enviroment, hay comandos que siguen pudiendo ejecutarse y puedo crear archivos y meterles cosas. Y quizas empiezo el minishell sin enviroment y a base de exports me lo podria crear
+
+
 
 	while (1)
 	{
+		
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
+		//Explicacion:
+			// !data.line == NULL --> punetero null
+			// data.line[0] = '\0' --> contenido con un caracter nulo
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
+			//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
+			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 			break;
 		}
-		// if (ft_strncmp("exit", data.line, 5) == 0) //temporal
-		// {
-		// 	free(data.line);
-		// 	break;
-		// }
+		if (data.line && *data.line)
+		{
+		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
+		{
+			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
+			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
+			free(data.line);
+			break;
+		}
 		add_history (data.line); // para poder acceder al historial de comandos
 		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
 
@@ -52,21 +64,30 @@ int main(int argc, char **argv, char **env)
 		}
 		
 		//PARSER
-		//pseudoparser(line, &data); //pseudaparser sencillo que solo me coja un comando spliteado por espacios
-		
-		if (parser(&data) == 0) 
+		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
 			free (data.line);
-			continue; // para volver a empezar el whilecontinue; // para volver a empezar el while
+			continue; // para volver a empezar el while
 		}
+	
 
 		//EXPANDER
 
+
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
-		pseudoexecutor(&data); 
+		///pseudoexecutor(&data); 
 
-		printf ("\n******************* FREE *******************\n");
+		//EXIT STATUS!!!!!!!!!!!!
+		if (executor (&data)== 0)
+		{
+			free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
+			free (data.line);
+			free_cmd(&data);
+			continue; // para volver a empezar el while
+		}
+		printf("**************soy la line %s\n", data.line);
+		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
@@ -77,14 +98,18 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
+		free_matrix_env(&data);
+		free_cmd(&data);
 		free(data.line);
+		data.line = NULL;
+		}
 	}
 	free_before_end(&data);
     return (0);	
 }
 
 
-//Cuando haces un EOF (end-of-file, osease un control D), le estas mandando un NULL, osea line sera  igual a NULL. Como ahora hago un strncmp de line sin protegerlo, al mandarle un NULL me da segfault
+//Cuando haces un EOF (end-of-FILE_REDIRECTION, osease un control D), le estas mandando un NULL, osea line sera  igual a NULL. Como ahora hago un strncmp de line sin protegerlo, al mandarle un NULL me da segfault
 //Unset PATH -> borra el path
 
 //Creo la copia del enviroment al principio y luego trabajo con la copia, por eso esa funcion esta fuera del while, solo lo hago una vez
