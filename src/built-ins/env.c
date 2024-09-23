@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 01:22:21 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/18 18:55:03 by yanaranj         ###   ########.fr       */
+/*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
+/*   Updated: 2024/09/19 16:21:48 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//Escribe la cadena s en el descriptor de archivo fd.
-
+#include "minishell.h"
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+/*tiene que salir por e STDOUT*/
+int	ft_env(t_env *env)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
+	printf(YELLOW"OWN ENVIRONMENT\n\n"END);
+	while (env && env->next != NULL)
 	{
-		write (fd, &s[i], 1);
-		i++;
+		if (env->value)
+		{
+			ft_putstr_fd(env->name, 1);
+			ft_putstr_fd("=", 1);
+			ft_putendl_fd(env->value, 1);
+		}
+		env = env->next;
 	}
-}
-/*
-int main(void)
-{
-	int fd;
-	char *s = "hola";
-	
-	fd = open("test.txt", O_RDWR | O_CREAT);
-	if (fd < 0)
-		return (0);
-	ft_putstr_fd (s, fd);
-	close(fd);
-	printf("fd: |%d| ", fd);
+	if (env)
+	{
+		if(!env->value)
+			return (0);
+		else
+		{
+			ft_putstr_fd(env->name, 1);
+			ft_putstr_fd("=", 1);
+			ft_putendl_fd(env->value, 1);
+		}
+	}
 	return (0);
-}*/
+}
