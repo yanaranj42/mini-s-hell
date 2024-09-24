@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/23 15:32:27 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:49:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	printf ("\n");
 	printf ("valor de i: %d\n", i);
 	printf ("   >>> Cmd path antes del execve: %s\n", cmd->path);
+	printf("el argv[0] es: |%s|\n", cmd->argv[0]);
 	if (n > 1 && i != 0) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
 		prepare_input_pipe(data); // le digo que el input del comando sea el fd 0 de la pipe 
 	if (n > 1 && i < (n - 1)) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
@@ -237,7 +238,11 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
 	// for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
 	// 	close(i);
-	if (cmd->argv[0]) // Y NO ERES BUILTIN
+	/*CHECKING BUILTINS WORK*/
+	printf("\n\n\nSOY CONCHA.,, ENTRO\n\n\n\n");
+	data->builtin = is_builtin(cmd);
+	printf("\n\n\nSOY CONCHA.,, ME VOY\n\n\n\n");
+	if (cmd->argv[0] || data->builtin == 0) // Y NO ERES BUILTIN
 	{
 		printf(PURPLE"\n# Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
@@ -246,7 +251,10 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 			exit(1);
 		}
 	}
+	else
+		pseudoexecutor(data, cmd);
 	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
+	printf("SOY UN HIJO Y ME VOY A MORIR\n");
 	exit (0);
 }
 

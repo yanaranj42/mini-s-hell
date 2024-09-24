@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/23 15:46:57 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:41:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_general
 	int			ret_exit;
 	int			equal;
 	int			flag;
+	int			builtin;
 	t_env		*env_lst;
 	char		**env;
 
@@ -210,8 +211,10 @@ char	*check_cmd_absolut_path(char *cmd_argv);
 char	*check_cmd_relative_path(char *cmd_argv, char *path);
 void	father_status(t_general *data);
 
-int 	pseudoexecutor(t_general *data);
 	//BUILT-INS
+	void 	pseudoexecutor(t_general *data, t_cmd *cmd);
+	int		is_builtin(t_cmd *cmd);
+	
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);
 	

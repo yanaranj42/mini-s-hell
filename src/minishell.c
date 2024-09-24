@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/23 15:57:43 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:34:38 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv, char **env)
 			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
-		pseudoexecutor(&data); //HE METIDO AQUI PARA QUE FUNCIONEN LOS BUILTINS
+		//pseudoexecutor(&data); //HE METIDO AQUI PARA QUE FUNCIONEN LOS BUILTINS
 		printf("**************soy la line %s\n", data.line);
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
