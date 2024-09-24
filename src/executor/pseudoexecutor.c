@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 16:44:05 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:18:01 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	pseudoexecutor(t_general *data, t_cmd *cmd)
 }
 int	is_builtin(t_cmd *cmd)
 {
-	printf("\n\n\nENTROOO\n\n\n\n");
-	if (!cmd || cmd == (void*)0)
-		return (KO);
+	printf(YELLOW"ENTROOO\n\n\n\n"END);
+	if (!cmd->argv || cmd->argv == (void*)0)
+		return (9);
 	else if (ft_strncmp("echo", cmd->argv[0], 4) == 0)
 		return (1);
 	else if (ft_strncmp("cd", cmd->argv[0], 2) == 0)

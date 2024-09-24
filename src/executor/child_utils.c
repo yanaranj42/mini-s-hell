@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 23:06:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:11:13 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ char *check_cmd_current_directory(char *cmd_argv)
 	char	*tmp;
 	char	*tmp2;
 
-	printf("\n   Primero voy a comprobar si el programa del comando está en el DIRECTORIO ACTUAL\n");
 	tmp = NULL;
 	tmp2 = NULL;
 	if(getcwd(cwd, PATH_MAX))
 	{
-		printf ("     >>> El cwd es: %s\n", cwd);
 		tmp = ft_strjoin(cwd, "/"); //cojo el path del directorio actual y pongo / al final
 		if (!tmp)
 		{
@@ -41,7 +39,6 @@ char *check_cmd_current_directory(char *cmd_argv)
 			return (NULL);
 		}
 		printf ("       Pruebo el path relativo: %s\n", tmp2);
-		printf ("       Al comprobar si se puede acceder...\n");
 		if (access(tmp2, F_OK) == 0)
 		{
 			printf ("           ...Vemos que existe el path\n");
@@ -68,7 +65,6 @@ char	*check_cmd_relative_path(char *cmd_argv, char *path)
 {
 	char	*tmp;
 	char	*tmp2;
-	printf("\n       En la linea de comandos me han pasado un comando a secas -> CHECK RUTA RELATIVA\n");
 	tmp = ft_strjoin(path, "/"); //cojo el path entero, pongo / al final
 	if (!tmp)
 	{
@@ -82,24 +78,16 @@ char	*check_cmd_relative_path(char *cmd_argv, char *path)
 		//MENSAJE ERROR
 		return (NULL);
 	}
-	printf ("         Pruebo el path relativo: %s\n", tmp2);
-	printf ("           Al comprobar si se puede acceder...\n");
 	if (access(tmp2, F_OK) == 0)
 	{
-		printf ("           ...Vemos que existe el path\n");
 		if (access(tmp2, X_OK) == 0)
 		{
-			printf ("           ...Y SE PUEDE EJECUTAR!!!\n");
 			free(tmp);
 			return (tmp2);
 		}
 		else
-		{
-			printf ("           ...y NO se puede ejecutar\n");
 			permission_denied (cmd_argv);
-		}
 	}
-	printf ("           ...Vemos que NO existe el path -> NEXT\n");
 	free(tmp);
 	free(tmp2);
 	return (NULL);
@@ -111,16 +99,13 @@ char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de com
 
 	if (ft_strchr(cmd_argv, '/'))
 	{
-		printf("\n       En la linea de comandos me han pasado una RUTA ABSOLUTA...\n");
 		if (access(cmd_argv, F_OK) == -1)
 		{
-			printf ("         ...Pero no existe ese path");
 			no_such_file_or_directory (cmd_argv);
 			//command_not_found (cmd_argv); /Tiene que llegar al execve para que diga que no encuentra el archivo, por lo que esto no puedo ponerlo
 		}
 		else if (access(cmd_argv, X_OK) == 0)
 		{
-			printf ("         ...Y EXISTE EL PATH Y SE PUEDE EJECUTAR!!!\n");
 			cmd_argv = ft_strdup(cmd_argv);
 			if (!cmd_argv)
 			{
@@ -130,10 +115,7 @@ char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de com
 			return (cmd_argv);
 		}
 		else
-		{
-			printf ("         ...Y existe el path pero NO puede ejecutar\n");
 			permission_denied (cmd_argv);
-		}
 	}
 	return (NULL);
 	//Primero miramos si el comando existe en el primer access. En el caso que exista, en el segundo access miramos si se puede ejecutar. En caso que no se pueda ejecutar ponemos permission denied.
@@ -173,30 +155,17 @@ char	*check_cmd_access(char **paths, char *cmd_argv)
 
 void	check_cmd(t_cmd *cmd, char **paths)
 {
-	int i = 0; //BORRAR
 	cmd->path = check_cmd_current_directory(cmd->argv[0]);
 	if (!cmd->path)
 	{
-		printf("\n   Hay path en el enviroment??\n");
 		if (!paths) // No hay paths en el enviroment
 		{
-			printf ("     NO\n");
 			cmd->path = check_cmd_absolut_path(cmd->argv[0]);
 			if (cmd->path == NULL)
 				command_not_found (cmd->argv[0]);
 		}
 		else
-		{
-			printf ("     SI:\n");
-			printf ("%p\n", paths);
-			printf ("%p\n", *paths);
-			while (paths[i]) //BORRAR
-			{
-				printf("        %s\n", paths [i]);
-				i++;
-			}
 			cmd->path = check_cmd_access(paths, cmd->argv[0]);
-		}
 
 		//Esto lo ponia para que aunque no encuentre el path, el execve intentara igualmente ejecutar el comando por si era un comando del sistema y no necesitaba path, pero el execve no es capaz (y los casos en los que puede ocurrir son builtins, que se gestionan por otro lado).
 		// if (cmd->path == NULL)

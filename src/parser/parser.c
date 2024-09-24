@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 15:58:06 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:12:22 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,20 +280,14 @@ int parser(t_general *data)
 	//puedo ir guardando un cacho en pretoken, creo token, destruyo pretoken y sigo recorriendo para coger el siguiente cacho
 	//primero saber cuantos cachos hay en la linea, hacer un array de strings de la cantidad de cachos que voy a necesitar, recorrer e ir metiendo cachos en ese array y luego ya crear los tokens.
 	i = 0;
-	printf (GREEN"\n******************* PARSER *******************\n"END);
-	printf ("#Creacion de tokens:\n\n");
+	//printf ("#Creacion de tokens:\n\n");
 	while (data->line[i])
 	{
-		printf(" 🟡 TOKEN %d\n", num); //BORRAR
-		
-		//guardo en pretoken
 		if (take_pretoken (data, &i) == 0)
 		{
 			printf("Error: There have been problems preparing tokens\n");
 			return (0);
 		}
-		printf ("  Pretoken final: |%s|\n\n", data->pretoken); 
-		
 		//subdivido pretoken
 		argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
 		//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
@@ -333,7 +327,7 @@ int parser(t_general *data)
 				return (0);
 			}
 			classify_token_type (new_token);
-			debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
+			//debug_token(new_token, num); // PARA CHECKEAR, LUEGO BORRAR
 			num++; //BORRAR
 			j++;
 		}

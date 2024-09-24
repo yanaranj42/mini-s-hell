@@ -6,24 +6,12 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 16:49:11 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:41:31 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-// Planteamiento evolucion executor:
-	// Ejecutar comando unico
-	// Ejecutar varios comandos, simplemente saltadome los separdos
-	// Ejectuar los pipes
-	// Hacer redirecciones a la derecha > >>
-	// Hacer redicrecciones a la izquierda < <<
-
-
-// En el caso de que el token sea < inFILE_REDIRECTION cat, dejar que se ejecute el < inFILE_REDIRECTION, y luego reconvertir el token a cat (lo machaco)
-
-
 
 //FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
 void debug_cmd(t_cmd *cmd, int num)
@@ -207,15 +195,10 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	
 	write(1, PURPLE, ft_strlen(PURPLE)); // BORRAR
 	write(1, "\nSOY UN HIJO\n", 13); // BORRAR
-	write(1, "\n# Checkear comandos:\n", 22); // BORRAR
 	write(2, END, ft_strlen(END)); // BORRAR
 	//si no hago esperar al padre mientras el hijo hace cosas, el padre sigue y me aparece el siguiente readline en medio, por eso cuando el hijo acaba no me aparece el prompt, porque ya estoy ahi
 	if (cmd->argv[0])
 		check_cmd(cmd, data->paths);
-	printf ("\n");
-	printf ("valor de i: %d\n", i);
-	printf ("   >>> Cmd path antes del execve: %s\n", cmd->path);
-	printf("el argv[0] es: |%s|\n", cmd->argv[0]);
 	if (n > 1 && i != 0) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
 		prepare_input_pipe(data); // le digo que el input del comando sea el fd 0 de la pipe 
 	if (n > 1 && i < (n - 1)) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
@@ -238,13 +221,14 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
 	// for (int i = 3; i < 10240; i++) // Esto cierra todos lo fd que no sean el 0, 1 o 2. Esto me asegura que no tenga ningun despiste de dejarme un fd abierto antes de ejcutar el comando, ya que si quedara alguno aberto, algunos cmd no se llegarian a terminar de ejecutar porque se quedarian esperando
 	// 	close(i);
+	
 	/*CHECKING BUILTINS WORK*/
-	printf("\n\n\nSOY CONCHA.,, ENTRO\n\n\n\n");
 	data->builtin = is_builtin(cmd);
-	printf("\n\n\nSOY CONCHA.,, ME VOY\n\n\n\n");
 	if (cmd->argv[0] || data->builtin == 0) // Y NO ERES BUILTIN
 	{
-		printf(PURPLE"\n# Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
+		printf(PURPLE"\n# Excecve:\n"END); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
+		printf(PURPLE"# No builtin:\n"END);
+		printf(RED"no ejecuta bien los builtins ya que entra en el excecve\n"END);
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 		{
 			perror_message(NULL, "Execve failed");
@@ -320,15 +304,11 @@ int	get_children(t_general *data)
 	int 		n;
 	t_cmd 		*cmd;
 
-	printf ("\n# Get children:\n");
 	i = 0;
 	//n = count_commands(data); // = numero de pipes + 1
 	n = count_commands(data);
-	
-	printf ("   La cantidad de hijos es: %d\n", n);
 
 	cmd = data->first_cmd;
-	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
 	data->pipe_fd[0] = -1; 
 	data->pipe_fd[1] = -1; 
 	while (i < n)
@@ -461,7 +441,6 @@ int get_command (t_general *data, t_token *first_token)
 	count_tkn = first_token;
 	tmp_tkn = first_token;
 	num = 1; // borrar
-	printf("\n# Get commands\n");
 	while (tmp_tkn)
 	{
 		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
@@ -481,12 +460,10 @@ int get_command (t_general *data, t_token *first_token)
 		//contar cuantos argumentos tiene el comando 
 		
 		count = 0;
-		// printf ("\n Argumentos del comando %d:\n", num);
 		while (count_tkn && count_tkn->type != PIPE)
 		{
 			if (count_tkn->type == CMD_ARGV)
 				count++;
-			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
 			count_tkn = count_tkn->next;
 		}
 		printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
@@ -546,7 +523,7 @@ int get_command (t_general *data, t_token *first_token)
 				tmp_tkn = tmp_tkn->next;
 		}
 		new_cmd->argv[i] = NULL;
-		debug_cmd(new_cmd, num); // PARA CHECKEAR, LUEGO BORRAR
+		//debug_cmd(new_cmd, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++;
 		if (count_tkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
 			count_tkn = count_tkn->next;
