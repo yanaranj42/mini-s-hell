@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/22 23:12:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:30:58 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 		if (redir->type == OUTPUT) // >
 			check_output_redir (cmd, redir);
 		if (redir->type == APPEND) // >>
-			check_append_redir (cmd, redir);
+			check_append_redir  (cmd, redir);
 		if (redir->type == INPUT) // <
 			check_input_redir (cmd, redir);
 		if (redir->type == HEREDOC) // <<
