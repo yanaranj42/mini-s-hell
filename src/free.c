@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 18:11:51 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:57:14 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT (BUILTIN)
 {
 	free(data->line);
+	printf("\n\nvoy a eliminar el pid del child\n\n\n");
 	exit(data->ret_exit);
 }
 
@@ -78,12 +79,10 @@ void free_tokens_list(t_general *data)
 		// 	i++;
 		// }
 		// free(data->first_token->argv); //me cargo el argv del token
-		printf("limpio el contenido del token = %s\n", data->first_token->content);
 		free(data->first_token->content); //SI?????????????????????//me cargo el contenido del token
 		free(data->first_token); //mato el token actual
 		data->first_token = NULL;
 		data->first_token = tmp_token;
-		printf("next token es = %p\n\n", data->first_token);
 	}
 }
 
@@ -127,21 +126,15 @@ void free_cmd(t_general *data)
 	{
 		i = 0;
 		tmp_cmd = data->first_cmd->next;
-		printf ("cmd actual es = %p\n", data->first_cmd);
 		while (data->first_cmd->argv && data->first_cmd->argv[i]) 
 		{
-			printf("limpio argv[%d] = %s\n", i, data->first_cmd->argv[i]);
 			free(data->first_cmd->argv[i]);
 			i++;
 		}
 		free(data->first_cmd->argv); //me cargo el argv del cmd
 		data->first_cmd->argv = NULL;
-		// printf("limpio el path = %s\n", data->first_cmd->path);
-		// free(data->first_cmd->path); No tengo que liberar path porque no lo tengo,lo obtengo en el hijo y el padre no lo tiene, por lo que si intento liberarlo me da segfault. En el hijo se autolibera porque sale haciendo exit
-		printf("limpio las redirecciones\n");
 		while (data->first_cmd->first_redir)
 		{
-			printf ("archivo de redireccion: %s\n", data->first_cmd->first_redir->file_name);
 			tmp_redir = data->first_cmd->first_redir->next;
 			free (data->first_cmd->first_redir->file_name);
 			free (data->first_cmd->first_redir);
@@ -151,7 +144,6 @@ void free_cmd(t_general *data)
 		data->first_cmd->first_redir = NULL;
 		free(data->first_cmd); //mato el cmd actual
 		data->first_cmd = tmp_cmd;
-		printf("next token es = %p\n\n", data->first_token);
 	}
 	data->first_cmd = NULL;
 }

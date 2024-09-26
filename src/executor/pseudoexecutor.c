@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 18:18:01 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:17:26 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_builtin(t_cmd *cmd)
 {
 	printf(YELLOW"ENTROOO\n\n\n\n"END);
 	if (!cmd->argv || cmd->argv == (void*)0)
-		return (9);
+		return (0);
 	else if (ft_strncmp("echo", cmd->argv[0], 4) == 0)
 		return (1);
 	else if (ft_strncmp("cd", cmd->argv[0], 2) == 0)
@@ -60,6 +60,6 @@ int	is_builtin(t_cmd *cmd)
 		return (7);
 	else
 		printf(RED"BUILTIN COMMAND: %s: NOT FOUND\n\n\n"END, cmd->argv[0]);
-	return (KO);
+	return (0);
 }
 //provisional, esta mal porque si me pasan echoasdaf, por ejemplo, lo cogeria como builtin, cuando en realidad no existe.

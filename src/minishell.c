@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 17:34:22 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:07:28 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ int main(int argc, char **argv, char **env)
 			continue; // para volver a empezar el while
 		}
 		//pseudoexecutor(&data); //HE METIDO AQUI PARA QUE FUNCIONEN LOS BUILTINS
-		printf("**************soy la line %s\n\n\n", data.line);
-		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
