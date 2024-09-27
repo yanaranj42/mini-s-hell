@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 18:09:20 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:19:56 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,17 @@ typedef struct s_token
 	
 }				t_token;			
 
-
+typedef struct s_xtkn
+{
+	//char 		**argv;
+	//int 		argc;
+	char 		*content_post_expansion;
+	char 		*content_pre_expansion;
+	struct 		s_token *back;
+	struct 		s_token *next;
+	int 		type;
+	
+}				t_xtkn;	
 
 typedef struct s_redir
 {
@@ -120,7 +130,8 @@ typedef struct s_general
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
-	int 		expanded;
+	t_token		*first_xtkn; 
+
 	char		**paths;
 	char 		**env_matrix;
 	t_cmd		*first_cmd;
