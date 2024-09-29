@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 18:30:58 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/29 12:24:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -608,11 +608,11 @@ int executor (t_general *data)
 {
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
 	
-	if (data->line)
-		printf("soy la line %s\n", data->line);
-	else
-		printf("soy null :c \n");
-	if (get_matrix_env (data, data->env_lst) == 0)
+	// if (data->line)
+	// 	printf("soy la line %s\n", data->line);
+	// else
+	// 	printf("soy null :c \n");
+	if (get_matrix_env (data, data->env_lst) == 0) // ESTO SE HARA EN INICIALIZACIONES
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.

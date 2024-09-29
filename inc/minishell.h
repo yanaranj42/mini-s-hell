@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/27 19:19:56 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/29 20:03:38 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ typedef struct s_xtkn
 {
 	//char 		**argv;
 	//int 		argc;
-	char 		*content_post_expansion;
-	char 		*content_pre_expansion;
+	char 		*content;
+	int  		split; // para saber si hacerlo o no
 	struct 		s_token *back;
 	struct 		s_token *next;
 	int 		type;
