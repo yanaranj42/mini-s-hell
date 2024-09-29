@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/26 14:03:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:59:40 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,11 +197,11 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	write(1, "\nSOY UN HIJO\n", 13); // BORRAR
 	write(2, END, ft_strlen(END)); // BORRAR
 	
-	data->builtin = is_builtin(cmd);
-	printf(BLUE"BUILTIN RET ES: %i\n\n"END, data->builtin);
+	//data->builtin = is_builtin(cmd);
+	//printf(BLUE"BUILTIN RET ES: %i\n\n"END, data->builtin);
 	
 	//si no hago esperar al padre mientras el hijo hace cosas, el padre sigue y me aparece el siguiente readline en medio, por eso cuando el hijo acaba no me aparece el prompt, porque ya estoy ahi
-	if (cmd->argv[0] && data->builtin == 0)//si es bu
+	if (cmd->argv[0] /* && data->builtin == 0 */)//si es bu
 		check_cmd(cmd, data->paths);
 	if (n > 1 && i != 0) //NECESARIO??? CONFRONTA CON LAS REDIRECCIONES?
 		prepare_input_pipe(data); // le digo que el input del comando sea el fd 0 de la pipe 
@@ -227,11 +227,11 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	// 	close(i);
 	
 	/*CHECKING BUILTINS WORK*/
-	if (cmd->argv[0] && data->builtin == 0) // Y NO ERES BUILTIN
+	if (cmd->argv[0]/*  && data->builtin == 0 */) // Y NO ERES BUILTIN
 	{
 		printf(PURPLE"\n# Excecve:\n"END); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
 		printf(PURPLE"# No builtin:\n"END);
-		printf(PURPLE"\n"END);
+		printf(PURPLE"\n"END); 
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 		{
 			perror_message(NULL, "Execve failed");
@@ -334,7 +334,12 @@ int	get_children(t_general *data)
 		// if (cmd->argv[0] != NULL) Este if hace que si no hay argumentos, no se cree el fork, por lo tanto no se asigna ningun valor al pid y se le asigna uno random por defecto. Si coincide que es 0, entra en la funcion de crear un hijo, pero como no es un hijo, al salir con un exit mata el programa.
 		// Tengo que crear un if para que el unico caso en el que no entre sea si hay un solo comando y ademas es un builtin. En todo el resto de casos si se deben crear hijos, aunque solo haya redireccion.
 		
-			cmd->pid = fork();
+		data->builtin = is_builtin(cmd);
+		if (data->builtin == 0)
+			;
+		else
+			pseudoexecutor(data, cmd);
+		cmd->pid = fork();
 		if (cmd->pid == -1)
 		{
 			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
