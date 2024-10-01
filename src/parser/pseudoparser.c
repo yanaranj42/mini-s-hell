@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pseudoparser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 00:53:22 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 21:46:43 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:29:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 
 
-void debug_token(t_token *token)
+/* void debug_token(t_token *token)
 {
 	int i;
 
@@ -29,7 +29,7 @@ void debug_token(t_token *token)
 	}
 	printf("next apunta a %p\n", token->next);
 	printf("back apunta a %p\n", token->back);
-}
+} */
 
 
 void pseudoparser(char *line, t_general *data)
@@ -52,7 +52,7 @@ void pseudoparser(char *line, t_general *data)
 	data->first_token->argc = count;
 	data->first_token->next = NULL;
 	data->first_token->back = NULL;
-	debug_token(data->first_token);
+	//debug_token(data->first_token);
 }
 
 

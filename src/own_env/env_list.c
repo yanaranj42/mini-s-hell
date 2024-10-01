@@ -3,22 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/20 12:09:01 by yaja             ###   ########.fr       */
+/*   Updated: 2024/09/30 13:48:06 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-//MOVER AL UNSET
-void	unset_free(t_env *env)
-{
-	ft_memdel(env->name);
-	ft_memdel(env->value);
-	ft_memdel(env);
-}
 
 char	*find_env_var(t_general *data, char *var_name)
 {
@@ -55,7 +48,7 @@ int	env_add_last(t_general *data, char *name, char *value)
 		new_env->value = ft_strdup(value);
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
-	printf(YELLOW"NEW VAR ON ENV  LST\n"END);
+	printf(YELLOW"[%s]:\tNEW VAR ON ENV  LST\n"END, new_env->name);
 	//print_env(data, new_env);
 	data->equal = OK;
 	return (OK);
@@ -85,7 +78,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		{
 			if ((value || data->equal == OK))
 			{
-				free(env->value);
+				free(env->value); 
 				env->value = ft_strdup(value);
 			}
 			if(value && ft_strlen(value) == 0)

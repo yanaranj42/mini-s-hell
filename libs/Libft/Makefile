@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:53:26 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/22 17:47:11 by mfontser         ###   ########.fr        #
+#    Updated: 2024/08/24 17:10:58 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ OBJSBONUS = ${SRCSBONUS:.c=.o}
 NAME = libft.a
 HEADER = libft.h
 
-CC = cc
+CC = gcc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 #comandos para compilar (compilador, flags, borrar)

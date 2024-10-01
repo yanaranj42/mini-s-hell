@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 21:08:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 17:47:58 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:30:03 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 
 			}
 			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
 		}
 		else if (data->qdata.quotes == 1)
 		{
@@ -115,6 +116,7 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 			while (s[i] != '\0' && s[i] != del)
 				i++;
 			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
 		}
 
 		else if (data->qdata.miniquotes == 1)
@@ -127,6 +129,7 @@ static char	**matrix_token_words(char **res, const char *s, char del, t_general 
 			while (s[i] != '\0' && s[i] != del)
 				i++;
 			res[word] = ft_substr(s, start, i - start);
+			printf("     Palabra %d: |%s|\n", word + 1, res[word]);
 		}
 		if (!res[word])
 		{
@@ -145,7 +148,6 @@ char	**ft_token_split(char const *s, char del, t_general *data)
 	char	**res;
 
 	words = token_num_words (s, del, data);
-	printf("Numero de palabras: |%d|\n", words);
 	res = malloc(sizeof(char *) * (words + 1));
 	if (!res)
 		return (NULL);

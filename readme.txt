@@ -30,3 +30,9 @@ yaja 14/09: Ha dejado de funcionar el export. Cuando le pasamos un var que ya ex
 			deberia estar pero con valor "".
 			Sigue sin funcionar las variables que de valor son NULL, tanto en las
 			nuevas como en las ya existentes.
+
+yaja 29/09: una vez llamamos al env despues de hacer un export, la lista nos la
+			printa de forma ordenada porque la direccion de momoria a la que
+			apuntan es la misma, y se ha modificado el contenido.
+			En caso de querer solucionarlo, habria que hacer una copia del
+			puntero y modificar esta otra direccion de memoria.

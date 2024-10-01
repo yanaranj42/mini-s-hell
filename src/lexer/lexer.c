@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 13:39:24 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 18:12:03 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:30:58 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,21 @@ int review_closed_quotes (t_general *data)
 	{
 		if (data->line[i] == '"' && data->qdata.miniquotes == 0) //solo cambia el valor si el otro tipo de comillas no esta abierto ya, porque sino seran un char normal
 		{
+			printf("        He encontrado unas comillas dobles\n");
 			if (data->qdata.quotes == 0)
 				data->qdata.quotes = 1;
 			else if(data->qdata.quotes == 1)
 				data->qdata.quotes  = 0;
+			printf("        Valor de quotes: %d\n", data->qdata.quotes);
 		}
 		if (data->line[i] == '\'' && data->qdata.quotes == 0) //como poner el char ' ??? si pongo \' estoy escapando el caracter, osea estoy diciendo que lo interprete como un caracter normal, y no como el metacaracter que representa. La contrabarra me permite escapar metacaracteres
 		{
+			printf("        He encontrado unas comillas simples\n");
 			if (data->qdata.miniquotes == 0)
 				data->qdata.miniquotes = 1;
 			else if(data->qdata.miniquotes == 1)
 				data->qdata.miniquotes  = 0;
+			printf("        Valor de miniquotes: %d\n", data->qdata.miniquotes);
 		}
 		i++;
 	}
@@ -52,6 +56,7 @@ int review_closed_quotes (t_general *data)
 		return (0);
 	return (1);
 }
+
 
 int delete_useless_spaces (t_general *data)
 {

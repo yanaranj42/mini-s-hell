@@ -6,7 +6,7 @@
 #    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/23 15:26:25 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/09/26 18:32:34 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ FILES += lexer/lexer.c
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
-FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
+FILES += executor/pseudoexecutor.c 
 
-FILES += executor/pseudoexecutor.c
-FILES += built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c 
-
+FILES += built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c \
+			built-ins/exit.c built-ins/export.c built-ins/export_utils.c \
+			built-ins/unset.c
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
