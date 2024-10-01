@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 18:51:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:33:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,22 @@ void free_tokens_list(t_general *data)
 * hay que rehacer el arr_clean, porque seguro lo usamos en otras partes y no tenemos la funcion de memdel
 * quiero mirar como hacer directamente con el free (un swap quiza? esta por verse) 
 */
+
+//MOVER AL UNSET
+/*liberamos el nodo*/
 void	*ft_memdel(void *ptr)
 {
 	if (ptr)
 		free(ptr);
 	ptr = NULL;
 	return (NULL);
+}
+
+void	unset_free(t_env *env)
+{
+	ft_memdel(env->name);
+	ft_memdel(env->value);
+	ft_memdel(env);
 }
 
 char	**arr_clean(char **arr)
@@ -109,7 +119,7 @@ char	**arr_clean(char **arr)
 	return (NULL);
 }
 
-void	free_matrix_env(char **matrix)
+/* void	free_matrix_env(char **matrix)
 {
 	int	i;
 
@@ -124,4 +134,4 @@ void	free_matrix_env(char **matrix)
 	free(matrix);
 	matrix = NULL; // libero la matriz y la vuelvo a poner a null, para proteger que si en otra parte del codigo la intento liberar cuando ya estaba liberada, que no me de un double free (si hago free de null no pasa nada). O si en otra parte del codigo quiero usar el enviroment, ver que no hay, que es null.
 	//Cuando libero, libero la memoria, pero el puntero sigue apuntando a ese espacio. Al ponerlo a NULL lo que hago es que el puntero ya no apunte a ninguna parte.
-}
+} */

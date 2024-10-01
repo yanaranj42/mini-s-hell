@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 19:00:13 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:24:26 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	init_data_values(t_general *data, char **env)
 	if (env)
 		get_own_env(data, env);
 	get_matrix_env(data, data->env_lst);
-	/* printf("# Get matrix enviroment:\n\n");
-	print_matrix_env(data->env_matrix);
-	printf("\n"); */
 }
 
 //NO ENTIENDO EL SENTIDO DE CONVERTIR ESTA FUNCION A INT, PORQUE FUERA NO RECIBE NADA, LA DEJO EN VOID

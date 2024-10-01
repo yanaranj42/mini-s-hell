@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/29 16:20:28 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:18:37 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 */
 void	print_env(t_general *data, t_env *tmp)
 {
+	ft_putstr_fd(tmp->name, STDOUT);
 	ft_putstr_fd("\"", STDOUT);
 	if (tmp->value != NULL && data->equal == OK)
 		ft_putstr_fd(tmp->value, STDOUT);
@@ -51,7 +52,7 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_general *data, t_env *own_env)
+int	print_export_lst(t_general *data, t_env  *own_env)
 {
 	t_env	*tmp;
 	

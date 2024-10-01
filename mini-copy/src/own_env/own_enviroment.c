@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 19:02:46 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:33:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void print_matrix_env(char **env_matrix)
 	i = 0;
 	while (env_matrix[i])
 	{
-		printf("    %s\n", env_matrix[i]);
+		printf("[%i]\t%s\n",i, env_matrix[i]);
 		i++;
 	}
 }
@@ -101,7 +101,7 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 		if (!half_str)
 		{
 			data->env_matrix[i] = NULL;
-			free_matrix_env(data->env_matrix); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
+			arr_clean(data->env_matrix); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
 			return (NULL);
 		}
 		data->env_matrix[i] = ft_strjoin (half_str, tmp->value);
@@ -109,7 +109,7 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 		{
 			free (half_str);
 			data->env_matrix[i] = NULL;
-			free_matrix_env(data->env_matrix);
+			arr_clean(data->env_matrix);
 			return (NULL);
 		}
 		free (half_str);

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 17:15:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:46:02 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int		get_own_env(t_general *data, char **env);
 void	env_to_lst(t_general *data, t_env *new_env);
 
 //ENV LIST
-void	unset_free(t_env *env);
 char	*find_env_var(t_general *data, char *var_name);
 int		env_add_last(t_general *data, char *name, char *value);
 void	add_upd_env(t_general *data, char *name, char *value);
@@ -162,7 +161,6 @@ void 	print_matrix_env(char **matrix_env); //borrar
 
 	int		ft_unset(t_general *data);
 	void	do_unset(t_general *data, char *var);
-	char	**ft_new_env(t_env *env);
 	
 	//export utils
 	void	print_env(t_general *data, t_env *tmp);//MODIFF
@@ -185,5 +183,6 @@ void 	free_tokens_list(t_general *data);
 char	**arr_clean(char **arr);
 void	*ft_memdel(void *ptr);
 void	free_matrix_env(char **matrix);
+void	unset_free(t_env *env);
 
 #endif

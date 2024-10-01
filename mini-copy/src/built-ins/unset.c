@@ -6,14 +6,13 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/29 19:24:57 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:24:00 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-char	**ft_new_env(t_env *env);
 /* Este builtin borra las variables de entorno que elijamos y modifica tambien
     la lista que tengamos en el env que se vean afectadas por esta. (ex. CD,
 	OWD, OLDPWD...)
@@ -29,15 +28,13 @@ char	**ft_new_env(t_env *env);
 	no se esta moviendo correctamente la lista despues de eliminar la var eencontrada.
 	mirar de hacerlo con iteradores
 */
-void	do_unset(t_general *data, char *var)
+/* void	do_unset(t_general *data, char *var)
 {
 	t_env	*tmp;
 	t_env	*new_env;
-	int		i;
 	
 	tmp = data->env_lst;
 	new_env = NULL;
-	i = 0;
 	while (tmp != NULL)
 	{
 		printf("env var: %s\tparam var: %s\n", tmp->name, var);
@@ -47,11 +44,9 @@ void	do_unset(t_general *data, char *var)
 			printf("%s\t Hay match y procedo a eliminarla\n", var);
 			data->env_lst = data->env_lst->next;
 			unset_free(tmp);
-			tmp = NULL;
 			return ;
 		}
 		tmp = tmp->next;
-		i++;
 	}
 	printf("%s:\tMatch not found\n\n\n", var);
 	printf("Si no es el final y no encuentro la var, copiamos esta en el nodo\n");
@@ -64,8 +59,6 @@ void	do_unset(t_general *data, char *var)
 	if (tmp == NULL)
 		return ;
 	new_env->next = tmp->next;
-/* 	printf(YELLOW"********** NEW ENV (unseted) **********\n"END);
-	print_env(data, new_env); */
 	unset_free(tmp);
 }
 int    ft_unset(t_general *data)
@@ -88,21 +81,65 @@ int    ft_unset(t_general *data)
 	if (data->env_matrix)
 		arr_clean(data->env_matrix);
 	printf("Aqui actualizamos la lst del env:\n");
-	get_matrix_env(data, data->env_lst);
+	//get_matrix_env(data, data->env_lst);
 	if (!data->env_matrix)
 		return (error_brk(data, ERR01, NULL, 12));
 	return (OK);
-}
-/*char	**ft_new_env(t_env *env)
+} */
+//SEGUNDA VERSION
+
+void	do_unset(t_general *data, char *var)
 {
-	t_env	*tmp;
-	char	**list;
+	t_env	*tmp;//
+	t_env	*head;//tiene la ref al inicio de la lista y se  va modificando
+	
+	head = data->env_lst;
+	tmp = NULL;
+	if (ft_strncmp(head->name, var, ft_strlen(var)) == 0)
+	{
+		printf("Match found: %s - %s", head->name, var);
+		data->env_lst = data->env_lst->next;
+		unset_free(head);
+		return ;
+	}
+	while (head != NULL && ft_strncmp(head->name, var, ft_strlen(var)) != 0)
+	{
+		tmp = head;
+		head = head->next;
+	}
+	if (head == NULL)
+		return ;
+	tmp->next = head->next;
+	unset_free(head);
+}
+//recibira los args desde el fist_cmd
+int	ft_unset(t_general *data)
+{
+	t_env	*head;
+	char	**argv;
 	int		i;
 
-	i = 0;
-	if (!env)
-		return (NULL);
-	
-	tmp = env;
-	return (NULL);
-}*/
+	i = 1;
+	argv = data->first_token->argv;
+	head = data->env_lst;
+	if (!argv[i])
+		;
+	printf(BLUE"Matrix before unset:\n\n");
+	print_matrix_env(data->env_matrix);
+	printf("\n\n"END);
+	while (argv[i])
+	{
+		do_unset(data, argv[i]);
+		i++;
+	}
+	if (data->env_matrix)
+		data->env_matrix= arr_clean(data->env_matrix);
+	get_matrix_env(data, data->env_lst);
+	printf(YELLOW"Matrix after unset:\n\n");
+	print_matrix_env(data->env_matrix);
+	printf("\n"END);
+	if (!data->env_lst)
+		return(error_brk(data, ERR01, NULL, 12));
+	return (OK);
+}
+

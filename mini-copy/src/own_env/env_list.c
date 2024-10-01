@@ -6,21 +6,12 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/29 18:55:48 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:48:06 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-//MOVER AL UNSET
-void	unset_free(t_env *env)
-{
-	ft_memdel(env->name);
-	ft_memdel(env->value);
-	ft_memdel(env->next);
-	env->next = NULL;
-	ft_memdel(env);
-}
 
 char	*find_env_var(t_general *data, char *var_name)
 {
