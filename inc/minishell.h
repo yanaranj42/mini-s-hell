@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/01 13:46:02 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:02:53 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,12 @@
 
 /*PARSING*/
 #define PIPE 1
-#define STDIN_REDIRECTION 2
-#define STDIN_DOUBLE_REDIRECTION 3
-#define STDOUT_REDIRECTION 4
-#define STDOUT_DOUBLE_REDIRECTION 5
-#define NO_SEPARATOR 6
-
-
-typedef struct s_token
-{
-	char 		**argv;
-	int 		argc;
-	struct 		s_token *back;
-	struct 		s_token *next;
-	int 		type;
-}				t_token;
-
+#define INPUT 2  // < STDIN_REDIRECTION
+#define HEREDOC 3 // << STDIN_DOUBLE_REDIRECTION 
+#define OUTPUT 4 // > STDOUT_REDIRECTION
+#define APPEND 5 // >>  STDOUT_DOUBLE_REDIRECTION
+#define FILE_REDIRECTION 6
+#define CMD_ARGV 7
 
 typedef struct s_quotes
 {
@@ -72,18 +62,63 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+typedef struct s_token
+{
+	//char 		**argv;
+	//int 		argc;
+	char 		*content;
+	struct 		s_token *back;
+	struct 		s_token *next;
+	int 		type;
+	
+}				t_token;			
+
+
+
+typedef struct s_redir
+{
+	int		type;
+	char	*file_name;
+	int		fd; // Esto lo necesito para los heredocs
+	struct 	s_redir	*next;
+} 			t_redir;
+
+
+typedef struct s_cmd
+{
+	char		**argv;
+ 	char		*path;
+	pid_t		pid;
+	t_redir		*first_redir;
+	struct 		s_cmd *next;
+	int		fd_in; // para las redirs de input
+	int		fd_out; // para las redirs de output
+//(se van actualizando prq los voy sobreescribiendo)
+	
+	//int			indx; // cuál comando es
+
+}				t_cmd;
 
 typedef struct s_general
 {
-	int			ret_exit;//variable yaja //var duplicada
-	int			equal;//variable yaja. Para saber si imprimir o no la variable NULL
-	int			flag; 	 //variable yaja
-	t_env		*env_lst;//lista del env
-	char 		**env_matrix;//matriz del env //var duplicada char **env
+	int			ret_exit;
+	int			equal;
+	int			flag;
+	int			builtin;
+	t_env		*env_lst;
+	char		**env;
+
 	char 		*line;
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
+	char		**paths;
+	char 		**env_matrix;
+	t_cmd		*first_cmd;
+	int 		exit_status;
+	int			pipe_fd[2];
+	int 		next_cmd_input_fd;
+
 }				t_general;
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
