@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/29 16:15:38 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:48:21 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,8 @@ int	ft_export(t_general *data)
 	
 	i = 1;
 	data->ret_exit = 0;
-	argv = data->first_token->argv;
+	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
-	/*printf(YELLOW"INICIO EXPORT Y 1o PRINTO LA LISTA ENV\n"END);
-	while (tmp_env)
-	{
-		printf("%s=%s\n", tmp_env->name, tmp_env->value);
-		tmp_env = tmp_env->next;
-	}*/
 	if (!argv[1])
 		print_export_lst(data, tmp_env);//add data para la estructura y flag equal
 	while (argv[i])

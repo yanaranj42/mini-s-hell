@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
+#    By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/09/26 18:32:34 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/10/04 13:11:10 by yaja             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ FILES += own_env/own_enviroment.c own_env/env_list.c
 FILES += lexer/lexer.c 
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
+
+FILES += executor/executor.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
 
 FILES += executor/pseudoexecutor.c 
 

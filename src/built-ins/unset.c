@@ -6,7 +6,7 @@
 /*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/04 11:52:37 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/04 13:08:12 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	do_unset(t_general *data, char *var)
 	unset_free(head);
 }
 //recibira los args desde el fist_cmd
-int	ft_unset(t_general *data)
+int	ft_unset(t_general *data, t_cmd *cmd)
 {
 	t_env	*head;
 	char	**argv;
 	int		i;
 
 	i = 1;
-	argv = data->first_token->argv;
+	argv = cmd->argv;
 	head = data->env_lst;
 	if (!argv[i])
 		;

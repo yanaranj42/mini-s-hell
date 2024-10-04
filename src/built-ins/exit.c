@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/08/29 13:25:42 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:45:39 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static int	check_long(char *arg);
 /* El error de salida de LONG_MIN es bash, es 1... que fem??*/
 void	ft_exit(t_general *data)
 {
+	printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
+	printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
 	ft_putstr_fd("exit \n", STDERR);
-	if (data->first_token->argv[0] && data->first_token->argv[1] == NULL)
+	if (data->first_cmd->argv[0] && data->first_cmd->argv[1] == NULL)
 		exit(0);
-	if (exit_code(data, data->first_token->argv) == 1)
+	if (exit_code(data, data->first_cmd->argv) == 1)
 		;
 	else
 		free_exit(data);

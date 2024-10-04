@@ -6,7 +6,7 @@
 /*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/04 12:02:53 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/04 13:09:00 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 
 /*COLORS*/
 #define END		"\x1b[0m"
-#define RED		"\x1b[31m"
-#define YELLOW	"\x1b[33m"
-#define BLUE	"\x1b[34m"
-#define GREEN	"\x1b[32m"
-#define CYAN	"\x1b[36m"
+#define RED		"\e[1;91m"
+#define YELLOW	"\e[1;93m"
+#define BLUE	"\e[1;94m"
+#define GREEN	"\e[1;92m"
+#define CYAN	"\e[1;96m"
+#define PURPLE 	"\e[1;95m"
+#define ORANGE  "\e[1;38;2;255;128;0m"
 
 /*ERRORS*/
 #define	ERR01	"Malloc error\n"
@@ -154,7 +156,7 @@ int 	is_real_separator(char c, t_general *data);
 int 	take_pretoken (t_general *data, int *i);
 t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);
-t_token *create_token_content (t_general *data, t_token *new_token);
+//t_token *create_token_content (t_general *data, t_token *new_token);
 void 	classify_token_type (t_token *new_token);
 //void 	debug_token(t_token *token, int num); // BORRAR
 char	**ft_token_split(char const *s, char del, t_general *data);
@@ -172,13 +174,28 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
-int 	pseudoexecutor(t_general *data);
+int 	executor (t_general *data);
+int		get_all_paths(t_env	*env_lst, t_general *data);
+t_env 	*there_is_path(t_env	*env_lst);
+
+int 	get_children(t_general *data);
+int 	count_commands(t_general *data);
+int		create_child(t_general *data, t_cmd *cmd, int i, int n);
+void	check_cmd(t_cmd *cmd, char **paths);
+char	*check_cmd_access(char **paths, char *cmd_argv);
+char 	*check_cmd_current_directory(char *cmd_argv);
+char	*check_cmd_absolut_path(char *cmd_argv);
+char	*check_cmd_relative_path(char *cmd_argv, char *path);
+void	father_status(t_general *data);
 
 char	**get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
 void 	print_matrix_env(char **matrix_env); //borrar
 
-	//BUILT-INS
+//BUILT-INS
+void	pseudoexecutor(t_general *data, t_cmd *cmd);
+int		is_builtin(t_cmd *cmd);
+
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);
 	
@@ -194,30 +211,38 @@ void 	print_matrix_env(char **matrix_env); //borrar
 	int		ft_export(t_general *data);
 	int		handle_args(t_general *data, char *argv);
 
-	int		ft_unset(t_general *data);
+	int		ft_unset(t_general *data, t_cmd *cmd);
 	void	do_unset(t_general *data, char *var);
 	
 	//export utils
-	void	print_env(t_general *data, t_env *tmp);//MODIFF
+	void	print_env(t_general *data, t_env *tmp);
 	void	print_sort(t_env *own_env);
 	int		print_export_lst(t_general *data, t_env *own_env);//inicia con la flag en 1
 	int		export_opt(char *name, char *argv);
 	void	export_plus_var(t_general *data, char *name, char *value);
 
 
-
 //ERROR_MESSAGES
+void	unexpected_token_message(char *message);
+void	command_not_found(char *start);
+void	permission_denied(char *start);
+void	no_such_file_or_directory(char *start);
+
 void	perror_message(char *start, char *message);
 int		error_opt(char *s1, char *s2, char **arr, char *argv);
 int		error_brk(t_general *data, char *msg, char *name, int flag);
+
 //FREE
+void	free_data_paths (char **paths);
+void 	free_pretoken_argv (char **argv);
+void 	free_tokens_list(t_general *data);
+void	free_cmd(t_general *data);
+
 void	free_exit(t_general *data);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
-void 	free_tokens_list(t_general *data);
 char	**arr_clean(char **arr);
 void	*ft_memdel(void *ptr);
-void	free_matrix_env(char **matrix);
 void	unset_free(t_env *env);
 
 #endif

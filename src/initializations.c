@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializations.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 19:00:13 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:32:27 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@ void	init_data_values(t_general *data, char **env)
 	data->line = NULL;
 	data->first_token = NULL;
 	data->pretoken = NULL;
-	data->first_token = NULL;
-	data->ret_exit = 0;
-	data->equal = OK;
 	data->env_lst = NULL;
+	data->ret_exit = 0;
+	data->builtin = 0;
+	data->paths = NULL;
 	data->env_matrix = NULL;
+	data->first_cmd = NULL;
+	data->exit_status = 0;//same as ret_exit
+	data->pipe_fd[0] = -1; //Inicializo a -1 porque no existen fd negativos, asi me aseguro de no machacar ningun otro (y menos los standars, 0, 1 y 2)
+	data->pipe_fd[1] = -1; // 
+	data->next_cmd_input_fd = -1;
 
 	/*	iniciamos el programa haciendo una copia del env y poniendola en
 		formato lista y tambien en formato matriz
@@ -30,9 +35,6 @@ void	init_data_values(t_general *data, char **env)
 	if (env)
 		get_own_env(data, env);
 	get_matrix_env(data, data->env_lst);
-	/* printf("# Get matrix enviroment:\n\n");
-	print_matrix_env(data->env_matrix);
-	printf("\n"); */
 }
 
 //NO ENTIENDO EL SENTIDO DE CONVERTIR ESTA FUNCION A INT, PORQUE FUERA NO RECIBE NADA, LA DEJO EN VOID

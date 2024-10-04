@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_enviroment.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 19:02:46 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:24:51 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 		if (!half_str)
 		{
 			data->env_matrix[i] = NULL;
-			free_matrix_env(data->env_matrix); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
+			arr_clean(data->env_matrix); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
 			return (NULL);
 		}
 		data->env_matrix[i] = ft_strjoin (half_str, tmp->value);
@@ -109,7 +109,7 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 		{
 			free (half_str);
 			data->env_matrix[i] = NULL;
-			free_matrix_env(data->env_matrix);
+			arr_clean(data->env_matrix);
 			return (NULL);
 		}
 		free (half_str);

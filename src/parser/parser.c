@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/27 12:28:37 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:41:56 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,48 +246,50 @@ void put_new_list_node (t_general *data, t_token *new_token)
 	}
 }
 
-
-t_token *create_token_content (t_general *data, t_token *new_token)
+void put_new_list_token_node (t_general *data, t_token *new_token)
 {
-	int i;
-	int count;
+	t_token *tmp_token;
 
-	new_token->argv = ft_token_split(data->pretoken, ' ', data); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
-	//new_token->argv = ft_split(data->pretoken, ' '); //el split me crea la matriz, lo que hago es guardar la direccion de memoria de esa matriz en argv
-	//dentro del split tengo que controlar que no haya comillas abiertas o cerradas cuando evaluo el espacio.
-	//contar palabras teniendo en cuenta que todo lo de dentro de las comillas es una sola.
-	if (!new_token->argv)
+	if (!data->first_token)
 	{
-		printf("Error: There have been problems doing the argv token split\n");
-		free(data->pretoken);
-		free_tokens_list(data);
-		return (NULL);
+		data->first_token = new_token;
+		data->first_token->back = NULL;
+		data->first_token->next = NULL;
 	}
-	count = 0;
-	i = 0;
-	while (new_token->argv[i])
+	else
 	{
-		i++;
-		count++;
+	//	(addback)
+		tmp_token = data->first_token;
+		while (tmp_token && tmp_token->next)
+			tmp_token = tmp_token->next;
+		tmp_token->next = new_token;
+		new_token->back = tmp_token;
+		new_token->next = NULL;
 	}
-	new_token->argc = count;
-	return (new_token);
 }
 
 void classify_token_type (t_token *new_token)
 {
-	if (ft_strncmp ("|", new_token->argv[0], 2) == 0 && new_token->argc == 1)
+	if (ft_strncmp ("|", new_token->content, 2) == 0)
 		new_token->type = PIPE;
-	else if (ft_strncmp ("<", new_token->argv[0], 2) == 0 && new_token->argc == 1)
-		new_token->type = STDIN_REDIRECTION;
-	else if (ft_strncmp ("<<", new_token->argv[0], 3) == 0 && new_token->argc == 1)
-		new_token->type = STDIN_DOUBLE_REDIRECTION;
-	else if (ft_strncmp (">", new_token->argv[0], 2) == 0 && new_token->argc == 1)
-		new_token->type = STDOUT_REDIRECTION;
-	else if (ft_strncmp (">>", new_token->argv[0], 3) == 0 && new_token->argc == 1)
-		new_token->type = STDOUT_DOUBLE_REDIRECTION;
+	else if (ft_strncmp ("<", new_token->content, 2) == 0)
+		new_token->type = INPUT;
+	else if (ft_strncmp ("<<", new_token->content, 3) == 0)
+		new_token->type = HEREDOC;
+	else if (ft_strncmp (">", new_token->content, 2) == 0)
+		new_token->type = OUTPUT;
+	else if (ft_strncmp (">>", new_token->content, 3) == 0)
+		new_token->type = APPEND;
+	else if (new_token->back && (new_token->back->type == INPUT || new_token->back->type == HEREDOC || new_token->back->type == OUTPUT || new_token->back->type == APPEND ))
+		new_token->type = FILE_REDIRECTION;
 	else
-		new_token->type = NO_SEPARATOR;
+		new_token->type = CMD_ARGV;
+
+
+	// else if (new_token->back && (new_token->back->type == INPUT || new_token->back->type == HEREDOC || new_token->back->type == OUTPUT || new_token->back->type == APPEND || new_token->back->type == FILE_REDIRECTION || (new_token->back->type == CMD_ARGV && ft_strncmp ("-", new_token->content, 1) != 0)))
+	// 	new_token->type = FILE_REDIRECTION;
+	// else
+	// 	new_token->type = CMD_ARGV;
 }
 
 int parser(t_general *data)
@@ -323,7 +325,7 @@ int parser(t_general *data)
 
 		//estas dos maneras siguientes me sirven independientemente que en create token content me duevuelva el puntero token o un 0 - 1 de si ha funcionado bien o mal. Teniendo en cuenta que eso puedo hacerlo porque destruyo token dentro de la funcion, sino tendria un leak de memoria, porque me ha entrado un token, ha fallado el argv, pero el token hay que destruirlo, porque ya estaba creado.
 		//manera 1:
-		if(!create_token_content (data, new_token)) //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
+		if(!create_token(data)) //REVISAR SI ESTO SE PUEDE O TIENE SENTIDO
 			return (0);
 			//Si me devuelvo la direccion de memoria de new_token despues de pasar por create token content, contara como true. Si me devuelve null contara como false la condicion.
 		

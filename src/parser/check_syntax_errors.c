@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_errors.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/28 00:47:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:42:57 by yaja             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,157 +24,91 @@
 int check_pipe (t_general *data, t_token *token)
 {
 	if (!token->back) // empieza por pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
+		unexpected_token_message("`|'"); //error de salida ($?) 2:command not found
 	else if (!token->next) // acaba por pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
+		unexpected_token_message("`|'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // dos pipes seguidas
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
-	return (1);
+		unexpected_token_message("`|'"); //error de salida 2:command not found
+	else
+		return (1);
+	data->exit_status = 2;
+	free_tokens_list(data);
+	return (0);
 }
+
 	
-int check_stdin_redirection (t_general *data, t_token *token) // <
+int check_INPUT (t_general *data, t_token *token) // <
 {
 	if (!token->next) // acaba por <
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `newline'"); //error de salida 2:command not found
-		return (0);
-	}
+		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de < viene una pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_REDIRECTION) // despues de < viene un <
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<'"); //error de salida 2:command not found
-		return (0);
-	}
-	return (1);
+		unexpected_token_message("`|'"); //error de salida 2:command not found
+	else if (token->next->type == INPUT) // despues de < viene un <
+		unexpected_token_message("`<'"); //error de salida 2:command not found
+	else
+		return (1);
+	data->exit_status = 2;
+	free_tokens_list(data);
+	return (0);
 }
 
-int check_stdin_double_redirection (t_general *data, t_token *token) // <<
+int check_HEREDOC (t_general *data, t_token *token) // <<
 {
 	if (!token->next) // acaba por <<
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `newline'"); //error de salida 2:command not found
-		return (0);
-	}
+		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de << viene una pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_REDIRECTION) // despues de << viene un <
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de << viene un <<
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<<'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de << viene un >
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `>'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de << viene un >>
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `>>'"); //error de salida 2:command not found
-		return (0);
-	}
-	return (1);
+		unexpected_token_message("`|'"); //error de salida 2:command not found
+	else if (token->next->type == INPUT) // despues de << viene un <
+		unexpected_token_message("`<'"); //error de salida 2:command not found
+	else if (token->next->type == HEREDOC) // despues de << viene un <<
+		unexpected_token_message("`<<'"); //error de salida 2:command not found
+	else if (token->next->type == OUTPUT) // despues de << viene un >
+		unexpected_token_message("`>'"); //error de salida 2:command not found
+	else if (token->next->type == APPEND) // despues de << viene un >>
+		unexpected_token_message("`>>'"); //error de salida 2:command not found
+	else
+		return (1);
+	data->exit_status = 2;
+	free_tokens_list(data);
+	return (0);
 }
 
-int check_stdout_redirection (t_general *data, t_token *token) // >
+int check_OUTPUT (t_general *data, t_token *token) // >
 {
 	if (!token->next) // acaba por >
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `newline'"); //error de salida 2:command not found
-	}
+		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de > viene una pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_REDIRECTION) // despues de > viene un <
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de > viene un >
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `>'"); //error de salida 2:command not found
-		return (0);
-	}
-	return (1);
+		unexpected_token_message("`|'"); //error de salida 2:command not found
+	else if (token->next->type == INPUT) // despues de > viene un <
+		unexpected_token_message("`<'"); //error de salida 2:command not found
+	else if (token->next->type == OUTPUT) // despues de > viene un >
+		unexpected_token_message("`>'"); //error de salida 2:command not found
+	else
+		return (1);
+	data->exit_status = 2;
+	free_tokens_list(data);
+	return (0);
 }
 
-int check_stdout_double_redirection (t_general *data, t_token *token) // >>
+int check_APPEND (t_general *data, t_token *token) // >>
 {
 	if (!token->next) // acaba por >>
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `newline'"); //error de salida 2:command not found
-		return (0);
-	}
+		unexpected_token_message("`newline'"); //error de salida 2:command not found
 	else if (token->next->type == PIPE) // despues de >> viene una pipe
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `|'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDOUT_REDIRECTION) // despues de >> viene un >
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `>'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDOUT_DOUBLE_REDIRECTION) // despues de >> viene un >>
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `>>'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_REDIRECTION) // despues de >> viene un <
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<'"); //error de salida 2:command not found
-		return (0);
-	}
-	else if (token->next->type == STDIN_DOUBLE_REDIRECTION) // despues de >> viene un <<
-	{
-		free_tokens_list(data);
-		perror_message("Drackyshell", "syntax error near unexpected token `<<'"); //error de salida 2:command not found
-		return (0);
-	}
-	return (1);
+		unexpected_token_message("`|'"); //error de salida 2:command not found
+	else if (token->next->type == OUTPUT) // despues de >> viene un >
+		unexpected_token_message("`>'"); //error de salida 2:command not found
+	else if (token->next->type == APPEND) // despues de >> viene un >>
+		unexpected_token_message("`>>'"); //error de salida 2:command not found
+	else if (token->next->type == INPUT) // despues de >> viene un <
+		unexpected_token_message("`<'"); //error de salida 2:command not found
+	else if (token->next->type == HEREDOC) // despues de >> viene un <<
+		unexpected_token_message("`<<'"); //error de salida 2:command not found
+	else
+		return (1);
+	data->exit_status = 2;
+	free_tokens_list(data);
+	return (0);
 }
 
 int check_syntax_errors (t_general *data)
@@ -189,24 +123,24 @@ int check_syntax_errors (t_general *data)
 			if (check_pipe (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDIN_REDIRECTION)
+		if (tmp1_token->type == INPUT)
 		{
-			if (check_stdin_redirection (data, tmp1_token) == 0)
+			if (check_INPUT (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDIN_DOUBLE_REDIRECTION)
+		if (tmp1_token->type == HEREDOC)
 		{
-			if (check_stdin_double_redirection (data, tmp1_token) == 0)
+			if (check_HEREDOC (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDOUT_REDIRECTION)
+		if (tmp1_token->type == OUTPUT)
 		{
-			if (check_stdout_redirection (data, tmp1_token) == 0)
+			if (check_OUTPUT (data, tmp1_token) == 0)
 				return (0);
 		}
-		if (tmp1_token->type == STDOUT_DOUBLE_REDIRECTION)
+		if (tmp1_token->type == APPEND)
 		{
-			if (check_stdout_double_redirection (data, tmp1_token) == 0)
+			if (check_APPEND (data, tmp1_token) == 0)
 				return (0);
 		}
 		tmp1_token = tmp1_token->next;
