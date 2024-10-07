@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   own_enviroment.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/04 12:24:51 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/07 13:42:40 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+
+//si no tenemos ENV, debemos agregar PWD, SHLVL, _=/usr/... y OLDPWD cuando corresponda
+//y podemos crear un env a base de hacer exports
+//void	basic_env(t_general *data)
+
 //agrega la variable a la lista
 void	env_to_lst(t_general *data, t_env *my_env)
 {
@@ -89,7 +94,6 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 
 	if (!env_lst)
 		return (NULL);
-	//malloc para la cantidad de elementos de la lista
 	data->env_matrix = malloc(sizeof(char*) * (env_matrix_base(env_lst) + 1));
 	if (!data->env_matrix)
 		return (perror_message(NULL, "Failure in matrix enviroment creation"), NULL);
@@ -119,55 +123,3 @@ char	**get_matrix_env(t_general *data, t_env *env_lst)
 	data->env_matrix[i] = NULL;
 	return (data->env_matrix);
 }
-/* char	*env_line(char *name, char *value)
-{
-	char	*line;
-	int		i;
-	int		j;
-
-	if (!name)
-		return (NULL);
-	if (!value)
-		return (ft_strdup(""));
-	line = malloc(sizeof(char *) * ft_strlen(name) + ft_strlen(value) + 2);
-	if (!line)
-		return (NULL);
-	i = -1;
-	while (name[++i])
-		line[i] = name[i];
-	name[i++] = '=';
-	j = -1;
-	while (value[++j])
-		line[i + j] = value[j];
-	line[i + j] = '\0';
-	return (line);
-}
-
-char	**get_matrix_env(t_general *data, t_env *env)
-{
-	char	**matrix;
-	t_env	*tmp;
-	int		i;
-	(void)data;
-	
-	if (!env)
-		return (NULL);
-	matrix = malloc(sizeof(char *) * (env_matrix_base(env) + 1));
-	if (!matrix)
-		return (NULL);
-	tmp = env;
-	i = 0;
-	while (tmp)
-	{
-		if (tmp->value)
-		{
-			matrix[i] = env_line(tmp->name, tmp->value);
-			if (!matrix[i])
-				arr_clean(matrix);
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	matrix[i] = NULL;
-	return (matrix);	
-} */

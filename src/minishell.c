@@ -3,37 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/04 12:35:56 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/07 14:14:19 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
+/*tenemos que gestionar el -i del ENV*/
 int main(int argc, char **argv, char **env)
 {
 	t_general	data; 
 
-	(void)argv; 
-
+	(void)argv;
+	(void)argc;
 	if (argc != 1)
 	{
 		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
 	init_data_values(&data, env); 
-	if (get_own_env(&data, env) == 0)
-		return (1); //cortamos programa?????????? NO, REVISAR PARA QUE LA LISTA SEA VACIA EN VEZ DE SALIR
-	//Si no hay enviroment, crearse una lista vacia, osea poner el puntero first a null. Esto es lo mas correcto, porque aunque no haya enviroment, hay comandos que siguen pudiendo ejecutarse y puedo crear archivos y meterles cosas. Y quizas empiezo el minishell sin enviroment y a base de exports me lo podria crear
-
-
 
 	while (1)
 	{
-		
+		/*INICIAMOS LAS SIGNALS*/
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
 		//Explicacion:
 			// !data.line == NULL --> punetero null
@@ -45,8 +41,6 @@ int main(int argc, char **argv, char **env)
 			break;
 		}
 		add_history (data.line); // para poder acceder al historial de comandos
-		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
-
 		//LEXER
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 		{

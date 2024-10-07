@@ -36,3 +36,5 @@ yaja 29/09: una vez llamamos al env despues de hacer un export, la lista nos la
 			apuntan es la misma, y se ha modificado el contenido.
 			En caso de querer solucionarlo, habria que hacer una copia del
 			puntero y modificar esta otra direccion de memoria.
+yaja 07/10: hay que revisar que en los mensajes de error, hagan la salida que
+			corresponda. Quiza sea por error_brk()

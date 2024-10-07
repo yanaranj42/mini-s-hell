@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/04 12:22:22 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/07 14:16:44 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,7 +443,6 @@ int get_command (t_general *data, t_token *first_token)
 	t_redir *new_redir;
 	int		count;
 	int i;
-	// char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"}; // BORRAR
 	int num; //borrar
 
 	count_tkn = first_token;
@@ -599,12 +598,8 @@ int do_heredoc(t_general *data)
 
 int executor (t_general *data)
 {
-	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
-	
-	if (data->line)
-		printf("soy la line %s\n", data->line);
-	else
-		printf("soy null :c \n");
+	//si ya tenemos la matriz desde el init, la condicion se puede cambiar
+	//para no ejecutar la funcion nuevamente:
 	if (get_matrix_env (data, data->env_lst) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:28:30 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/24 17:51:22 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:00:45 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	get_all_paths(t_env	*env_lst, t_general *data)
 		data->paths = ft_split(path_node->value, ':');
 		if (!data->paths)
 		{
-			perror_message(NULL, "Malloc failure in take path");
+			perror_message(NULL, "Malloc failure in take path");//error_brk(12);
 			return (0);
 		}
 		//BORRAR FINAL
 		printf ("# Get path \n\n Los paths del env son:\n");
-		while (data->paths[i])
+		while (data->paths[i]) 
 		{
 			printf("    %s\n", data->paths[i]);
 			i++;
