@@ -38,3 +38,6 @@ yaja 29/09: una vez llamamos al env despues de hacer un export, la lista nos la
 			puntero y modificar esta otra direccion de memoria.
 yaja 07/10: hay que revisar que en los mensajes de error, hagan la salida que
 			corresponda. Quiza sea por error_brk()
+yaja 08/10: no me compila por el father status. Quiero checkear que las senyales
+			me esten iniciando bien con el NORM que he definido y luego seguir
+			con el resto.

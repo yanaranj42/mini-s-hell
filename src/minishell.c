@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/07 14:14:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/08 14:17:57 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(int argc, char **argv, char **env)
 		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
+	init_signals(&data, NORM, 0);
 	init_data_values(&data, env); 
 
 	while (1)

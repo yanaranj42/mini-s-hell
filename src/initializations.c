@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/07 13:58:10 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:42:24 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ void	init_quote_values(t_general *data)
 	data->qdata.miniquotes = 0;
 }
 
-//falta  crear la estructura
-/*void	init_signals();*/
+void	init_signals(t_general *data, int code, int init)
+{
+	/*	si init = 0 -> es el inicio del programa
+		si init = 1 --> se cambias las signals para heredoc.
+		sig_int(int code) SIGINT --> signal del CTRL + C
+		sig_quit(int code) SIGQUIT --> signal del CTRL + \
+		utilizamos el data para el exit status
+	*/
+	(void)data;
+	if (init == 0)
+	{
+		if (code == SIGINT)
+			sig_init();
+		if (code ==  SIGQUIT)
+			sig_quit();
+	}
+	/* else if (init == 1)
+	{
+		if (code == SIGINT)
+			heredoc_sig(code);
+		if (code == SIGQUIT)
+		
+	} */
+	
+}
 

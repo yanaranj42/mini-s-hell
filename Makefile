@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+         #
+#    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/04 13:11:10 by yaja             ###   ########.fr        #
+#    Updated: 2024/10/08 16:13:12 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,8 @@ FILES = minishell.c initializations.c error_messages.c lexer_parser_utils.c free
 FILES += own_env/own_enviroment.c own_env/env_list.c
 
 FILES += lexer/lexer.c 
+
+FILES += signals/signals.c 
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/07 12:32:27 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:41:51 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
+# include <signal.h>
 
 /*COLORS*/
 #define END		"\x1b[0m"
@@ -41,6 +42,8 @@
 #define STDOUT	1
 #define STDERR	2
 
+/*SIGNALS*/
+#define NORM	1
 
 /*PARSING*/
 #define PIPE 1
@@ -50,6 +53,9 @@
 #define APPEND 5 // >>  STDOUT_DOUBLE_REDIRECTION
 #define FILE_REDIRECTION 6
 #define CMD_ARGV 7
+
+//VARIABLE GLOBAL
+int g_error;
 
 typedef struct s_quotes
 {
@@ -109,7 +115,6 @@ typedef struct s_general
 	int			builtin;
 	t_env		*env_lst;
 	char		**env;
-
 	char 		*line;
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
@@ -245,4 +250,8 @@ char	**arr_clean(char **arr);
 void	*ft_memdel(void *ptr);
 void	unset_free(t_env *env);
 
+//SIGNALS
+void	init_signals(t_general *data, int code, int init);
+void	sig_init();
+void	sig_quit();
 #endif
