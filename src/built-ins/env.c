@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/19 16:21:48 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 00:22:32 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,19 @@
 int	ft_env(t_env *env)
 {
 	printf(YELLOW"OWN ENVIRONMENT\n\n"END);
+	printf("\n"); //BORRAR
 	while (env && env->next != NULL)
 	{
-		if (env->value)
-		{
-			ft_putstr_fd(env->name, 1);
-			ft_putstr_fd("=", 1);
-			ft_putendl_fd(env->value, 1);
-		}
+		ft_putstr_fd(env->name, 1);
+		ft_putstr_fd(GREEN"="END, 1);
+		ft_putendl_fd(env->value, 1);
 		env = env->next;
 	}
 	if (env)
 	{
-		if(!env->value)
-			return (0);
-		else
-		{
-			ft_putstr_fd(env->name, 1);
-			ft_putstr_fd("=", 1);
-			ft_putendl_fd(env->value, 1);
-		}
+		ft_putstr_fd(env->name, 1);
+		ft_putstr_fd(GREEN"="END, 1);
+		ft_putendl_fd(env->value, 1);
 	}
 	return (0);
 }

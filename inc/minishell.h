@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/09 23:33:55 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/10 00:10:04 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,6 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 
 //EXECUTOR
-//int 	pseudoexecutor(t_general *data);
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
@@ -223,6 +222,8 @@ char	*check_cmd_access(char **paths, char *cmd_argv);
 char 	*check_cmd_current_directory(char *cmd_argv);
 char	*check_cmd_absolut_path(char *cmd_argv);
 char	*check_cmd_relative_path(char *cmd_argv, char *path);
+void	execute_builtin(t_general *data, t_cmd *cmd);
+int		is_builtin(t_cmd *cmd);
 void	father_status(t_general *data);
 
 
