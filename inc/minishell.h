@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 10:15:31 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:11:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,9 @@ void	father_status(t_general *data);
 	
 	int		ft_export(t_general *data);
 	int		handle_args(t_general *data, char *argv);
+	
+	int		ft_unset(t_general *dat, t_cmd *cmd);
+	void	do_unset(t_general *data, char *var);
 	/*export utils*/
 	void	print_env(t_general *data, t_env *tmp);//MODIFF
 	void	print_sort(t_env *own_env);

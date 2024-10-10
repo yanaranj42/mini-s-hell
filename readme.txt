@@ -45,4 +45,7 @@ yaja 10/10: actualizacion de la branch con todos los cambios hechos con Marta
 	10:28	(del: KO-OK. Unificar la struct cmd en los builtins, etc).
 			Tengo una copia de la anterior version de la branch en mi repo personal
 			Procedo a agregar el unset, y seguir con las sigs (las iniciales ya
-			funcionan, tendria que mirar las del here_doc)
+			Funcionan, tendria que mirar las del here_doc)
+	12:23	No funcionan los builtins ya que hay que cambiar el orden de funcio-
+			namiento en el executor, ya que ha de hacerlo antes de que entre en
+			el CHILD
