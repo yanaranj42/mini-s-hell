@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list.c                                         :+:      :+:    :+:   */
+/*   export_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/30 13:48:06 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 09:55:05 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,17 @@ int	env_add_last(t_general *data, char *name, char *value)
 
 	new_env = malloc(sizeof(t_env));
 	if (!new_env)
-		return (KO);
+		return (0);
 	new_env->name = ft_strdup(name);
-	if (data->equal == KO)
+	if (data->equal == 0)
 		new_env->value = NULL;
 	else
 		new_env->value = ft_strdup(value);
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
-	printf(YELLOW"[%s]:\tNEW VAR ON ENV  LST\n"END, new_env->name);
-	//print_env(data, new_env);
-	data->equal = OK;
-	return (OK);
+	printf(YELLOW"NEW VAR ON ENV  LST\n"END);
+	data->equal = 1;
+	return (1);
 }
 /*	CASOS:
 *	variable ya existente: USER
@@ -68,7 +67,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 {
 	t_env	*env;
 
-	if (value == NULL && data->equal == OK)
+	if (value == NULL && data->equal == 1)
 		value = ft_strdup("");
 	env = data->env_lst;
 	while (env != NULL)
@@ -76,9 +75,9 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0 \
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
-			if ((value || data->equal == OK))
+			if ((value || data->equal == 1))
 			{
-				free(env->value); 
+				free(env->value);
 				env->value = ft_strdup(value);
 			}
 			if(value && ft_strlen(value) == 0)
@@ -87,7 +86,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		}
 		env = env->next;
 	}
-	if (env_add_last(data, name, value) == KO)
+	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
 	if(value && ft_strlen(value) == 0)
 		free(value);

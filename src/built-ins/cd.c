@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/04 12:44:31 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/10 10:15:50 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_env_path(t_general *data, char *k_word)
 	int		len;
 
 	if (!data || !k_word)
-		return (KO);
+		return (0);
 	tmp = data->env_lst;
 	if (ft_strlen(k_word) > ft_strlen(tmp->name))
 		len = ft_strlen(k_word);
@@ -52,12 +52,12 @@ int	env_update(t_env *head, char *k_word, char *n_value)
 		{
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
-				return (KO);
-			return (OK);
+				return (0);
+			return (1);
 		}
 		tmp = tmp->next;
 	}
-	return (KO);
+	return (0);
 }
 
 int	update_pwd(t_general *data)
@@ -65,9 +65,9 @@ int	update_pwd(t_general *data)
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
-		return (KO);
+		return (0);
 	if (env_update(data->env_lst, "OLDPWD", cwd))
-		return (OK);
+		return (1);
 	return (0); //que hace si no ha entrado a ninguna de las condiciones??
 }
 
@@ -84,14 +84,14 @@ int	go_to_path(int opt, t_general *data)
 		if (!env_path)
 		{
 			ft_putendl_fd("minishell: cd: HOME is not set", 2);
-			return (KO);
+			return (0);
 		}
 	}
 	else if (opt == 1)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), KO);
+			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), 0);
 		update_pwd(data);
 	}
 	ret = chdir(env_path);
@@ -105,8 +105,7 @@ int	ft_cd(t_general *data)
 	char	**arg;
 
 	arg = data->first_cmd->argv;
-	//if (!argv[1])
-	if (!arg[1] || arg[1][0] == '~') //HOME
+	if (!arg[1] || arg[1][0] == '~')//HOME
 	{
 		printf("%d\n", ft_pwd());
 		return (go_to_path(0, data));

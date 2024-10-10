@@ -6,30 +6,12 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 00:53:22 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/27 12:29:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 00:19:43 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-
-/* void debug_token(t_token *token)
-{
-	int i;
-
-	i = 0;
-
-	printf ("\n******************* PARSER *******************\n");
-	printf("argc = %d\n", token->argc);
-	while (token->argv[i])
-	{
-		printf("argv[%d] = %s\n", i, token->argv[i]);
-		i++;
-	}
-	printf("next apunta a %p\n", token->next);
-	printf("back apunta a %p\n", token->back);
-} */
 
 
 void pseudoparser(char *line, t_general *data)
@@ -52,7 +34,6 @@ void pseudoparser(char *line, t_general *data)
 	data->first_token->argc = count;
 	data->first_token->next = NULL;
 	data->first_token->back = NULL;
-	//debug_token(data->first_token);
 }
 
 

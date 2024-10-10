@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/01 12:18:37 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 09:54:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@
 */
 void	print_env(t_general *data, t_env *tmp)
 {
-	ft_putstr_fd(tmp->name, STDOUT);
 	ft_putstr_fd("\"", STDOUT);
-	if (tmp->value != NULL && data->equal == OK)
+	if (tmp->value != NULL && data->equal == 1)
 		ft_putstr_fd(tmp->value, STDOUT);
 	ft_putstr_fd("\"", STDOUT);
 	ft_putstr_fd("\n", STDOUT);
@@ -52,15 +51,15 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_general *data, t_env  *own_env)
+int	print_export_lst(t_general *data, t_env *own_env)
 {
 	t_env	*tmp;
 	
 	(void)data;
 	if (!own_env)
 		return (1);
-	print_sort(own_env);//esta tmp la modificamos
-	tmp = own_env;//hacemos una copia del env en la tmp
+	print_sort(own_env);
+	tmp = own_env;
 	while (tmp)
 	{
 		ft_putstr_fd(" declare -x ", STDOUT);
@@ -69,7 +68,7 @@ int	print_export_lst(t_general *data, t_env  *own_env)
 		{
 			ft_putstr_fd("=", STDOUT);
 			ft_putstr_fd("\"", STDOUT);
-			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)//if value = "", no escribe el dup
+			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
 				ft_putstr_fd(tmp->value, STDOUT);
 			ft_putstr_fd("\"", STDOUT);
 		}
@@ -86,7 +85,7 @@ int	export_opt(char *name, char *argv)
 	int	end;
 	
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
-		return (KO);
+		return (0);
 	i = 1;
 	end = ft_strlen(name) - 1;
 	while (name[i] && name[i + 1] != '=')
@@ -94,15 +93,15 @@ int	export_opt(char *name, char *argv)
 		if (!ft_isalnum(name[i] && name[i] != '_'))
 		{
 			if (name[i] == '+' && (name[i + 1] || !ft_strchr(argv, '=')))
-				return (KO);
+				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
-				return (KO);
+				return (0);
 			if (name[end] != '+' && name[end] != '=' && !(ft_isalpha(name[end])))
-				return (KO);
+				return (0);
 		}
 		i++;
 	}
-	return (OK);
+	return (1);
 }
 /* Busca si la var esta en la lista. Si no esta, la agregamos a la lista env
 	Si la encuentra, y el valor es NULL, hacemos un dup de "".

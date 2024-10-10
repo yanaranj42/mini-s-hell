@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/04 12:48:21 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/10 09:53:48 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	handle_args(t_general *data, char *argv)
 	char	*name;
 
 	if (!ft_strchr(argv, '='))
-		data->equal = KO;
+		data->equal = 0;
 	else
-		data->equal = OK;
+		data->equal = 1;
 	arr = ft_split(argv, '=');
 	if (!export_opt(arr[0], argv))
 		return (error_opt(arr[0], arr[1], arr, argv));
@@ -48,7 +48,7 @@ int	ft_export(t_general *data)
 	int		i;
 	
 	i = 1;
-	data->ret_exit = 0;
+	data->exit_status = 0;
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
@@ -57,11 +57,11 @@ int	ft_export(t_general *data)
 	{
 		if (argv[i][0] == '=')
 			error_opt("", "\'", NULL, argv[i]);
-		else if (!data->ret_exit)
-			data->ret_exit = handle_args(data, argv[i]);//el argv puede ser: LOG+=hola//LOG//LOG=//LOG$
+		else if (!data->exit_status)
+			data->exit_status = handle_args(data, argv[i]);//el argv puede ser: LOG+=hola//LOG//LOG=//LOG$
 		else
 			handle_args(data, argv[i]);
 		i++;
 	}
-	return (data->ret_exit);//este return sirve para cuando se hace echo $?
+	return (data->exit_status);//este return sirve para cuando se hace echo $?
 }

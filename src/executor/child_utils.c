@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/26 13:05:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 00:32:52 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,19 @@ char *check_cmd_current_directory(char *cmd_argv)
 			//MENSAJE ERROR
 			return (NULL);
 		}
-		printf ("       Pruebo el path relativo: %s\n", tmp2);
 		if (access(tmp2, F_OK) == 0)
 		{
-			printf ("           ...Vemos que existe el path\n");
 			if (access(tmp2, X_OK) == 0)
 			{
-				printf ("           ...Y SE PUEDE EJECUTAR!!!\n");
 				free(tmp);
 				return (tmp2);
 			}
 			else
 			{
-				printf ("           ...y NO se puede ejecutar\n");
 				permission_denied (cmd_argv);
 			}
 		}
 	}
-	printf ("           ...Vemos que NO existe el path -> NEXT\n");
 	free(tmp);
 	free(tmp2);
 	return (NULL);
@@ -86,7 +81,9 @@ char	*check_cmd_relative_path(char *cmd_argv, char *path)
 			return (tmp2);
 		}
 		else
+		{
 			permission_denied (cmd_argv);
+		}
 	}
 	free(tmp);
 	free(tmp2);
@@ -99,13 +96,16 @@ char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de com
 
 	if (ft_strchr(cmd_argv, '/'))
 	{
+		printf("\n       En la linea de comandos me han pasado una RUTA ABSOLUTA...\n");
 		if (access(cmd_argv, F_OK) == -1)
 		{
+			printf ("         ...Pero no existe ese path");
 			no_such_file_or_directory (cmd_argv);
 			//command_not_found (cmd_argv); /Tiene que llegar al execve para que diga que no encuentra el archivo, por lo que esto no puedo ponerlo
 		}
 		else if (access(cmd_argv, X_OK) == 0)
 		{
+			printf ("         ...Y EXISTE EL PATH Y SE PUEDE EJECUTAR!!!\n");
 			cmd_argv = ft_strdup(cmd_argv);
 			if (!cmd_argv)
 			{
@@ -115,7 +115,10 @@ char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de com
 			return (cmd_argv);
 		}
 		else
+		{
+			printf ("         ...Y existe el path pero NO puede ejecutar\n");
 			permission_denied (cmd_argv);
+		}
 	}
 	return (NULL);
 	//Primero miramos si el comando existe en el primer access. En el caso que exista, en el segundo access miramos si se puede ejecutar. En caso que no se pueda ejecutar ponemos permission denied.
@@ -166,7 +169,6 @@ void	check_cmd(t_cmd *cmd, char **paths)
 		}
 		else
 			cmd->path = check_cmd_access(paths, cmd->argv[0]);
-
 		//Esto lo ponia para que aunque no encuentre el path, el execve intentara igualmente ejecutar el comando por si era un comando del sistema y no necesitaba path, pero el execve no es capaz (y los casos en los que puede ocurrir son builtins, que se gestionan por otro lado).
 		// if (cmd->path == NULL)
 		// {

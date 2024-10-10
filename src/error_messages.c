@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_messages.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/04 13:14:27 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/10 10:12:28 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "minishell.h"
 
- void	no_such_file_or_directory(char *start)
+void	no_such_file_or_directory(char *start)
 {
 	write(2, RED, ft_strlen(RED)); // BORRAR
 	write(2, "💀 bash: ", 11);
@@ -62,12 +62,19 @@ void	unexpected_token_message(char *message)
 	write(2, "******************* FREE *******************\n", 45);
 	write(2, END, ft_strlen(END));
 }
+
 void	perror_message(char *start, char *message)
 {
 	if (start)
-		printf("%s: ", start); 
+	{
+		write(2, RED, ft_strlen(RED));
+		write(2, start, ft_strlen(start));
+		write(2, ": ", 2);
+		write(2, END, ft_strlen(END));
+	}
 	perror(message);
 }
+
 int	error_opt(char *s1, char *s2, char **arr, char *argv)
 {
 	ft_putstr_fd("minishell: export: `", STDOUT);
@@ -79,9 +86,10 @@ int	error_opt(char *s1, char *s2, char **arr, char *argv)
 	ft_putstr_fd(s2, STDOUT);
 	ft_putstr_fd(": not a valid identifier\n", STDOUT);
 	arr_clean(arr);
-	return (KO);
+	return (0);
 }
-int	error_brk(t_general *data, char *msg, char *name, int flag)
+
+void	error_brk(t_general *data, char *msg, char *name, int flag)
 {
 	if (name || msg)
 		ft_putstr_fd("minishell: ", STDERR);
@@ -97,7 +105,6 @@ int	error_brk(t_general *data, char *msg, char *name, int flag)
 		ft_putstr_fd(msg, STDERR);	
 		ft_putstr_fd("\n", STDERR);	
 	}
-	data->ret_exit = flag;
+	data->exit_status = flag;
 	free_exit(data);
-	return (OK);
 }

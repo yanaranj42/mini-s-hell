@@ -41,3 +41,8 @@ yaja 07/10: hay que revisar que en los mensajes de error, hagan la salida que
 yaja 08/10: no me compila por el father status. Quiero checkear que las senyales
 			me esten iniciando bien con el NORM que he definido y luego seguir
 			con el resto.
+yaja 10/10: actualizacion de la branch con todos los cambios hechos con Marta
+	10:28	(del: KO-OK. Unificar la struct cmd en los builtins, etc).
+			Tengo una copia de la anterior version de la branch en mi repo personal
+			Procedo a agregar el unset, y seguir con las sigs (las iniciales ya
+			funcionan, tendria que mirar las del here_doc)

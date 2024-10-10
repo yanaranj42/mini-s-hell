@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/04 12:45:39 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/10 10:18:25 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	ft_strnum(char *s, int i);
 static int	exit_code(t_general *data, char **argv);
 static int	check_long(char *arg);
 /* El error de salida de LONG_MIN es bash, es 1... que fem??*/
+//No sale como corresponde. Hay que darle una vuelta
 void	ft_exit(t_general *data)
 {
 	printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
@@ -55,15 +56,15 @@ static int	exit_code(t_general *data, char **argv)
 		if (argv[2])
 		{
 			ft_putendl_fd(CYAN"minishell: exit: too many arguments"END, STDERR);
-			data->ret_exit = 155;
+			data->exit_status = 155;
 			return (1);
 		}
 		else
 		{	
 			if (check_long(argv[1]))
-				data->ret_exit = 255;
+				data->exit_status = 255;
 			else
-				data->ret_exit = ft_atoi(argv[1]);
+				data->exit_status = ft_atoi(argv[1]);
 			return (0);
 		}
 	}
@@ -72,7 +73,7 @@ static int	exit_code(t_general *data, char **argv)
 		ft_putstr_fd("minishell: exit: " , STDERR);
 		ft_putstr_fd(argv[1], STDERR);
 		ft_putendl_fd(RED": numeric arg required"END, STDERR);
-		data->ret_exit = 2;
+		data->exit_status = 2;
 	}
 	return (0);
 }

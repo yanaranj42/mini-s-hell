@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaja <yaja@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/09/02 14:21:33 by yaja             ###   ########.fr       */
+/*   Updated: 2024/10/10 09:51:39 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_pwd(void)
 	{
 		ft_putendl_fd(cwd, 1);
 		printf(BLUE"PWD: %s\n"END, cwd);
-		return (OK);
+		return (1);
 	}
-	return (KO);
+	return (0);
 }

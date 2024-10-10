@@ -6,7 +6,7 @@
 #    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/08 16:13:12 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/10/10 10:04:55 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ YELLOW = \e[1;93m
 
 FILES = minishell.c initializations.c error_messages.c lexer_parser_utils.c free.c
 
-FILES += own_env/own_enviroment.c own_env/env_list.c
+FILES += own_env/own_enviroment.c
 
 FILES += lexer/lexer.c 
 
@@ -30,13 +30,12 @@ FILES += signals/signals.c
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
-FILES += executor/executor.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
+#FILES += executor/pseudoexecutor.c
+FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
 
-FILES += executor/pseudoexecutor.c 
 
-FILES += built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c \
-			built-ins/exit.c built-ins/export.c built-ins/export_utils.c \
-			built-ins/unset.c
+FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c 
+
 
 SRCDIR = src/
 SRCS = 	$(addprefix $(SRCDIR), $(FILES))
