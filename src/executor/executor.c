@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 10:13:21 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 01:21:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -653,3 +653,4 @@ int executor (t_general *data)
 //builtins trabajen con doble puntero para que el executer ejecute como 
 //tal o lo mande a builtins si hace falta, que pueda hacerlo con strncmp 
 //sin tener que reconvertir variables 
+
