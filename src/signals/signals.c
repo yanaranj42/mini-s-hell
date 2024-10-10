@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/10 02:06:57 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:57:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ void	do_eof(t_general *data)
 
 void	norm_sig_heredoc(int sig)
 {
-	if (sig == SIGINT)
-	{
-//		printf("teng que salir\n");
-		ft_putendl_fd("", 1);
-		rl_replace_line("", 1);
-		g_error = 130;
-		//exit(g_error);//me sale por completo del programa
-		return ;
-	}
+		if (sig == SIGINT)
+		{
+	//		printf("teng que salir\n");
+			ft_putendl_fd("", 1);
+			rl_replace_line("", 1);
+			g_error = 130;
+			//me sale por completo del programa
+			//return ;
+			
+		}
 }

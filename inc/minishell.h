@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 12:11:23 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:46:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,5 @@ void    init_signal(t_general *data);
 void    norm_sig_handle(int sig);
 void	do_eof(t_general *data);
 void	norm_sig_heredoc(int sig);
-
 
 #endif

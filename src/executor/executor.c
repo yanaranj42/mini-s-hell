@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 01:21:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:59:03 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -577,6 +577,9 @@ int do_heredoc(t_general *data)
 		{
 			if (redir->type == HEREDOC)
 			{
+				signal(SIGINT, norm_sig_heredoc);
+				if (g_error == 130)
+					break ;
 				if (pipe(pipe_fd) == -1)
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS

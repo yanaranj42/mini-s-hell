@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 01:13:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:36:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 		ft_exit(data);
 	else if (data->builtin == 6)
 		ft_export(data);
-	/* else if (data->builtin == 7)
-		return (ft_unset(data)); */ 
+	 else if (data->builtin == 7)
+		ft_unset(data, cmd);
 }
 
 int	is_builtin(t_cmd *cmd)
