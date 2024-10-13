@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 01:13:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 22:41:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 
 int	is_builtin(t_cmd *cmd)
 {
-	printf("\nSoy un builtin?\n");
+	printf("\n#Revisar si soy un built-in\n");
 	if (!cmd || !cmd->argv[0])
 		return (0);
 	else if (ft_strncmp("echo", cmd->argv[0], 5) == 0)

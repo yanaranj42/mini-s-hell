@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/12 22:01:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 22:43:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int main(int argc, char **argv, char **env)
 			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
-		printf("**************soy la line %s\n", data.line);
 		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token

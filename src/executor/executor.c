@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 22:36:59 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 22:40:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -661,8 +661,8 @@ int executor (t_general *data)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	father_status(data);
 	free_data_paths (data->paths); //Creo unos paths con malloc, y al acabar los tengo que eliminar, independientemente de que el comando exista o no. Lo hago en el padre porque lo creo en el padre, el hijo tiene una copia, no tiene que destruirlo.
-	return (1);6500
-	
+	return (1);
+
 }
 
 //Para contar cuantos hijos tiene que haber: El mismo que tokens tipo no separator
