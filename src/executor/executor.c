@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 01:21:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 22:36:59 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,20 @@ int count_commands(t_general *data)
 	return (n);
 }
 
+
+int	check_executor_type (t_general *data)
+{
+	t_cmd *cmd;
+
+	cmd = data->first_cmd;
+	data->builtin = is_builtin(cmd);
+	if (cmd->argv[0] && data->builtin != 0 && !cmd->next)
+		return (1);
+	return (0);
+}
+
+
+
 int	get_children(t_general *data)
 {
 	int			i;
@@ -356,7 +370,10 @@ int	get_children(t_general *data)
 		// if (cmd->argv[0] != NULL) Este if hace que si no hay argumentos, no se cree el fork, por lo tanto no se asigna ningun valor al pid y se le asigna uno random por defecto. Si coincide que es 0, entra en la funcion de crear un hijo, pero como no es un hijo, al salir con un exit mata el programa.
 		// Tengo que crear un if para que el unico caso en el que no entre sea si hay un solo comando y ademas es un builtin. En todo el resto de casos si se deben crear hijos, aunque solo haya redireccion.
 		
-			cmd->pid = fork();
+		//Si es el primer comando i es un builtin i no hay pipes hago eso:
+		
+		//else:
+		cmd->pid = fork();
 		if (cmd->pid == -1)
 		{
 			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
@@ -370,6 +387,9 @@ int	get_children(t_general *data)
 			//cmd->pid = pid; //necesito guardarme el pid para luego checkear el status del proceso en el waitpid.
 			create_child(data, cmd, i, n);
 		}
+		// end else
+
+
 		//printf("******tengo que ser -1 : %d\n", data->pipe_fd[1]);
 		//Si no lo inicializo, al usarlo le da un valor random y si coincide con el 0 (stdin), al cerrar el fd1 de forma indiscriminada, haya creado pipe o no, cerrare el stdin y en la siguiente vuelta el readline inicial del main no podra acceder a la linea.
 		close(data->pipe_fd[1]); // cierro el fd en el padre. Si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
@@ -635,11 +655,14 @@ int executor (t_general *data)
 // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA TOKEN, NO????
 	if (do_heredoc(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
-	if (get_children(data) == 0)
+	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
+		execute_builtin(data, data->first_cmd);
+	else if (get_children(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	father_status(data);
 	free_data_paths (data->paths); //Creo unos paths con malloc, y al acabar los tengo que eliminar, independientemente de que el comando exista o no. Lo hago en el padre porque lo creo en el padre, el hijo tiene una copia, no tiene que destruirlo.
-	return (1);
+	return (1);6500
+	
 }
 
 //Para contar cuantos hijos tiene que haber: El mismo que tokens tipo no separator

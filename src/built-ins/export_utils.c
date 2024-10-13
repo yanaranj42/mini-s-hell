@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/09/23 15:18:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:37:34 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	print_env(t_general *data, t_env *tmp)
 {
 	ft_putstr_fd("\"", STDOUT);
-	if (tmp->value != NULL && data->equal == OK)
+	if (tmp->value != NULL && data->equal == 1)
 		ft_putstr_fd(tmp->value, STDOUT);
 	ft_putstr_fd("\"", STDOUT);
 	ft_putstr_fd("\n", STDOUT);
@@ -85,7 +85,7 @@ int	export_opt(char *name, char *argv)
 	int	end;
 	
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
-		return (KO);
+		return (0);
 	i = 1;
 	end = ft_strlen(name) - 1;
 	while (name[i] && name[i + 1] != '=')
@@ -93,15 +93,15 @@ int	export_opt(char *name, char *argv)
 		if (!ft_isalnum(name[i] && name[i] != '_'))
 		{
 			if (name[i] == '+' && (name[i + 1] || !ft_strchr(argv, '=')))
-				return (KO);
+				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
-				return (KO);
+				return (0);
 			if (name[end] != '+' && name[end] != '=' && !(ft_isalpha(name[end])))
-				return (KO);
+				return (0);
 		}
 		i++;
 	}
-	return (OK);
+	return (1);
 }
 /* Busca si la var esta en la lista. Si no esta, la agregamos a la lista env
 	Si la encuentra, y el valor es NULL, hacemos un dup de "".

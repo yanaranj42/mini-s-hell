@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/10 00:24:51 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:36:34 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	go_to_path(int opt, t_general *data)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), KO);
+			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), 0);
 		update_pwd(data);
 	}
 	ret = chdir(env_path);

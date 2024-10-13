@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 00:10:04 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 02:04:21 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@
 /*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
 #define	ERR01	"Malloc error\n"
 #define ERR02	"ENV creation failiure"
-#define KO	0
-#define OK	1
+
 
 
 
@@ -88,10 +87,11 @@ typedef struct s_xtkn
 {
 	//char 		**argv;
 	//int 		argc;
+	//char 		*original;
 	char 		*content;
-	int  		split; // para saber si hacerlo o no
-	struct 		s_token *back;
-	struct 		s_token *next;
+	//int  		split; // para saber si hacerlo o no
+	struct 		s_xtkn *back;
+	struct 		s_xtkn *next;
 	int 		type;
 	
 }				t_xtkn;	
@@ -134,7 +134,7 @@ typedef struct s_general
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
-	t_token		*first_xtkn; 
+	t_xtkn		*first_xtkn; 
 
 	char		**paths;
 	char 		**env_matrix;
@@ -205,6 +205,8 @@ int 	check_stdin_double_redirection (t_general *data, t_token *token);
 int 	check_stdout_redirection (t_general *data, t_token *token);
 int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
+//EXPANSOR
+int 	expansor(t_general *data);
 
 //EXECUTOR
 int 	executor (t_general *data);
