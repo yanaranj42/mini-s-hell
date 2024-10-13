@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 22:40:18 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/13 23:00:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,8 +247,8 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	data->builtin = is_builtin(cmd);
 	if (cmd->argv[0] && data->builtin == 0) // Y NO ERES BUILTIN
 	{
-		printf("\nComo no soy un builtin hago el execve\n");
-		printf(PURPLE"\n# Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
+		printf("\nComo no soy un builtin haré el execve\n");
+		printf(PURPLE"\n# Resultado del Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 		{
 			perror_message(NULL, "Execve failed");
@@ -257,7 +257,10 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	}
 	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
 	else if (cmd->argv[0] && data->builtin != 0)
+	{
+		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
 		execute_builtin(data, cmd);
+	}
 	
 	printf("SOY UN HIJO Y ME VOY A MORIR\n");
 	exit (0);
@@ -656,7 +659,10 @@ int executor (t_general *data)
 	if (do_heredoc(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
+	{
+		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
 		execute_builtin(data, data->first_cmd);
+	}
 	else if (get_children(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	father_status(data);
