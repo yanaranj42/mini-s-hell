@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/09 23:24:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:20:52 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,21 @@ void free_tokens_list(t_general *data)
 		data->first_token = NULL;
 		data->first_token = tmp_token;
 		printf("next token es = %p\n\n", data->first_token);
+	}
+}
+
+void free_xtkns_list(t_general *data)
+{
+	t_xtkn *tmp_xtkn;
+ 	while (data->first_xtkn)
+	{
+		tmp_xtkn = data->first_xtkn->next;
+		printf("limpio el contenido del xtoken = %s\n", data->first_xtkn->content);
+		free(data->first_xtkn->content); //SI?????????????????????//me cargo el contenido del token
+		free(data->first_xtkn); //mato el xtoken actual
+		data->first_xtkn = NULL;
+		data->first_xtkn = tmp_xtkn;
+		printf("next token es = %p\n\n", data->first_xtkn);
 	}
 }
 

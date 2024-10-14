@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 19:57:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:22:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn)
 	if (!data->first_xtkn)
 	{
 		data->first_xtkn = xtkn;
-		//data->first_cmd->back = NULL; CREO QUE NO LO NECESITO
+		data->first_xtkn->back = NULL;
 		data->first_xtkn->next = NULL;
 	}
 	else
@@ -162,7 +162,9 @@ int expansor_variable_has_space (char *tmp, t_env *env)
 int change_expansor_variable(t_xtkn *xtkn, char *tmp, t_env *env)
 {
 	t_env *env_tmp;
+	int i;
 
+	i = 0;;
 	env_tmp = env;
 	if (!tmp)
 		return (0);
@@ -170,11 +172,36 @@ int change_expansor_variable(t_xtkn *xtkn, char *tmp, t_env *env)
 	{
 		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0))
 		{
-			xtkn->content = adapted_strjoin(xtkn->content, env_tmp->value);
-			if (!xtkn->content)
+			while (env_tmp->value[i])
 			{
-				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-				return (0);
+				if (env_tmp->value[i] == '"')
+				{
+					xtkn->content = strjoinchar (xtkn->content, 30); //Cambio las quotes por un valor no imprimible antes de expandir. Asi no tendre problemas al gestionar el split y saber que comillas quitar
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				else if (env_tmp->value[i] == '\'')
+				{
+					xtkn->content = strjoinchar (xtkn->content, 31); //Cambio las miniquotes por un valor no imprimible antes de expandir. Asi no tendre problemas al gestionar el split y saber que comillas quitar
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				else 
+				{
+					xtkn->content = strjoinchar (xtkn->content, env_tmp->value[i]);
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				i++;
 			}
 		}
 		env_tmp = env_tmp->next;
@@ -188,6 +215,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 	char *tmp;
 	char *exit_number;
 
+	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
 	init_quote_values(data);
@@ -210,7 +238,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					
 					i++;
 				}
-				printf ("contenido tmp |%s|\n", tmp);
+				printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
 				if (data->qdata.miniquotes == 1)
 				{
 					account_quotes (token->content[i], data);
@@ -278,7 +306,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					}
 					else
 					{
-						if (expansor_variable_has_space(tmp, env))
+						if (expansor_variable_has_space(tmp, env) && xtkn->type == FILE_REDIRECTION)
 						{
 							xtkn->content = ft_strdup (token->content);
 							if (!xtkn->content)
@@ -374,12 +402,123 @@ t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data
 	return (xtkn);
 }
 
-// void split_xtkn(t_xtkn	*xtkn, t_general *data)
-// {
+//FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
+void debug_xtoken(t_xtkn	*xtkn, int num)
+{
+	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
+
+	printf("\n  >> Contenido del xtkn %d:\n", num);
+	printf("     contenido = |%s|\n", xtkn->content);
+	printf("     tipo de xtkn: %d (%s)\n", xtkn->type, type[xtkn->type]);
+	printf("     xtkn actual: %p\n", xtkn);
+	printf("     next apunta a %p\n", xtkn->next);
+	printf("     back apunta a %p\n\n", xtkn->back);
+}
+
+int split_xtkn(t_xtkn	*xtkn, t_general *data)
+{
+	//revisar si tengo que hacer split
+	//En caso de tener que hacerlo crear nuevo xtoken a continuacion
+	//REPETIR EL TIPO DE TOKEN EN LOS NUEVOS TOKENS QUE SE GENEREN POR EL SPLIT
+	char **splited_content;
+	int i;
+	t_xtkn	*tmp_xtkn;
+	int num = 0; //BORRAR
+
+	printf("\n# Split\n");
+	printf ("  Contenido del xtoken spliteado\n");
+	splited_content = ft_token_split(xtkn->content, ' ', data); 
+	
+	if (!splited_content)
+	{
+		printf("Error: There have been problems doing the xtoken content split\n");
+		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		return (0);
+	}
+	i = 0;
+	while (splited_content[i])
+		i++;
+	if (i > 1)
+	{
+		free (xtkn->content); //NECESARIO???
+		xtkn->content = ft_strdup (splited_content[0]);
+		printf ("\nRETOKENIZACION\n");
+		i = 1;
+		while (splited_content[i])
+		{
+			tmp_xtkn = create_xtoken ();
+			if (!tmp_xtkn)
+			{
+				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+				//CUIDADO NO HACER DOUBLE FREE
+				return (0);
+			}
+
+			//relleno xtkn
+			tmp_xtkn->type = xtkn->type;
+			tmp_xtkn->content = ft_strdup (splited_content[i]);
+
+			//ubico el nuevo cmd
+			put_new_list_xtoken_node (data, tmp_xtkn);
+			i++;
+		}
+	}
+
+	t_xtkn *super_tmp = data->first_xtkn;
+	while (super_tmp)
+	{
+		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
+		num++; //BORRAR
+		super_tmp= super_tmp->next;
+	}
+
+	return (1);
+}
 
 
-// 	//REPETIR EL TIPO DE TOKEN EN LOS NUEVOS TOKENS QUE SE GENEREN POR EL SPLIT
-// }
+int remove_quotes(t_xtkn	*xtkn, t_general *data)
+{
+	char *tmp;
+	int i;
+
+	i = 0;
+	printf("\n# Remove quotes\n");
+	init_quote_values(data);
+	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
+	while (xtkn->content[i])
+	{
+		account_quotes (xtkn->content[i], data);
+		if(xtkn->content[i] == '"' && data->qdata.miniquotes == 0)
+		{
+			i++;
+			continue ;
+		}
+		if(xtkn->content[i] == '\'' && data->qdata.quotes == 0)
+		{
+			i++;
+			continue ;
+		}
+		tmp = strjoinchar (tmp, xtkn->content[i]);
+			if (!tmp)
+			{
+				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+				return (0);
+			}
+		i++;
+	}
+	free (xtkn->content); //CORRECTO???
+	xtkn->content = ft_strdup (tmp);
+	if (!xtkn->content)
+	{
+		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		return (0);
+	}
+	
+	printf ("  Contenido del xtoken FINAL: %s\n\n\n", xtkn->content);
+	return (1);
+}
+
+
 
 // Expands the env variables and $? of the 'commands' and split words if needed.
 // Finally, performs quote removal and returns the result.
@@ -388,7 +527,7 @@ int expansor (t_general *data)
 	t_token *token;
 	t_xtkn	*xtkn;
 
-	printf (GREEN"\n******************* EXPANSOR *******************\n"END);
+	printf (GREEN"\n******************* EXPANSOR *******************"END);
 	token = data->first_token;
 	while (token)
 	{
@@ -398,8 +537,11 @@ int expansor (t_general *data)
 			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 			return (0);
 		}
-		printf ("token expandido |%s|\n\n", xtkn->content);
-		//split_xtkn (xtkn, data);
+		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
+		if (split_xtkn (xtkn, data) == 0)
+			return (0);
+		if (remove_quotes (xtkn, data) == 0)
+			return (0);
 		token = token->next;
 	}
 
@@ -409,4 +551,4 @@ int expansor (t_general *data)
 }
 
 
-
+// DESPUES DEL SPLIT PIERDO TOKENS PPOR EL CAMINO

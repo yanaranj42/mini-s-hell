@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 22:43:30 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:20:48 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
+		free_xtkns_list(&data);
 		free_matrix_env(&data);
 		free_cmd(&data);
 		free(data.line);
