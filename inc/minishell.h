@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:27:14 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:44:00 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ int 	check_stdout_redirection (t_general *data, t_token *token);
 int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 //EXPANSOR
-int 	expansor(t_general *data);
+//int 	expansor(t_general *data);
 
 //EXECUTOR
 int 	executor (t_general *data);
@@ -282,7 +282,7 @@ void	free_data_paths (char **paths);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
-void 	free_xtkns_list(t_general *data);
+//void 	free_xtkns_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);

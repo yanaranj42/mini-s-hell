@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:28:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:45:01 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int main(int argc, char **argv, char **env)
 	
 
 		//EXPANDER
-		if (expansor(&data)== 0)
+		/* if (expansor(&data)== 0)
 		{
 			free (data.line);
 			continue; // para volver a empezar el while
-		}
+		} */
 		
 
 		//EXECUTOR
@@ -102,7 +102,7 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
-		free_xtkns_list(&data);
+		//free_xtkns_list(&data);
 		free_matrix_env(&data);
 		free_cmd(&data);
 		free(data.line);
