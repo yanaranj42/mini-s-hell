@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 12:35:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:16:15 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <signal.h>
 
 
 /*COLORS*/
@@ -39,6 +38,8 @@
 #define ERR02	"ENV creation failiure"
 
 
+
+
 #define STDIN	0
 #define STDOUT	1
 #define STDERR	2
@@ -53,7 +54,10 @@
 #define FILE_REDIRECTION 6
 #define CMD_ARGV 7
 
-extern int	g_error;
+/*OTROS
+#define LONG_MIN "-9223372036854775807"
+#define LONG_MAX "9223372036854775807"*/
+
 
 typedef struct s_quotes
 {
@@ -159,7 +163,7 @@ typedef struct s_general
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
 
 
-
+extern int	g_error;
 
 
 //CREATE OWN ENVIROMENT
@@ -187,6 +191,7 @@ t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);
 //t_token *create_token_content (t_general *data, t_token *new_token);
 void 	classify_token_type (t_token *new_token);
+void 	debug_token(t_token *token, int num); // BORRAR
 char	**ft_token_split(char const *s, char del, t_general *data);
 
 	//UTILS
@@ -204,7 +209,6 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 int 	expansor(t_general *data);
 
 //EXECUTOR
-//int 	pseudoexecutor(t_general *data);
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
@@ -220,7 +224,7 @@ char	*check_cmd_access(char **paths, char *cmd_argv);
 char 	*check_cmd_current_directory(char *cmd_argv);
 char	*check_cmd_absolut_path(char *cmd_argv);
 char	*check_cmd_relative_path(char *cmd_argv, char *path);
-void 	execute_builtin(t_general *data, t_cmd *cmd);
+void	execute_builtin(t_general *data, t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 void	father_status(t_general *data);
 
@@ -228,7 +232,7 @@ void	father_status(t_general *data);
 
 
 	//BUILT-INS
-	//void 	pseudoexecutor(t_general *data, t_cmd *cmd);
+	void 	pseudoexecutor(t_general *data, t_cmd *cmd);
 	int		is_builtin(t_cmd *cmd);
 	
 	int		ft_env(t_env *env);
@@ -278,8 +282,9 @@ void	free_data_paths (char **paths);
 void	free_env(t_env *head);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
+void 	free_xtkns_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
-void	free_matrix_env(t_general *data);//es lo mismo que arr_clean
+void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);
 
 

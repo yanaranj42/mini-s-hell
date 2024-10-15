@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 12:25:16 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:15:40 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // environment variables (or exit status) expanded, preserving the original
 // token type and setting each character's flags for expanded and quoted status.
 
-
+/*
 t_xtkn *create_xtoken (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
 {
 	t_xtkn 	*tmp_xtkn;
@@ -552,3 +552,4 @@ int expansor (t_general *data)
 
 
 // DESPUES DEL SPLIT PIERDO TOKENS PPOR EL CAMINO
+ */
