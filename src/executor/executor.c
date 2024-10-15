@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 12:59:03 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:27:53 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,10 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	}
 	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
 	else if (cmd->argv[0] && data->builtin != 0)
+	{
+		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
 		execute_builtin(data, cmd);
+	}
 	
 	printf("SOY UN HIJO Y ME VOY A MORIR\n");
 	exit (0);

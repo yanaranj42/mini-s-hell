@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 10:16:31 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:20:44 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@ int main(int argc, char **argv, char **env)
 
 	while (1)
 	{
+		
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
-		if (!data.line)
+		//Explicacion:
+			// !data.line == NULL --> punetero null
+			// data.line[0] = '\0' --> contenido con un caracter nulo
+		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
 			do_eof(&data);
 			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
@@ -43,14 +47,15 @@ int main(int argc, char **argv, char **env)
 		}
 		if (data.line && *data.line)
 		{
-		/* if (ft_strncmp("exit", data.line, 5) == 0) //temporal
+		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
 		{
 			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
 			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
 			free(data.line);
 			break;
-		} */
+		}
 		add_history (data.line); // para poder acceder al historial de comandos
+		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
 
 		//LEXER
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
@@ -68,7 +73,11 @@ int main(int argc, char **argv, char **env)
 	
 
 		//EXPANDER
-		//expansor(&data);
+		if (expansor(&data)== 0)
+		{
+			free (data.line);
+			continue; // para volver a empezar el while
+		}
 		
 
 		//EXECUTOR
@@ -83,6 +92,7 @@ int main(int argc, char **argv, char **env)
 			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
+		printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
@@ -113,4 +123,3 @@ int main(int argc, char **argv, char **env)
 //Como el export lo estoy haciendo en un hijo, estoy añadiendo la variable de entorno a en ese hijo, pero cuando el siguiente hijo quiera imprimir el valor de a, para el no existe esa variable.
 //En minishell como puedo ejecutar mas de una linea, si hago un primer comando que sea: export a=3; y en el siguiente pongo: echo hola | export a=2 | echo $a; esto me imprimira 3, porque el export del hijo sigue estando solo en el hijo.
 //El echo hola no se imprime porque al haber una pipe, el resultado de ese comando se redirige al stdin del siguiente comando (no se muestra por pantalla). La redireccion la he hecho, pero el comando export no coge ningun stdin, por lo que lo ignora.
-

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 12:46:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:35:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ typedef struct s_xtkn
 {
 	//char 		**argv;
 	//int 		argc;
+	//char 		*original;
 	char 		*content;
-	int  		split; // para saber si hacerlo o no
-	struct 		s_token *back;
-	struct 		s_token *next;
+	//int  		split; // para saber si hacerlo o no
+	struct 		s_xtkn *back;
+	struct 		s_xtkn *next;
 	int 		type;
 	
 }				t_xtkn;	
@@ -199,6 +200,8 @@ int 	check_stdin_double_redirection (t_general *data, t_token *token);
 int 	check_stdout_redirection (t_general *data, t_token *token);
 int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
+//EXPANSOR
+int 	expansor(t_general *data);
 
 //EXECUTOR
 //int 	pseudoexecutor(t_general *data);
@@ -226,7 +229,7 @@ void	father_status(t_general *data);
 
 	//BUILT-INS
 	//void 	pseudoexecutor(t_general *data, t_cmd *cmd);
-	//int		is_builtin(t_cmd *cmd);
+	int		is_builtin(t_cmd *cmd);
 	
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);

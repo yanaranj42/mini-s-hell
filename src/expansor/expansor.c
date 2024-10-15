@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/29 20:03:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:25:16 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ t_xtkn *create_xtoken (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
 
 }
 
-void put_new_list_xtoken_node (t_general *data, t_token *xtkn)
+void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn)
 {
 	t_xtkn  *tmp_xtkn;
 
 	if (!data->first_xtkn)
 	{
 		data->first_xtkn = xtkn;
-		//data->first_cmd->back = NULL; CREO QUE NO LO NECESITO
+		data->first_xtkn->back = NULL;
 		data->first_xtkn->next = NULL;
 	}
 	else
@@ -64,22 +64,22 @@ void put_new_list_xtoken_node (t_general *data, t_token *xtkn)
 
 
 
-t_xtkn *token_to_xtoken(t_token *token)
+t_xtkn *token_to_xtoken(t_token *token, t_general *data)
 {
 	t_xtkn	*xtkn;
 
-	xtkn = create_xtoken ()
+	xtkn = create_xtoken ();
 	if (!xtkn)
-		{
-			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-			//CUIDADO NO HACER DOUBLE FREE
-			return (0);
-		}
+	{
+		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+		//CUIDADO NO HACER DOUBLE FREE
+		return (0);
+	}
 	
 	//relleno xtkn
-	// xtkn->content_pre_expansion = ft_strdup(token->content);
-	xtkn->content = '\0';
+	xtkn->content = NULL;
 	xtkn->type = token->type;
+
 
 	//ubico el nuevo cmd
 	put_new_list_xtoken_node (data, xtkn);
@@ -88,39 +88,47 @@ t_xtkn *token_to_xtoken(t_token *token)
 }
 
 
-char	*adapted_strjoin(char *store, char *buffer) //LLEVAR A LIBFT
+char	*adapted_strjoin(char *s1, char *s2) //LLEVAR A LIBFT
 {
 	char	*fusion;
 	int		i;
 	int		j;
 
 	i = 0;
-	if (store == NULL)
+	if (s1 == NULL)
 	{
-		store = malloc (sizeof(char) * 1);
-		if (!store)
+		s1 = malloc (sizeof(char) * 1);
+		if (!s1)
 			return (NULL);
-		store[0] = '\0';
+		s1[0] = '\0';
 	}
-	fusion = malloc (sizeof(char) * (ft_strlen(store) + ft_strlen(buffer) + 1));
+
+	fusion = malloc (sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!fusion)
-		return (killer_text(store));
+	{
+		free(s1);
+		free(s2);
+		return (NULL);
+	}
 	j = 0;
-	while (store[i] != '\0')
-		fusion[i++] = store[j++];
+	while (s1[i] != '\0')
+		fusion[i++] = s1[j++];
 	j = 0;
-	while (buffer[j] != '\0')
-		fusion[i++] = buffer[j++];
+	while (s2[j] != '\0')
+		fusion[i++] = s2[j++];
 	fusion[i] = '\0';
-	free (store);
+	free (s1);
 	return (fusion);
 }
 
-int check_expansor_variable_exists (char *tmp, t_ env *env)
+int check_expansor_variable_exists (char *tmp, t_env *env)
 {
 	t_env *env_tmp;
 
 	env_tmp = env;
+
+	if (!tmp)
+		return (0);
 	while (env_tmp)
 	{
 		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0))
@@ -131,32 +139,85 @@ int check_expansor_variable_exists (char *tmp, t_ env *env)
 	return (0);
 }
 
-int change_expansor_variable(t_token *token, char *tmp, t_ env *env)
+int expansor_variable_has_space (char *tmp, t_env *env)
 {
 	t_env *env_tmp;
 
 	env_tmp = env;
+
+	if (!tmp)
+		return (0);
 	while (env_tmp)
 	{
 		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0))
 		{
-			token->content = adapted_strjoin(token->content, env_tmp->value);
-			if (!token->content)
+			if (ft_strchr(env_tmp->value, ' '))
+				return (1);
+		}
+		env_tmp = env_tmp->next;
+	}
+	return (0);
+}
+
+int change_expansor_variable(t_xtkn *xtkn, char *tmp, t_env *env)
+{
+	t_env *env_tmp;
+	int i;
+
+	i = 0;;
+	env_tmp = env;
+	if (!tmp)
+		return (0);
+	while (env_tmp)
+	{
+		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0))
+		{
+			while (env_tmp->value[i])
 			{
-				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-				return (0);
+				if (env_tmp->value[i] == '"')
+				{
+					xtkn->content = strjoinchar (xtkn->content, 30); //Cambio las quotes por un valor no imprimible antes de expandir. Asi no tendre problemas al gestionar el split y saber que comillas quitar
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				else if (env_tmp->value[i] == '\'')
+				{
+					xtkn->content = strjoinchar (xtkn->content, 31); //Cambio las miniquotes por un valor no imprimible antes de expandir. Asi no tendre problemas al gestionar el split y saber que comillas quitar
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				else 
+				{
+					xtkn->content = strjoinchar (xtkn->content, env_tmp->value[i]);
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+				}
+				i++;
 			}
 		}
+		env_tmp = env_tmp->next;
 	}
 	return(1);
 }
 
-int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_ env *env, t_general *data)
+int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env *env, t_general *data)
 {
 	int i;
 	char *tmp;
+	char *exit_number;
 
+	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
+	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
 	init_quote_values(data);
 	while (token->content[i])
 	{
@@ -168,19 +229,21 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_ en
 			{
 				while (token->content[i] && (ft_isalpha(token->content[i]) == 1 || ft_isdigit(token->content[i]) == 1 || token->content[i] == '_'))
 				{
-					tmp = strjoinchar (tmp, token->content[i])
+					tmp = strjoinchar (tmp, token->content[i]);
 					if (!tmp)
 					{
 						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 						return (0);
 					}
+					
 					i++;
 				}
+				printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
 				if (data->qdata.miniquotes == 1)
 				{
 					account_quotes (token->content[i], data);
-					token->content = adapted_strjoin(token->content, tmp);
-					if (!token->content)
+					xtkn->content = adapted_strjoin(xtkn->content, tmp);
+					if (!xtkn->content)
 					{
 						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 						return (0);
@@ -191,28 +254,16 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_ en
 					account_quotes (token->content[i], data);
 					if (check_expansor_variable_exists (tmp, env) == 0)
 					{
-						if (token->content[i] == '?')
+						xtkn->content = adapted_strjoin(xtkn->content, "");
+						if (!xtkn->content)
 						{
-							token->content = adapted_strjoin(token->content, exit_status);
-							if (!token->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
-						}
-						else 
-						{
-							token->content = adapted_strjoin(token->content, "");
-							if (!token->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
 						}
 					}
 					else
 					{
-						if(change_expansor_variable(token,tmp, env) == 0)
+						if (change_expansor_variable(xtkn,tmp, env) == 0)
 						{
 							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 							return (0);
@@ -224,69 +275,247 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_ en
 					account_quotes (token->content[i], data);
 					if (check_expansor_variable_exists (tmp, env) == 0)
 					{
-						if (token->content[i] == '?')
+						if (!xtkn->content && !token->content[i] && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
 						{
-							token->content = adapted_strjoin(token->content, exit_status);
-							if (!token->content)
+							xtkn->content = ft_strdup (token->content);
+							if (!xtkn->content)
 							{
 								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 								return (0);
 							}
 						}
-						else if (token->back->type == INPUT || token->next->type == INPUT || token->next->type == INPUT)
+						else if (xtkn->content && ft_strchr(xtkn->content, '$') && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
+						{
+							xtkn->content = ft_strdup (token->content);
+							if (!xtkn->content)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
+						}
+					
+						else
+						{
+							xtkn->content = adapted_strjoin(xtkn->content, "");
+							if (!xtkn->content)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
+						} 
 					}
-
+					else
+					{
+						if (expansor_variable_has_space(tmp, env) && xtkn->type == FILE_REDIRECTION)
+						{
+							xtkn->content = ft_strdup (token->content);
+							if (!xtkn->content)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
+						}
+						else if (change_expansor_variable(xtkn,tmp, env) == 0)
+						{
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
+						}
+					}	
 				}
 			}
-			if (token->content[i] && ft_isdigit(token->content[i]) == 1)
+			else if (token->content[i] && token->content[i] == '?')
 			{
-
+				exit_number = ft_itoa (exit_status);
+				xtkn->content = adapted_strjoin(xtkn->content, exit_number);
+				if (!xtkn->content)
+				{
+					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					return (0);
+				}
+				i++;
 			}
-			if (token->content[i] && token->content[i] == '"' && data->qdata.miniquotes == 0)
+			else if (token->content[i] && ft_isdigit(token->content[i]) == 1)
+			{
+				xtkn->content = adapted_strjoin(xtkn->content, "");
+				if (!xtkn->content)
+				{
+					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					return (0);
+				}
+				i++;
+			}
+			else if (token->content[i] && token->content[i] == '"' && data->qdata.miniquotes == 0 && data->qdata.quotes == 0)
 			{
 				account_quotes (token->content[i], data);
+				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+				i++;
+
 			}
-			if (token->content[i] && token->content[i] == '\'' && data->qdata.quotes == 0)
+			else if (token->content[i] && token->content[i] == '\'' && data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
 			{
 				account_quotes (token->content[i], data);
+				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+				i++;
 			}
-			if (token->content[i] && token->content[i] == '"' && data->qdata.miniquotes == 0 && && data->qdata.quotes == 1)
+			else if (token->content[i] && (token->content[i] == '"' || token->content[i] == '\''))
 			{
 				account_quotes (token->content[i], data);
+				xtkn->content = strjoinchar (xtkn->content, '$');
+				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+				if (!xtkn->content)
+				{
+					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					return (0);
+				}
+				i++;
 			}
-			if (token->content[i] && token->content[i] == '\'' && data->qdata.miniquotes == 1 && && data->qdata.quotes == 0)
-			{
-				account_quotes (token->content[i], data);
-			}
-
-
-
-			token->content = adapted_strjoin(token->content, tmp);
-			if (!token->content)
-			{
-				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-				return (0);
-			}
+			free(tmp);
+			tmp = NULL;
+			continue ;
 		}
-
-
+		xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+		if (!xtkn->content)
+		{
+			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+			return (0);
+		}
 		i++;
 	}
-	return (1)
+	return (1);
 }
 
-t_xtkn *expand(t_token *token, int exit_status, t_env *env, t_general *data)
+t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data)
 {
 	t_xtkn	*xtkn;
 
-	xtkn = token_to_xtoken(token);
+	xtkn = token_to_xtoken(token, data);
+	if (!xtkn)
+	{
+		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		return (NULL);
+	}
 	if (build_expanded_content (xtkn, token, exit_status, env, data) == 0)
 	{
 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 		return (NULL);
 	}
+	return (xtkn);
+}
+
+//FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
+void debug_xtoken(t_xtkn	*xtkn, int num)
+{
+	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
+
+	printf("\n  >> Contenido del xtkn %d:\n", num);
+	printf("     contenido = |%s|\n", xtkn->content);
+	printf("     tipo de xtkn: %d (%s)\n", xtkn->type, type[xtkn->type]);
+	printf("     xtkn actual: %p\n", xtkn);
+	printf("     next apunta a %p\n", xtkn->next);
+	printf("     back apunta a %p\n\n", xtkn->back);
+}
+
+int split_xtkn(t_xtkn	*xtkn, t_general *data)
+{
+	//revisar si tengo que hacer split
+	//En caso de tener que hacerlo crear nuevo xtoken a continuacion
+	//REPETIR EL TIPO DE TOKEN EN LOS NUEVOS TOKENS QUE SE GENEREN POR EL SPLIT
+	char **splited_content;
+	int i;
+	t_xtkn	*tmp_xtkn;
+	int num = 0; //BORRAR
+
+	printf("\n# Split\n");
+	printf ("  Contenido del xtoken spliteado\n");
+	splited_content = ft_token_split(xtkn->content, ' ', data); 
+	
+	if (!splited_content)
+	{
+		printf("Error: There have been problems doing the xtoken content split\n");
+		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		return (0);
+	}
+	i = 0;
+	while (splited_content[i])
+		i++;
+	if (i > 1)
+	{
+		free (xtkn->content); //NECESARIO???
+		xtkn->content = ft_strdup (splited_content[0]);
+		printf ("\nRETOKENIZACION\n");
+		i = 1;
+		while (splited_content[i])
+		{
+			tmp_xtkn = create_xtoken ();
+			if (!tmp_xtkn)
+			{
+				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
+				//CUIDADO NO HACER DOUBLE FREE
+				return (0);
+			}
+
+			//relleno xtkn
+			tmp_xtkn->type = xtkn->type;
+			tmp_xtkn->content = ft_strdup (splited_content[i]);
+
+			//ubico el nuevo cmd
+			put_new_list_xtoken_node (data, tmp_xtkn);
+			i++;
+		}
+	}
+
+	t_xtkn *super_tmp = data->first_xtkn;
+	while (super_tmp)
+	{
+		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
+		num++; //BORRAR
+		super_tmp= super_tmp->next;
+	}
+
+	return (1);
+}
 
 
+int remove_quotes(t_xtkn	*xtkn, t_general *data)
+{
+	char *tmp;
+	int i;
+
+	i = 0;
+	printf("\n# Remove quotes\n");
+	init_quote_values(data);
+	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
+	while (xtkn->content[i])
+	{
+		account_quotes (xtkn->content[i], data);
+		if(xtkn->content[i] == '"' && data->qdata.miniquotes == 0)
+		{
+			i++;
+			continue ;
+		}
+		if(xtkn->content[i] == '\'' && data->qdata.quotes == 0)
+		{
+			i++;
+			continue ;
+		}
+		tmp = strjoinchar (tmp, xtkn->content[i]);
+			if (!tmp)
+			{
+				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+				return (0);
+			}
+		i++;
+	}
+	free (xtkn->content); //CORRECTO???
+	xtkn->content = ft_strdup (tmp);
+	if (!xtkn->content)
+	{
+		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		return (0);
+	}
+	
+	printf ("  Contenido del xtoken FINAL: %s\n\n\n", xtkn->content);
+	return (1);
 }
 
 
@@ -298,15 +527,21 @@ int expansor (t_general *data)
 	t_token *token;
 	t_xtkn	*xtkn;
 
+	printf (GREEN"\n******************* EXPANSOR *******************"END);
 	token = data->first_token;
 	while (token)
 	{
-		xtkn = expand(token, data->exit_status, data->env_lst, data);
+		xtkn = expand_xtkn(token, data->exit_status, data->env_lst, data);
 		if (!xtkn)
 		{
 			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 			return (0);
 		}
+		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
+		if (split_xtkn (xtkn, data) == 0)
+			return (0);
+		if (remove_quotes (xtkn, data) == 0)
+			return (0);
 		token = token->next;
 	}
 
@@ -314,3 +549,6 @@ int expansor (t_general *data)
 	//Al acabar de crear todos los xtokens puedo liberar los tokens
 	return (1);
 }
+
+
+// DESPUES DEL SPLIT PIERDO TOKENS PPOR EL CAMINO

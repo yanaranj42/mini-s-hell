@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 00:11:42 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:36:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,20 @@ void free_tokens_list(t_general *data)
 	}
 }
 
+void free_xtkns_list(t_general *data)
+{
+	t_xtkn *tmp_xtkn;
+ 	while (data->first_xtkn)
+	{
+		tmp_xtkn = data->first_xtkn->next;
+		printf("limpio el contenido del xtoken = %s\n", data->first_xtkn->content);
+		free(data->first_xtkn->content); //SI?????????????????????//me cargo el contenido del token
+		free(data->first_xtkn); //mato el xtoken actual
+		data->first_xtkn = NULL;
+		data->first_xtkn = tmp_xtkn;
+		printf("next token es = %p\n\n", data->first_xtkn);
+	}
+}
 
 void 	free_pretoken_argv (char **argv)
 {
@@ -181,19 +195,3 @@ void free_cmd(t_general *data)
 	}
 	data->first_cmd = NULL;
 }
-
-// void free_token(t_token *token) // esta funcion solo limpia un nodo de la lista, un token
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (token->argv[i])
-// 	{
-// 		free(token->argv[i]);
-// 		i++;
-// 	}
-// 	free(token->argv);
-// 	free(token);
-// }
-
-//ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
