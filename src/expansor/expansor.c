@@ -214,7 +214,9 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 	int i;
 	char *tmp;
 	char *exit_number;
+	static int j = 1; //BORRAR
 
+	printf ("\n🟠 Toquen %d\n", j); //BORRAR
 	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
@@ -294,15 +296,16 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 							}
 						}
 					
-						else
-						{
-							xtkn->content = adapted_strjoin(xtkn->content, "");
-							if (!xtkn->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
-						} 
+						// else
+						// {
+						// 	printf ("entro\n");
+						// 	xtkn->content = adapted_strjoin(xtkn->content, NULL);
+						// 	if (!xtkn->content)
+						// 	{
+						// 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						// 		return (0);
+						// 	}
+						// } 
 					}
 					else
 					{
@@ -381,6 +384,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 		}
 		i++;
 	}
+	j++; //BORRAR
 	return (1);
 }
 
@@ -422,7 +426,7 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	//REPETIR EL TIPO DE TOKEN EN LOS NUEVOS TOKENS QUE SE GENEREN POR EL SPLIT
 	char **splited_content;
 	int i;
-	t_xtkn	*tmp_xtkn;
+	t_xtkn	*tmp_xtkn; // BORRAR
 	int num = 0; //BORRAR
 
 	printf("\n# Split\n");
@@ -438,6 +442,7 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	i = 0;
 	while (splited_content[i])
 		i++;
+
 	if (i > 1)
 	{
 		free (xtkn->content); //NECESARIO???
@@ -464,12 +469,13 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 		}
 	}
 
-	t_xtkn *super_tmp = data->first_xtkn;
-	while (super_tmp)
+	t_xtkn *super_tmp = data->first_xtkn; // BORRAR
+	printf ("\nLista final:");
+	while (super_tmp) //BORRAR
 	{
 		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++; //BORRAR
-		super_tmp= super_tmp->next;
+		super_tmp= super_tmp->next; // BORRAR
 	}
 
 	return (1);
@@ -482,9 +488,9 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 	int i;
 
 	i = 0;
-	printf("\n# Remove quotes\n");
+	//printf("\n# Remove quotes\n");
 	init_quote_values(data);
-	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
+	tmp = ft_strdup (""); //IMPORTANTISIMO inicializar, le meto un string vacio para que ya empiece con \0 en caso de que no haya nada mas que las comillas y el contenido se quede en \0, en vez de NULL. Ahora de este modo tengo un malloc. Es lo que me interesa, porque si esta entre comillas, aunque dentro no tenga nada, tengo que mantener el xtoken con un \0 dentro.
 	while (xtkn->content[i])
 	{
 		account_quotes (xtkn->content[i], data);
@@ -498,15 +504,16 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 			i++;
 			continue ;
 		}
+		
 		tmp = strjoinchar (tmp, xtkn->content[i]);
-			if (!tmp)
-			{
-				//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-				return (0);
-			}
+		if (!tmp)
+		{
+			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+			return (0);
+		}
 		i++;
 	}
-	free (xtkn->content); //CORRECTO???
+	free (xtkn->content);
 	xtkn->content = ft_strdup (tmp);
 	if (!xtkn->content)
 	{
@@ -514,11 +521,42 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 		return (0);
 	}
 	
-	printf ("  Contenido del xtoken FINAL: %s\n\n\n", xtkn->content);
+	//printf ("  Contenido del xtoken FINAL: %s\n\n\n", xtkn->content);
 	return (1);
 }
 
+void change_non_printable_chars(t_xtkn	*xtkn)
+{
+	int i;
 
+	i = 0;
+	while (xtkn->content[i])
+	{
+		if(xtkn->content[i] == 30)	
+			xtkn->content[i] = '"';
+		if(xtkn->content[i] == 31)	
+			xtkn->content[i] = '\'';
+		i++;
+	}
+}
+
+int finish_xtkn (t_xtkn	*first_xtkn, t_general *data)
+{
+	t_xtkn	*xtkn;
+
+	xtkn = first_xtkn;
+	printf ("#Lista final de xtokens:\n");
+	while (xtkn)
+	{
+		if (remove_quotes (xtkn, data) == 0)
+			return (0);
+		//FALTA CAMBIAR LOS CHARS NO IMPRIMIBLES POR COMILLAS SIMPLES O DOBLES
+		change_non_printable_chars (xtkn);
+		printf (" ----> Token final |%s|\n\n", xtkn->content);
+		xtkn = xtkn->next;
+	}
+	return (1);
+}
 
 // Expands the env variables and $? of the 'commands' and split words if needed.
 // Finally, performs quote removal and returns the result.
@@ -538,12 +576,25 @@ int expansor (t_general *data)
 			return (0);
 		}
 		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
-		if (split_xtkn (xtkn, data) == 0)
-			return (0);
-		if (remove_quotes (xtkn, data) == 0)
-			return (0);
+		if (xtkn->content)
+		{
+			if (split_xtkn (xtkn, data) == 0)
+				return (0);
+		}
+		else
+		{
+			if (xtkn->back)
+				xtkn->back->next = NULL;
+			free(xtkn); //mato el xtoken actual
+			xtkn = NULL;
+		}
+		
 		token = token->next;
 	}
+
+	if (finish_xtkn (data->first_xtkn, data) == 0) // RECORRER LA LISTA ENTERA, POR CADA UNO LE QUITO QUOTES Y LE CAMBIO LOS CHARS NO IPRIMIBLES, Y PASO AL SIGUIENTE	
+		return (0);
+		
 
 
 	//Al acabar de crear todos los xtokens puedo liberar los tokens
