@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:14:30 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:28:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void free_tokens_list(t_general *data)
 	}
 }
 
-/* void free_xtkns_list(t_general *data)
+void free_xtkns_list(t_general *data)
 {
 	t_xtkn *tmp_xtkn;
  	while (data->first_xtkn)
@@ -133,7 +133,7 @@ void free_tokens_list(t_general *data)
 		data->first_xtkn = tmp_xtkn;
 		printf("next token es = %p\n\n", data->first_xtkn);
 	}
-} */
+}
 
 
 void 	free_pretoken_argv (char **argv)

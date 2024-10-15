@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:17:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:28:26 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int main(int argc, char **argv, char **env)
 		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
-	init_signal(&data);
 	init_data_values(&data); 
 	if (get_own_env(&data, env) == 0)
 		return (1); //cortamos programa?????????? NO, REVISAR PARA QUE LA LISTA SEA VACIA EN VEZ DE SALIR
@@ -41,7 +40,7 @@ int main(int argc, char **argv, char **env)
 			// data.line[0] = '\0' --> contenido con un caracter nulo
 		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
 		{
-			do_eof(&data);
+			//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
 			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 			break;
 		}
@@ -73,12 +72,12 @@ int main(int argc, char **argv, char **env)
 	
 
 		//EXPANDER
-		/* if (expansor(&data)== 0)
+		if (expansor(&data)== 0)
 		{
 			free (data.line);
 			continue; // para volver a empezar el while
 		}
-		 */
+		
 
 		//EXECUTOR
 		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
@@ -103,7 +102,7 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
-		//free_xtkns_list(&data);
+		free_xtkns_list(&data);
 		free_matrix_env(&data);
 		free_cmd(&data);
 		free(data.line);
@@ -124,3 +123,4 @@ int main(int argc, char **argv, char **env)
 //Como el export lo estoy haciendo en un hijo, estoy añadiendo la variable de entorno a en ese hijo, pero cuando el siguiente hijo quiera imprimir el valor de a, para el no existe esa variable.
 //En minishell como puedo ejecutar mas de una linea, si hago un primer comando que sea: export a=3; y en el siguiente pongo: echo hola | export a=2 | echo $a; esto me imprimira 3, porque el export del hijo sigue estando solo en el hijo.
 //El echo hola no se imprime porque al haber una pipe, el resultado de ese comando se redirige al stdin del siguiente comando (no se muestra por pantalla). La redireccion la he hecho, pero el comando export no coge ningun stdin, por lo que lo ignora.
+
