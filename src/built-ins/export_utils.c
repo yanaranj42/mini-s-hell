@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/15 15:35:14 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:37:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	export_opt(char *name, char *argv)
 				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
 				return (0);
-			if (name[end] != '+' && name[end] != '=' && !(ft_isalpha(name[end])))
+			if (name[end] != '+' && name[end] != '=' && !(ft_isalnum(name[end])))
 				return (0);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/15 15:35:53 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:41:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	ft_pwd(void)
 {
 	char	cwd[PATH_MAX];
-
+	
 	if (getcwd(cwd, PATH_MAX))
 	{
 		ft_putendl_fd(cwd, 1);

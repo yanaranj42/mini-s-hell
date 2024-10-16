@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:37:07 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:19:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_own_env(t_general *data, char **env)
 	{
 		s_env = malloc(sizeof(t_env));
 		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
+			return (perror_message(NULL, "Fail creating ENV"), 0);
 		s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 		s_env->value = ft_strdup(getenv(s_env->name));
 		s_env->next = NULL;

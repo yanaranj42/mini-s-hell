@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:30:04 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:31:04 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,24 @@ void ambiguous_redirect (char *start)
 	write(2, start, ft_strlen(start));
 	write(2, ": ambiguous redirect", 20);
 	write(2, END, ft_strlen(END));
+}
+
+int	error_cd_last(t_general *data, char c, int flag)
+{
+	if (flag == 1)
+	{
+		ft_putstr_fd("minishell: cd: -", STDOUT);
+		ft_putchar_fd(c, STDERR);
+		ft_putstr_fd(": invalid option", STDOUT);
+		data->exit_status = 1;
+	}
+	if (flag == 0)
+	{
+		ft_putstr_fd("minishell: cd: ", STDOUT);
+		ft_putstr_fd("too many arguments", STDOUT);
+		data->exit_status = 2;
+	}
+	return (0);
 }
 
 int	error_opt(char *s1, char *s2, char **arr, char *argv)

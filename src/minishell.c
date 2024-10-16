@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 11:04:14 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:20:48 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int main(int argc, char **argv, char **env)
 		printf("To run the program, no parameters are needed other than the executable itself\n");
 		return (1); //de normal se usa el return 1 para decir true y el return 0 para decir false, pero en el main, el return 0 indica que todo ha acabado bien y el return 1 (o el numero que sea) para decir que ha habido un error y poder identificar cual, como el exit.
 	}
+	init_signal(&data);
 	init_data_values(&data); 
 	if (get_own_env(&data, env) == 0)
 		return (1); //cortamos programa?????????? NO, REVISAR PARA QUE LA LISTA SEA VACIA EN VEZ DE SALIR
@@ -35,23 +36,10 @@ int main(int argc, char **argv, char **env)
 	{
 		
 		data.line = readline("🔥 ÐrackyŠhell ▶ ");
-		//Explicacion:
-			// !data.line == NULL --> punetero null
-			// data.line[0] = '\0' --> contenido con un caracter nulo
-		// if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
-		// {
-		// 	//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
-		// 	printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
-		// 	break;
-		// }
-		// if (data.line && *data.line)
-		// {
-		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
+		if (!data.line)
 		{
-			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
-			printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
-			free(data.line);
-			break;
+		 	printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
+			do_eof(&data);
 		}
 		add_history (data.line); // para poder acceder al historial de comandos
 		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
@@ -102,7 +90,7 @@ int main(int argc, char **argv, char **env)
 		
 		//funcion final:
 		free_tokens_list(&data);
-		//free_xtkns_list(&data);
+		free_xtkns_list(&data);
 		free_matrix_env(&data);
 		free_cmd(&data);
 		free(data.line);

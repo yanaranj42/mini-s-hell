@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 11:03:59 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:29:03 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <signal.h>
 
 
 /*COLORS*/
@@ -32,13 +33,6 @@
 #define CYAN	"\e[1;96m"
 #define PURPLE 	"\e[1;95m"
 #define ORANGE  "\e[1;38;2;255;128;0m"
-
-/*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
-#define	ERR01	"Malloc error\n"
-#define ERR02	"ENV creation failiure"
-
-
-
 
 #define STDIN	0
 #define STDOUT	1
@@ -241,7 +235,7 @@ void	father_status(t_general *data);
 	
 	int		ft_cd(t_general *data);
 	int		go_to_path(int opt, t_general *data);
-	int		update_pwd(t_general *data);
+	int		update_pwd(t_general *data); //puede ser void
 	int		env_update(t_env *head, char *k_word, char *n_value);
 	char	*get_env_path(t_general *data, char *k_word);
 
@@ -272,6 +266,7 @@ void	command_not_found(char *start);
 void	permission_denied(char *start);
 void	no_such_file_or_directory(char *start);
 //ERROR BUILTINS
+int		error_cd_last(t_general *data, char c, int flag);
 int		error_opt(char *s1, char *s2, char **arr, char *argv);
 void	error_brk(t_general *data, char *msg, char *name, int flag);
 

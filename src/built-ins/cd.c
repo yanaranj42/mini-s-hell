@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/15 15:33:42 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:46:30 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ int	update_pwd(t_general *data)
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		return (0);
-	if (env_update(data->env_lst, "OLDPWD", cwd))
+	if (env_update(data->env_lst, "PWD", cwd))
 		return (1);
 	return (0); //que hace si no ha entrado a ninguna de las condiciones??
 }
 
 int	go_to_path(int opt, t_general *data)
-{
+{  
 	int		ret;	
 	char	*env_path;
 
@@ -99,6 +99,8 @@ int	go_to_path(int opt, t_general *data)
 }
 
 /*este argv sera el cmd que recibamos*/
+
+//NO ME ACTUALIZA EL OLDPWD AL LLAMAR AL ENV
 int	ft_cd(t_general *data)
 {
 	int		cd_ret;
@@ -110,11 +112,15 @@ int	ft_cd(t_general *data)
 		printf("%d\n", ft_pwd());
 		return (go_to_path(0, data));
 	}
-	if (ft_strncmp(arg[1], "-", 1) == 0) //LAST CHECKED DIR
+	if (arg[1][0] == '-' && !arg[2]) //LAST CHECKED DIR + ERRORS (quiza void??)
 	{
+		if (arg[1][1] != '\0')
+			return (error_cd_last(data, arg[1][1], 1));
 		cd_ret = go_to_path(1, data);
 		printf("%d\n", ft_pwd());
 	}
+	else if (arg[2] != NULL)
+		return (error_cd_last(data, '\0', 0));
 	else
 	{
 		update_pwd(data);
@@ -125,5 +131,6 @@ int	ft_cd(t_general *data)
 			printf(RED"ERROR de args"END);
 		printf("%d\n", ft_pwd()); //CHANGE SPECIFIC DIR
 	}
+	update_pwd(data);
 	return (cd_ret);
 }
