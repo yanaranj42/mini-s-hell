@@ -51,9 +51,9 @@ void	unexpected_token_message(char *message)
 {
 	write(2, RED, ft_strlen(RED));
 	write(2, "💀 bash: ", 11);
-	write(2, END, ft_strlen(END));
 	write(2, "syntax error near unexpected token ", 35);
 	write(2, message, ft_strlen(message));
+	write(2, END, ft_strlen(END));
 	write(2, "\n", 1);
 
 	//BORRAR:
@@ -68,11 +68,22 @@ void	perror_message(char *start, char *message)
 	if (start)
 	{
 		write(2, RED, ft_strlen(RED));
+		write(2, "💀 bash: ", 11);
 		write(2, start, ft_strlen(start));
 		write(2, ": ", 2);
 		write(2, END, ft_strlen(END));
 	}
 	perror(message);
+}
+
+void ambiguous_redirect (char *start)
+{
+
+	write(2, RED, ft_strlen(RED));
+	write(2, "💀 bash: ", 11);
+	write(2, start, ft_strlen(start));
+	write(2, ": ambiguous redirect", 20);
+	write(2, END, ft_strlen(END));
 }
 
 int	error_opt(char *s1, char *s2, char **arr, char *argv)

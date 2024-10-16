@@ -99,6 +99,11 @@ int	check_overwrite_file(t_cmd *cmd, t_redir *redir)
 	flags = O_CREAT | O_TRUNC | O_WRONLY;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	cmd->fd_out = open(redir->file_name, flags, mode);
+	if (cmd->fd_out < 0 && ft_strchr (redir->file_name, '$'))
+	{
+		ambiguous_redirect(redir->file_name);
+		return (0);
+	}
 	if (cmd->fd_out < 0)
 	{
 		perror_message(redir->file_name, "");
@@ -135,6 +140,11 @@ int	check_write_append_file(t_cmd *cmd, t_redir *redir)
 	flags = O_CREAT | O_APPEND | O_WRONLY;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	cmd->fd_out = open(redir->file_name, flags, mode);
+	if (cmd->fd_out < 0 && ft_strchr (redir->file_name, '$'))
+	{
+		ambiguous_redirect(redir->file_name);
+		return (0);
+	}
 	if (cmd->fd_out < 0)
 	{
 		perror_message(redir->file_name, "");
@@ -162,6 +172,11 @@ int	check_read_file(t_cmd *cmd, t_redir *redir)
 	printf ("valor del fd: %d\n", cmd->fd_in);
 	cmd->fd_in = open(redir->file_name, O_RDONLY);
 	printf ("valor del fd: %d\n", cmd->fd_in);
+	if (cmd->fd_out < 0 && ft_strchr (redir->file_name, '$'))
+	{
+		ambiguous_redirect(redir->file_name);
+		return (0);
+	}
 	if (cmd->fd_in < 0)
 	{
 		perror_message(redir->file_name, "");
@@ -475,10 +490,10 @@ void put_new_list_redir_node (t_cmd *new_cmd, t_redir *new_redir)
 	}
 }
 
-int get_command (t_general *data, t_token *first_token)
+int get_command (t_general *data, t_xtkn	*first_xtkn)
 {
-	t_token *count_tkn;
-	t_token *tmp_tkn;
+	t_xtkn *count_xtkn;
+	t_xtkn *tmp_xtkn;
 	t_cmd 	*new_cmd;
 	t_redir *new_redir;
 	int  	count;
@@ -486,11 +501,11 @@ int get_command (t_general *data, t_token *first_token)
 	// char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"}; // BORRAR
 	int num; //borrar
 
-	count_tkn = first_token;
-	tmp_tkn = first_token;
+	count_xtkn = first_xtkn;
+	tmp_xtkn = first_xtkn;
 	num = 1; // borrar
 	printf("\n# Get commands\n");
-	while (tmp_tkn)
+	while (tmp_xtkn)
 	{
 		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
 		
@@ -510,12 +525,12 @@ int get_command (t_general *data, t_token *first_token)
 		
 		count = 0;
 		// printf ("\n Argumentos del comando %d:\n", num);
-		while (count_tkn && count_tkn->type != PIPE)
+		while (count_xtkn && count_xtkn->type != PIPE)
 		{
-			if (count_tkn->type == CMD_ARGV)
+			if (count_xtkn->type == CMD_ARGV)
 				count++;
 			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
-			count_tkn = count_tkn->next;
+			count_xtkn = count_xtkn->next;
 		}
 		printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
 		
@@ -529,11 +544,11 @@ int get_command (t_general *data, t_token *first_token)
 		//rellenar contenido del comando en si (argumentos y redirecciones)
 		new_cmd->first_redir = NULL; // PARA INICIALIZAR EN CADA NODO, NO?
 		i = 0;
-		while (tmp_tkn && tmp_tkn->type != PIPE)
+		while (tmp_xtkn && tmp_xtkn->type != PIPE)
 		{
-			if (tmp_tkn && tmp_tkn->type == CMD_ARGV)
+			if (tmp_xtkn && tmp_xtkn->type == CMD_ARGV)
 			{
-				new_cmd->argv[i] = ft_strdup (tmp_tkn->content);
+				new_cmd->argv[i] = ft_strdup (tmp_xtkn->content);
 				if (!new_cmd->argv[i])
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
@@ -559,27 +574,27 @@ int get_command (t_general *data, t_token *first_token)
 				put_new_list_redir_node (new_cmd, new_redir); // SE PUEDE OPTIMIZAR PASANDO UN PUNTERO VOID Y ASI USAR LA MISMA FUNCION? O PASO? TENGO LA MISMA FUNCION 3 VECES CON DIFERENTES ESTRUCTURAS
 
 				//rellenar nuevo nodo
-				new_redir->type = tmp_tkn->type;
+				new_redir->type = tmp_xtkn->type;
 				printf("tipo de redireccion: %d\n", new_redir->type);
-				new_redir->file_name = ft_strdup(tmp_tkn->next->content);
+				new_redir->file_name = ft_strdup(tmp_xtkn->next->content);
 				printf("nombre archivo: %s\n", new_redir->file_name);
 				if (!new_redir->file_name)
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
 					return (0);
 				}
-				tmp_tkn = tmp_tkn->next;
+				tmp_xtkn = tmp_xtkn->next;
 			}
-			if (tmp_tkn)
-				tmp_tkn = tmp_tkn->next;
+			if (tmp_xtkn)
+				tmp_xtkn = tmp_xtkn->next;
 		}
 		new_cmd->argv[i] = NULL;
 		debug_cmd(new_cmd, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++;
-		if (count_tkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
-			count_tkn = count_tkn->next;
-		if (tmp_tkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
-			tmp_tkn = tmp_tkn->next;
+		if (count_xtkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
+			count_xtkn = count_xtkn->next;
+		if (tmp_xtkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
+			tmp_xtkn = tmp_xtkn->next;
 	}
 	return (1);
 }
@@ -652,10 +667,9 @@ int executor (t_general *data)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
-	if (get_command(data, data->first_token) == 0)
+	if (get_command(data, data->first_xtkn) == 0)
 		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO 
-
-// UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA TOKEN, NO????
+	free_xtkns_list(data); // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA XTOKEN, NO????
 	if (do_heredoc(data) == 0)
 		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
