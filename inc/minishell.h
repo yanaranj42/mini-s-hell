@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:44:00 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:03:59 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_general
 	char 		*pretoken;
 	t_quotes	qdata; //DIFERENCIA ENTRE HACERLO PUNTERO O NO, TENIA DUDA CON LAS QUOTES.
 	t_token		*first_token; 
-	t_token		*first_xtkn; 
+	t_xtkn		*first_xtkn; 
 
 	char		**paths;
 	char 		**env_matrix;
@@ -162,7 +162,7 @@ typedef struct s_general
 
 //creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
 
-
+//GLOBAL VAR:
 extern int	g_error;
 
 
@@ -206,7 +206,7 @@ int 	check_stdout_redirection (t_general *data, t_token *token);
 int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 //EXPANSOR
-//int 	expansor(t_general *data);
+int 	expansor(t_general *data);
 
 //EXECUTOR
 int 	executor (t_general *data);
@@ -215,6 +215,7 @@ int 	env_matrix_base (t_env *env_lst);
 void 	print_matrix_env(char **matrix_env); //borrar
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
+int		get_command (t_general *data, t_xtkn *first_xtkn);
 
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
@@ -232,7 +233,7 @@ void	father_status(t_general *data);
 
 
 	//BUILT-INS
-	void 	pseudoexecutor(t_general *data, t_cmd *cmd);
+	//void 	pseudoexecutor(t_general *data, t_cmd *cmd);
 	int		is_builtin(t_cmd *cmd);
 	
 	int		ft_env(t_env *env);
@@ -284,7 +285,7 @@ void	free_env(t_env *head);
 void free_splited_content (char **content);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
-//void 	free_xtkns_list(t_general *data);
+void 	free_xtkns_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);

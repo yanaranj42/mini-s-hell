@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:36:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:02:46 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -490,7 +490,7 @@ void put_new_list_redir_node (t_cmd *new_cmd, t_redir *new_redir)
 	}
 }
 
-int get_command (t_general *data, t_xtkn	*first_xtkn)
+int get_command (t_general *data, t_xtkn *first_xtkn)
 {
 	t_xtkn *count_xtkn;
 	t_xtkn *tmp_xtkn;

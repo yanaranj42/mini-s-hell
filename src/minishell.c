@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:45:01 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:04:14 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int main(int argc, char **argv, char **env)
 	
 
 		//EXPANDER
-		/* if (expansor(&data)== 0)
+		if (expansor(&data)== 0)
 		{
 			free (data.line);
 			continue; // para volver a empezar el while
-		} */
+		}
 		
 
 		//EXECUTOR

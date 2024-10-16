@@ -6,7 +6,7 @@
 #    By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/15 15:43:16 by yanaranj         ###   ########.fr        #
+#    Updated: 2024/10/16 11:02:57 by yanaranj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ FILES += signals/signals.c
 
 FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 
-#FILES += expansor/expansor.c
+FILES += expansor/expansor.c
 
 #FILES += executor/pseudoexecutor.c
 FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c

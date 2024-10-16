@@ -1,14 +1,12 @@
-<<<<<<< HEAD
-=======
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/14 11:22:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:03:38 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -605,4 +603,3 @@ int expansor (t_general *data)
 
 
 // DESPUES DEL SPLIT PIERDO TOKENS PPOR EL CAMINO
->>>>>>> develop_3
