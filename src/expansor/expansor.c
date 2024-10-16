@@ -477,7 +477,7 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 		num++; //BORRAR
 		super_tmp= super_tmp->next; // BORRAR
 	}
-
+	free_splited_content (splited_content);
 	return (1);
 }
 
@@ -520,7 +520,7 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 		return (0);
 	}
-	
+	free(tmp);
 	//printf ("  Contenido del xtoken FINAL: %s\n\n\n", xtkn->content);
 	return (1);
 }
@@ -595,7 +595,7 @@ int expansor (t_general *data)
 	if (finish_xtkn (data->first_xtkn, data) == 0) // RECORRER LA LISTA ENTERA, POR CADA UNO LE QUITO QUOTES Y LE CAMBIO LOS CHARS NO IPRIMIBLES, Y PASO AL SIGUIENTE	
 		return (0);
 		
-
+	free_tokens_list(data);
 
 	//Al acabar de crear todos los xtokens puedo liberar los tokens
 	return (1);

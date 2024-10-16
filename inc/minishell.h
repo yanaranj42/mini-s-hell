@@ -262,6 +262,7 @@ void	father_status(t_general *data);
 
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
+void 	ambiguous_redirect (char *start);
 void	unexpected_token_message(char *message);
 void	command_not_found(char *start);
 void	permission_denied(char *start);
@@ -277,6 +278,7 @@ void	unset_free(t_env *env);
 void	free_exit(t_general *data);
 void	free_data_paths (char **paths);
 void	free_env(t_env *head);
+void free_splited_content (char **content);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 void 	free_xtkns_list(t_general *data);

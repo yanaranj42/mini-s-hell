@@ -54,6 +54,7 @@ void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT 
 	exit(data->exit_status);
 }
 
+
 void	free_data_paths (char **paths)
 {
 	int i;
@@ -89,6 +90,26 @@ void	free_env(t_env *head)
 		prev = NULL;
 	}
 }
+
+
+void free_splited_content (char **content)
+{
+	int i;
+
+	i = 0;
+	if (content == NULL)
+		return ;
+	while (content[i])
+	{
+		free(content[i]);
+		i++;
+	}
+	free(content);
+}
+
+
+
+
 /* puede que esta no sea necesaria*/
 void	free_before_end(t_general *data)
 {

@@ -38,14 +38,14 @@ int main(int argc, char **argv, char **env)
 		//Explicacion:
 			// !data.line == NULL --> punetero null
 			// data.line[0] = '\0' --> contenido con un caracter nulo
-		if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
-		{
-			//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
-			printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
-			break;
-		}
-		if (data.line && *data.line)
-		{
+		// if (!data.line) //temporal. Para evitar segfault al comparar si line no existe, ej cuando le pongo ctr + D
+		// {
+		// 	//printf ("    Fire can't kill a dragon ❤️‍🔥\n    But.... Winter is coming 🥶\n");
+		// 	printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
+		// 	break;
+		// }
+		// if (data.line && *data.line)
+		// {
 		if (ft_strncmp("exit", data.line, 5) == 0) //temporal
 		{
 			printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
@@ -107,7 +107,7 @@ int main(int argc, char **argv, char **env)
 		free_cmd(&data);
 		free(data.line);
 		data.line = NULL;
-		}
+		// }
 	}
 	free_before_end(&data);
     return (0);	
