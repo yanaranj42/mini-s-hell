@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/15 15:35:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:47:46 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,12 @@ int	env_add_last(t_general *data, char *name, char *value)
 		return (0);
 	new_env->name = ft_strdup(name);
 	if (data->equal == 0)
-		new_env->value = NULL;
+		new_env->value = NULL; 
 	else
 		new_env->value = ft_strdup(value);
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
-	printf(YELLOW"NEW VAR ON ENV  LST\n"END);
-	data->equal = 1;
+//liberar el value y el name para evitar errores de leaks
 	return (1);
 }
 /*	CASOS:

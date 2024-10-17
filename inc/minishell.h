@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/17 03:58:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/17 11:27:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,8 +234,11 @@ void	father_status(t_general *data);
 	int		ft_pwd(void);
 	
 	int		ft_cd(t_general *data);
+	/*utils cd*/
+	void	set_oldpwd(t_general *data);
+	
 	int		go_to_path(int opt, t_general *data);
-	int		update_pwd(t_general *data); //puede ser void
+	void	update_pwd(t_general *data); //puede ser void
 	int		env_update(t_general *data, char *k_word, char *n_value);
 	char	*get_env_path(t_general *data, char *k_word);
 

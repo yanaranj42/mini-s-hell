@@ -52,3 +52,5 @@ yaja 10/10: actualizacion de la branch con todos los cambios hechos con Marta
 yaja 16/10: el export ya acepta a23=... y a13vb=...
 			el cd tiene los errores pero falta la correcta actualizacion del
 			oldpwd, que tiene que ver con el update_pwd.
+yaja 17/10: el OLDPWD ya funciona bien. Falta eliminar los leaks. Mirar comentario
+			L51 env_add_last();
