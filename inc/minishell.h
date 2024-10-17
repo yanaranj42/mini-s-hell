@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 15:29:03 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/17 03:58:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void	father_status(t_general *data);
 	int		ft_cd(t_general *data);
 	int		go_to_path(int opt, t_general *data);
 	int		update_pwd(t_general *data); //puede ser void
-	int		env_update(t_env *head, char *k_word, char *n_value);
+	int		env_update(t_general *data, char *k_word, char *n_value);
 	char	*get_env_path(t_general *data, char *k_word);
 
 	int		ft_echo(char **argv);

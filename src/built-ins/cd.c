@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/16 15:46:30 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/17 05:25:01 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ char	*get_env_path(t_general *data, char *k_word)
 	return (NULL);
 }
 
-int	env_update(t_env *head, char *k_word, char *n_value)
+int	env_update(t_general *data, char *k_word, char *n_value)
 {
 	t_env	*tmp;
 	size_t	len;
 
-	tmp = head;
+	tmp = data->env_lst;
 	len = ft_strlen(k_word);
 	while (tmp != NULL)
 	{
@@ -55,18 +55,22 @@ int	env_update(t_env *head, char *k_word, char *n_value)
 				return (0);
 			return (1);
 		}
+		if (!tmp->name)
+			add_upd_env(data, k_word, n_value);
 		tmp = tmp->next;
 	}
 	return (0);
 }
-
+//vamos a hacer que nos actualice el OLDPWD, ya que el PWD lo podemos hacer desde
+//update_env();
 int	update_pwd(t_general *data)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		return (0);
-	if (env_update(data->env_lst, "PWD", cwd))
+	printf("OLD: %s\n", cwd);
+	if (env_update(data, "OLDPWD", cwd))
 		return (1);
 	return (0); //que hace si no ha entrado a ninguna de las condiciones??
 }
@@ -87,14 +91,21 @@ int	go_to_path(int opt, t_general *data)
 			return (0);
 		}
 	}
+	//entra en este  error cuando "unset OLDPWD". Tenemos que crear nuevamente la var si corresponde
 	else if (opt == 1)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not seted", 2), 0);
+		{	
+			return (ft_putendl_fd("minish: cd: OLDPWD not seted", STDOUT), 0);
+			//add_upd_env(data, "OLDPWD", "HOLA");
+			//return (0);
+		}
 		update_pwd(data);
 	}
 	ret = chdir(env_path);
+	//update_pwd(data);
+	env_update(data, "PWD", env_path);
 	return (ret);
 }
 
@@ -105,19 +116,16 @@ int	ft_cd(t_general *data)
 {
 	int		cd_ret;
 	char	**arg;
+	char	dir[PATH_MAX];
 
 	arg = data->first_cmd->argv;
 	if (!arg[1] || arg[1][0] == '~')//HOME
-	{
-		printf("%d\n", ft_pwd());
 		return (go_to_path(0, data));
-	}
 	if (arg[1][0] == '-' && !arg[2]) //LAST CHECKED DIR + ERRORS (quiza void??)
 	{
 		if (arg[1][1] != '\0')
 			return (error_cd_last(data, arg[1][1], 1));
 		cd_ret = go_to_path(1, data);
-		printf("%d\n", ft_pwd());
 	}
 	else if (arg[2] != NULL)
 		return (error_cd_last(data, '\0', 0));
@@ -129,8 +137,8 @@ int	ft_cd(t_general *data)
 			cd_ret *= -1;
 		else if (cd_ret != 0)
 			printf(RED"ERROR de args"END);
-		printf("%d\n", ft_pwd()); //CHANGE SPECIFIC DIR
+		getcwd(dir, PATH_MAX);
+		env_update(data, "PWD", dir);
 	}
-	update_pwd(data);
 	return (cd_ret);
 }
