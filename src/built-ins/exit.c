@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/09 23:11:15 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:56:43 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	check_long(char *arg);
 void	ft_exit(t_general *data)
 {
 	printf (ORANGE"    Fire can't kill a dragon ❤️‍🔥\n"END);
-	printf (CYAN"              But.... Winter is coming ❄️\n\n"END);
-	ft_putstr_fd("exit \n", STDERR);
+	printf (CYAN"              But.... Winter is coming ❄️\n"END"\n");
+	ft_putstr_fd("Exit \n", STDERR);
 	if (data->first_cmd->argv[0] && data->first_cmd->argv[1] == NULL)
 		exit(0);
 	if (exit_code(data, data->first_cmd->argv) == 1)

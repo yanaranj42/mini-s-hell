@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/14 11:22:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:55:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,9 +214,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 	int i;
 	char *tmp;
 	char *exit_number;
-	static int j = 1; //BORRAR
-
-	printf ("\n🟠 Toquen %d\n", j); //BORRAR
+	
+	printf ("\n🟠 Toquen \n"); //BORRAR
 	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
@@ -339,13 +338,46 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 			}
 			else if (token->content[i] && ft_isdigit(token->content[i]) == 1)
 			{
-				xtkn->content = adapted_strjoin(xtkn->content, "");
-				if (!xtkn->content)
+				if (data->qdata.miniquotes == 1)
 				{
-					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-					return (0);
+					xtkn->content = strjoinchar (xtkn->content, '$');
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+					xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+					if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
+					i++;
 				}
-				i++;
+				else 
+				{
+					if (token->content[i] == '0')
+					{
+						xtkn->content = adapted_strjoin(xtkn->content, "✌️ bash");
+						if (!xtkn->content)
+						{
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
+						}
+						i++;
+					}
+					else 
+					{
+						xtkn->content = adapted_strjoin(xtkn->content, "");
+						if (!xtkn->content)
+						{
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
+						}
+						i++;
+					}
+				}
+				
 			}
 			else if (token->content[i] && token->content[i] == '"' && data->qdata.miniquotes == 0 && data->qdata.quotes == 0)
 			{
@@ -364,6 +396,11 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 			{
 				account_quotes (token->content[i], data);
 				xtkn->content = strjoinchar (xtkn->content, '$');
+				if (!xtkn->content)
+					{
+						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						return (0);
+					}
 				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
 				if (!xtkn->content)
 				{
@@ -384,7 +421,6 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 		}
 		i++;
 	}
-	j++; //BORRAR
 	return (1);
 }
 
@@ -470,7 +506,6 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	}
 
 	t_xtkn *super_tmp = data->first_xtkn; // BORRAR
-	printf ("\nLista final:");
 	while (super_tmp) //BORRAR
 	{
 		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
