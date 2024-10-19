@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/17 19:55:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 01:03:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,13 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
+	xtkn->heardoc_expansion = 1;
 	init_quote_values(data);
 	while (token->content[i])
 	{
 		account_quotes (token->content[i], data);
+		if (data->qdata.quotes == 1 || data->qdata.miniquotes == 1)
+			xtkn->heardoc_expansion = 0;
 		if(token->content[i] == '$')
 		{
 			i++;
@@ -242,7 +245,6 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
 				if (data->qdata.miniquotes == 1)
 				{
-					account_quotes (token->content[i], data);
 					xtkn->content = adapted_strjoin(xtkn->content, tmp);
 					if (!xtkn->content)
 					{
@@ -252,10 +254,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				}
 				else if (data->qdata.quotes == 1)
 				{
-					account_quotes (token->content[i], data);
-					if (check_expansor_variable_exists (tmp, env) == 0)
+					if (xtkn->back && xtkn->back->type == HEREDOC) // Si antes tiene un heredoc quiere decir que es un limitador y no se tiene que expandir
 					{
-						xtkn->content = adapted_strjoin(xtkn->content, "");
+						xtkn->content = strjoinchar (xtkn->content, '$');
+						if (!xtkn->content)
+						{
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
+						}
+						xtkn->content = adapted_strjoin(xtkn->content, tmp);
 						if (!xtkn->content)
 						{
 							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
@@ -264,63 +271,93 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					}
 					else
 					{
-						if (change_expansor_variable(xtkn,tmp, env) == 0)
+						if (check_expansor_variable_exists (tmp, env) == 0)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-							return (0);
+							xtkn->content = adapted_strjoin(xtkn->content, "");
+							if (!xtkn->content)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
 						}
-					}		
+						else
+						{
+							if (change_expansor_variable(xtkn,tmp, env) == 0)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
+						}	
+					}	
 				}
 				else
 				{
-					account_quotes (token->content[i], data);
-					if (check_expansor_variable_exists (tmp, env) == 0)
+					if (xtkn->back && xtkn->back->type == HEREDOC) // Si antes tiene un heredoc quiere decir que es un limitador y no se tiene que expandir
 					{
-						if (!xtkn->content && !token->content[i] && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
-						{
-							xtkn->content = ft_strdup (token->content);
-							if (!xtkn->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
-						}
-						else if (xtkn->content && ft_strchr(xtkn->content, '$') && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
-						{
-							xtkn->content = ft_strdup (token->content);
-							if (!xtkn->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
-						}
-					
-						// else
-						// {
-						// 	printf ("entro\n");
-						// 	xtkn->content = adapted_strjoin(xtkn->content, NULL);
-						// 	if (!xtkn->content)
-						// 	{
-						// 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-						// 		return (0);
-						// 	}
-						// } 
-					}
-					else
-					{
-						if (expansor_variable_has_space(tmp, env) && xtkn->type == FILE_REDIRECTION)
-						{
-							xtkn->content = ft_strdup (token->content);
-							if (!xtkn->content)
-							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-								return (0);
-							}
-						}
-						else if (change_expansor_variable(xtkn,tmp, env) == 0)
+						xtkn->content = strjoinchar (xtkn->content, '$'); 
+						if (!xtkn->content)
 						{
 							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 							return (0);
+						}
+						xtkn->content = adapted_strjoin(xtkn->content, tmp);
+						if (!xtkn->content)
+						{
+							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							return (0);
+						}
+					}
+					else
+					{
+						if (check_expansor_variable_exists (tmp, env) == 0)
+						{
+							//si hay un $nada y luego cosas, no entra y simplemente no se mete nada en content. Si lo siguiente es un $nada y ya no hay nada mas, entonces metera de golpe los dos $nada juntos en el contenido. Si en cambio despues de este segundo hay algo mas, simplemente saltara y se metera unicamente lo que hay a continuacion
+							if (!xtkn->content && !token->content[i] && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
+							{
+								xtkn->content = ft_strdup (token->content);
+								if (!xtkn->content)
+								{
+									//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+									return (0);
+								}
+							}
+							// else if (xtkn->content && ft_strchr(xtkn->content, '$') && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
+							// {
+							// 	xtkn->content = ft_strdup (token->content);
+							// 	if (!xtkn->content)
+							// 	{
+							// 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							// 		return (0);
+							// 	}
+							// }
+						
+							// else
+							// {
+							// 	printf ("entro\n");
+							// 	xtkn->content = adapted_strjoin(xtkn->content, NULL);
+							// 	if (!xtkn->content)
+							// 	{
+							// 		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							// 		return (0);
+							// 	}
+							// } 
+						}
+						else
+						{
+							if (expansor_variable_has_space(tmp, env) && xtkn->type == FILE_REDIRECTION)
+							{
+								xtkn->content = ft_strdup (token->content);
+								if (!xtkn->content)
+								{
+									//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+									return (0);
+								}
+							}
+							else if (change_expansor_variable(xtkn,tmp, env) == 0)
+							{
+								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								return (0);
+							}
 						}
 					}	
 				}
@@ -409,6 +446,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				}
 				i++;
 			}
+			printf("**************contenido de xtkn: %s\n", xtkn->content);
 			free(tmp);
 			tmp = NULL;
 			continue ;
