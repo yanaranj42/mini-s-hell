@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/13 01:50:28 by mfontser         ###   ########.fr        #
+#    Updated: 2024/10/20 03:18:27 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ FILES += parser/parser.c parser/ft_token_split.c parser/check_syntax_errors.c
 FILES += expansor/expansor.c
 
 #FILES += executor/pseudoexecutor.c
-FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c
+FILES += executor/executor.c executor/matrix_enviroment.c executor/get_env_paths.c executor/child_utils.c executor/father_status.c executor/heredoc_expansion.c
 
 
 FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c 

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 23:00:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 04:48:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -583,6 +583,8 @@ int get_command (t_general *data, t_xtkn	*first_xtkn)
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
 					return (0);
 				}
+				new_redir->heardoc_expansion = tmp_xtkn->next->heardoc_expansion;
+				printf("hay que expandir en heredoc?: %d\n", new_redir->heardoc_expansion);
 				tmp_xtkn = tmp_xtkn->next;
 			}
 			if (tmp_xtkn)
@@ -633,6 +635,9 @@ int do_heredoc(t_general *data)
 						break ;
 					}
 					//escribo la linea en el archivo pipe.txt, por el fd de escritura
+					printf ("expansion heredoc %d\n", redir->heardoc_expansion);
+					if (redir->heardoc_expansion == 1 && ft_strchr(line, '$')) // Hay que expandir el contenido de la linea
+						line = expand_line (line, data->env_lst, data->exit_status);
 					write(pipe_fd[1], line, ft_strlen(line));
 					write(pipe_fd[1], "\n", 1);
 					redir->fd = dup (pipe_fd[0]);

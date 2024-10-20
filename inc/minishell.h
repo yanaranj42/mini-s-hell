@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 00:46:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 04:25:26 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_redir
 	int		type;
 	char	*file_name;
 	int		fd; // Esto lo necesito para los heredocs
+	int 	heardoc_expansion;
 	struct 	s_redir	*next;
 } 			t_redir;
 
@@ -204,6 +205,7 @@ int 	check_stdout_double_redirection (t_general *data, t_token *token);
 
 //EXPANSOR
 int 	expansor(t_general *data);
+char	*adapted_strjoin(char *s1, char *s2); //LLEVAR A LIBFT
 
 //EXECUTOR
 int 	executor (t_general *data);
@@ -212,7 +214,7 @@ int 	env_matrix_base (t_env *env_lst);
 void 	print_matrix_env(char **matrix_env); //borrar
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
-
+char *expand_line (char *line, t_env *env, int exit_status);
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
 int		create_child(t_general *data, t_cmd *cmd, int i, int n);

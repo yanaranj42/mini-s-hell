@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 01:03:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 04:49:01 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,7 +446,6 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				}
 				i++;
 			}
-			printf("**************contenido de xtkn: %s\n", xtkn->content);
 			free(tmp);
 			tmp = NULL;
 			continue ;
@@ -459,6 +458,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 		}
 		i++;
 	}
+	printf("  hay que expandir en heredoc?: %d\n", xtkn->heardoc_expansion);
 	return (1);
 }
 
