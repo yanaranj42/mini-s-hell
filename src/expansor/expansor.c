@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 04:49:01 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 15:47:17 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,8 +312,9 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						if (check_expansor_variable_exists (tmp, env) == 0)
 						{
 							//si hay un $nada y luego cosas, no entra y simplemente no se mete nada en content. Si lo siguiente es un $nada y ya no hay nada mas, entonces metera de golpe los dos $nada juntos en el contenido. Si en cambio despues de este segundo hay algo mas, simplemente saltara y se metera unicamente lo que hay a continuacion
-							if (!xtkn->content && !token->content[i] && ((token->back && token->back->type == INPUT) || (token->next && (token->next->type == OUTPUT || token->next->type == APPEND))))
+							if (!xtkn->content && !token->content[i] && token->back && (token->back->type == INPUT || token->back->type == OUTPUT || token->back->type == APPEND))
 							{
+								printf("entro\n");
 								xtkn->content = ft_strdup (token->content);
 								if (!xtkn->content)
 								{
@@ -365,12 +366,19 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 			else if (token->content[i] && token->content[i] == '?')
 			{
 				exit_number = ft_itoa (exit_status);
-				xtkn->content = adapted_strjoin(xtkn->content, exit_number);
-				if (!xtkn->content)
+				if (!exit_number)
 				{
 					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 					return (0);
 				}
+				xtkn->content = adapted_strjoin(xtkn->content, exit_number);
+				if (!xtkn->content)
+				{
+					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					free (exit_number);
+					return (0);
+				}
+				free (exit_number);
 				i++;
 			}
 			else if (token->content[i] && ft_isdigit(token->content[i]) == 1)

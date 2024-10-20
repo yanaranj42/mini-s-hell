@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 04:25:26 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 12:12:15 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_token
 {
 	//char 		**argv;
 	//int 		argc;
-	char 		*content;
+	char 		*content; 
 	struct 		s_token *back;
 	struct 		s_token *next;
 	int 		type;

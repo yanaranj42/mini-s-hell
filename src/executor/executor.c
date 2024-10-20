@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 04:48:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 15:19:32 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,13 @@ int	check_overwrite_file(t_cmd *cmd, t_redir *redir)
 
 	flags = O_CREAT | O_TRUNC | O_WRONLY;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	cmd->fd_out = open(redir->file_name, flags, mode);
-	if (cmd->fd_out < 0 && ft_strchr (redir->file_name, '$'))
+	if (ft_strchr (redir->file_name, '$'))
 	{
 		ambiguous_redirect(redir->file_name);
 		return (0);
 	}
+	cmd->fd_out = open(redir->file_name, flags, mode);
+	
 	if (cmd->fd_out < 0)
 	{
 		perror_message(redir->file_name, "");
@@ -139,12 +140,13 @@ int	check_write_append_file(t_cmd *cmd, t_redir *redir)
 	mode_t	mode;
 	flags = O_CREAT | O_APPEND | O_WRONLY;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	cmd->fd_out = open(redir->file_name, flags, mode);
-	if (cmd->fd_out < 0 && ft_strchr (redir->file_name, '$'))
+	if (ft_strchr (redir->file_name, '$'))
 	{
 		ambiguous_redirect(redir->file_name);
 		return (0);
 	}
+	cmd->fd_out = open(redir->file_name, flags, mode);
+	
 	if (cmd->fd_out < 0)
 	{
 		perror_message(redir->file_name, "");
