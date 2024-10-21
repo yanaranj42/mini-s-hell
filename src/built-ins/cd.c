@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/17 15:43:14 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:33:33 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	env_update(t_general *data, char *k_word, char *n_value)
 
 	tmp = data->env_lst;
 	len = ft_strlen(k_word);
-	printf("Entro en ENV_UPDT\n");
 	while (tmp != NULL)
 	{
 		if ((ft_strncmp(tmp->name, k_word, len) == 0) \
@@ -103,7 +102,6 @@ int	go_to_path(int opt, t_general *data)
 
 /*este argv sera el cmd que recibamos*/
 
-//NO ME ACTUALIZA EL OLDPWD AL LLAMAR AL ENV
 int	ft_cd(t_general *data)
 {
 	int		cd_ret;
@@ -125,13 +123,14 @@ int	ft_cd(t_general *data)
 		return (error_cd_last(data, '\0', 0));
 	else
 	{
+		if (!check_dir(arg[1]))
+			return (error_dir(data, arg[1]));
 		update_pwd(data);
 		cd_ret = chdir(arg[1]);
 		if (cd_ret < 0)
 			cd_ret *= -1;
 		else if (cd_ret != 0)
 			printf(RED"ERROR de args"END);
-		getcwd(dir, PATH_MAX);
 		env_update(data, "PWD", dir);
 	}
 	return (cd_ret);

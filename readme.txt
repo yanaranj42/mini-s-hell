@@ -54,3 +54,8 @@ yaja 16/10: el export ya acepta a23=... y a13vb=...
 			oldpwd, que tiene que ver con el update_pwd.
 yaja 17/10: el OLDPWD ya funciona bien. Falta eliminar los leaks. Mirar comentario
 			L51 env_add_last();
+yaja 21/0:	problemas de cd arreglados, ya funciona el OLDPWD.
+			CD: ya controla el error si no es o existe el directorio.
+			Parece que ya funciona si eliminamos el dir actual. Solo tenemos que
+			guardar el dir actual en un PWD temp para que al llamar a la funcion
+			me indique algo. 

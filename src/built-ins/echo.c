@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:41:00 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/15 15:33:56 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:10:51 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ static int	args_counter(char **argv)
 	return (i);
 }
 
+static	int	n_flag(char *argv)
+{
+	int	i;
+
+	i = 0;
+	if (argv[0] == '-')
+		i++;
+	while (argv[i] == 'n')
+		i++;
+	if (argv[i] !=  '\0')
+		return (0);
+	return (1);
+}
+
 int	ft_echo(char **argv)
 {
 	int	i;
@@ -32,7 +46,7 @@ int	ft_echo(char **argv)
 	n_opt = 0;
 	if (args_counter(argv) > 1)
 	{
-		while (argv[i] && (ft_strncmp(argv[i], "-n", 1) == 0))
+		if (n_flag(argv[1]))
 		{
 			n_opt = 1;
 			i++;

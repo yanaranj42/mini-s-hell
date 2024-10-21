@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_paths.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:28:30 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/04 16:35:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:19:56 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env *there_is_path(t_env	*env_lst)
 int	get_all_paths(t_env	*env_lst, t_general *data)
 {
 	t_env *path_node;
-	int i = 0; //BORRAR
+	//int i = 0; //BORRAR
 
 	path_node = there_is_path(env_lst);
 	if (path_node)
@@ -42,12 +42,12 @@ int	get_all_paths(t_env	*env_lst, t_general *data)
 			return (0);
 		}
 		//BORRAR
-		printf ("# Get path \n\n Los paths del env son:\n");
+		/* printf ("# Get path \n\n Los paths del env son:\n");
 		while (data->paths[i])
 		{
 			printf("    %s\n", data->paths[i]);
 			i++;
-		}
+		} */
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/17 11:27:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:29:40 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <signal.h>
 
@@ -236,6 +237,9 @@ void	father_status(t_general *data);
 	int		ft_cd(t_general *data);
 	/*utils cd*/
 	void	set_oldpwd(t_general *data);
+	int		error_dir(t_general *data, char *str);
+	int		check_dir(char *path);
+
 	
 	int		go_to_path(int opt, t_general *data);
 	void	update_pwd(t_general *data); //puede ser void

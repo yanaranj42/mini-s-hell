@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/16 11:19:17 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:53:36 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 	if (!argv[i])
 		;
 	//BORRAR prints
-	printf(BLUE"Matrix before unset:\n\n");
+	/* printf(BLUE"Matrix before unset:\n\n");
 	print_matrix_env(data->env_matrix);
-	printf("\n\n"END);
+	printf("\n\n"END); */
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);
@@ -60,9 +60,9 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 	if (data->env_matrix)
 		data->env_matrix = arr_clean(data->env_matrix);
 	get_matrix_env(data, data->env_lst);
-	printf(YELLOW"Matrix after unset:\n\n");
+	/* printf(YELLOW"Matrix after unset:\n\n");
 	print_matrix_env(data->env_matrix);
-	printf("\n"END);
+	printf("\n"END); */
 	if (!data->env_lst)
 		return ((void)error_brk(data, "Malloc Error", NULL, 12), 0);
 	return (1);

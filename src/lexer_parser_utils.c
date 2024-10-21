@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:50:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/15 15:32:10 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:12:39 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ char *strjoinchar (char *str, char c) // METER EN EL LIBFT
 	int i;
 	char *new_str;
 
-	printf ("     contenido de pretoken: |%s|\n", str);
-	printf ("     char a añadir: |%c|\n\n", c);
+	//printf ("     contenido de pretoken: |%s|\n", str);
+	//printf ("     char a añadir: |%c|\n\n", c);
 	if (str == NULL && c == '\0')
 		return (NULL);
 	if (str)

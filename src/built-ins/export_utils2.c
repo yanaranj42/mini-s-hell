@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/17 15:47:46 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 13:37:44 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*find_env_var(t_general *data, char *var_name)
 	}
 	return (NULL);
 }
-
+/*TENGO QUE HACER UNA COPIA*/
 int	env_add_last(t_general *data, char *name, char *value)
 {
 	t_env	*new_env;
@@ -48,7 +48,6 @@ int	env_add_last(t_general *data, char *name, char *value)
 		new_env->value = ft_strdup(value);
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
-//liberar el value y el name para evitar errores de leaks
 	return (1);
 }
 /*	CASOS:

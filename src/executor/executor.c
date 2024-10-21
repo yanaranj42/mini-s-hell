@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 11:02:46 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:22:56 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,15 @@ void debug_cmd(t_cmd *cmd, int num)
 	t_redir *redir = cmd->first_redir;
 	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
-	i = 0;
+	(void)num;
+	/*i = 0;
 	
 	printf("\n    >> Contenido del comando %d:\n", num);
 	while (cmd->argv[i])
 	{
 		printf("        argv[%d] = |%s|\n", i, cmd->argv[i]);
 		i++;
-	}
+	} */
 	printf("\n");
 	if (cmd->first_redir == NULL)
 		printf("        No hay redirecciones\n");
@@ -273,7 +274,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
 	else if (cmd->argv[0] && data->builtin != 0)
 	{
-		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
+		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END);
 		execute_builtin(data, cmd);
 	}
 	

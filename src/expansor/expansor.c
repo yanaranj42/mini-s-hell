@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 11:03:38 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:15:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,8 +216,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 	char *exit_number;
 	static int j = 1; //BORRAR
 
-	printf ("\n🟠 Toquen %d\n", j); //BORRAR
-	printf("\n# Expandir contenido del token |%s|\n", token->content);
+	//printf ("\n🟠 Toquen %d\n", j); //BORRAR
+	//printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
 	init_quote_values(data);
@@ -240,7 +240,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					
 					i++;
 				}
-				printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
+				//printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
 				if (data->qdata.miniquotes == 1)
 				{
 					account_quotes (token->content[i], data);
@@ -407,7 +407,7 @@ t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data
 }
 
 //FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
-void debug_xtoken(t_xtkn	*xtkn, int num)
+/* void debug_xtoken(t_xtkn	*xtkn, int num)
 {
 	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
@@ -417,7 +417,7 @@ void debug_xtoken(t_xtkn	*xtkn, int num)
 	printf("     xtkn actual: %p\n", xtkn);
 	printf("     next apunta a %p\n", xtkn->next);
 	printf("     back apunta a %p\n\n", xtkn->back);
-}
+} */
 
 int split_xtkn(t_xtkn	*xtkn, t_general *data)
 {
@@ -429,8 +429,8 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	t_xtkn	*tmp_xtkn; // BORRAR
 	int num = 0; //BORRAR
 
-	printf("\n# Split\n");
-	printf ("  Contenido del xtoken spliteado\n");
+	//printf("\n# Split\n");
+	//printf ("  Contenido del xtoken spliteado\n");
 	splited_content = ft_token_split(xtkn->content, ' ', data); 
 	
 	if (!splited_content)
@@ -447,7 +447,7 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	{
 		free (xtkn->content); //NECESARIO???
 		xtkn->content = ft_strdup (splited_content[0]);
-		printf ("\nRETOKENIZACION\n");
+		//printf ("\nRETOKENIZACION\n");
 		i = 1;
 		while (splited_content[i])
 		{
@@ -470,10 +470,10 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	}
 
 	t_xtkn *super_tmp = data->first_xtkn; // BORRAR
-	printf ("\nLista final:");
+	//printf ("\nLista final:");
 	while (super_tmp) //BORRAR
 	{
-		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
+		//debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
 		num++; //BORRAR
 		super_tmp= super_tmp->next; // BORRAR
 	}
@@ -575,7 +575,7 @@ int expansor (t_general *data)
 			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 			return (0);
 		}
-		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
+		//printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
 		if (xtkn->content)
 		{
 			if (split_xtkn (xtkn, data) == 0)

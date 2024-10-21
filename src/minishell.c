@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 11:20:48 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/21 11:18:20 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ int main(int argc, char **argv, char **env)
 			free (data.line);
 			continue; // para volver a empezar el while
 		}
-		
 
-		//EXECUTOR
-		//pseudoexecutor que no es capaz de ejecutar comandos encadenados por separador, pero si me podria ejecutar un export a=3 y luego env (dos comandos por separado: primero canviar el enviroment y luego ver los cambios al imprimirlo), podria probar export 3=3 que tiene que sacar un error. Asi sin haber terminado el parser podemos empezar a probar los built-ins
-		///pseudoexecutor(&data); 
 
 		//EXIT STATUS!!!!!!!!!!!!
 		if (executor (&data)== 0)
@@ -79,7 +75,7 @@ int main(int argc, char **argv, char **env)
 			free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
-		printf (GREEN"\n******************* FREE *******************\n"END);
+		//printf (GREEN"\n******************* FREE *******************\n"END);
 		// limpiar los tokens
 		//free_tokens_list (data.first_token); //--> sera la funciona que llamare cuando tenga lista, iterare sobre la lista e ire limpiando nodos llamando a la funcion basica de free token
 		//no paso la direccion de memoria porque estoy pasando first token, que ya es un puntero, y quiero limpiar lo que hay a donde apunta ese puntero. Me da igual que en la funcion que limpie lo que llegue sea una copia del puntero, y no el puntero original.
