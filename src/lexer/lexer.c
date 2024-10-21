@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 13:39:24 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/29 13:37:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:21:05 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int delete_useless_spaces (t_general *data)
 	init_quote_values(data);
 	while (data->line[i])
 	{
-		if ((data->line[i] == '"' && data->qdata.miniquotes == 0) || (data->line[i] == '\'' && data->qdata.quotes == 0))
+		if ((data->line[i] == '"' /*&& data->qdata.miniquotes == 0*/) || (data->line[i] == '\'' /*&& data->qdata.quotes == 0*/))
 			account_quotes (data->line[i], data);
 		else if (data->line[i] == ' ' && data->line[i + 1] == ' ' && data->qdata.quotes == 0 && data->qdata.miniquotes == 0)
 		{
@@ -82,7 +82,14 @@ int delete_useless_spaces (t_general *data)
 	}
 	printf("# Linea de comandos final: |%s|\n", data->pretoken);
 	free(data->line); //libero la linea original con los espacios inutiles
-	data->line = data->pretoken; // le digo que line sea la nueva linea transformada
+	data->line = ft_strdup(data->pretoken); // le digo que line sea la nueva linea transformada
+	if (!data->line)
+	{
+		free(data->pretoken);
+		data->pretoken = NULL;
+		return (0);
+	}
+	free(data->pretoken);//libero pretoken para resetear;
 	data->pretoken = NULL; // por si acaso ya pongo este puntero en en null porque ya no lo necesito mas, ya tengo line para acceder al contenido del lexer
 	return (1);
 } 
@@ -94,17 +101,22 @@ int lexer (t_general *data)
 	delete_spaces(data);
 	printf ("# Linea de comandos despues de strtrim: |%s|\n", data->line);
 	if (data->line[0] == '\0') // como digo contenido al estar en una estructura????
+	{	
+		data->exit_status = 127;
 		return (0);
+	}
 	printf ("\n# Revision de comillas:\n");
 	if (review_closed_quotes (data) == 0)
 	{
-		printf("Error: The quotes are not closed properly\n"); // pensar si mensaje de error y continue, o no cerrar hasta que ponga comillas 
+		printf("Error: The quotes are not closed properly\n"); 
+		data->exit_status = 1;
 		return (0);
 	}
 	//limpiar espacios inutiles 
 	if (delete_useless_spaces(data) == 0)
 	{
 		printf("Error: There have been problems cleaning useless spaces\n");
+		data->exit_status = 1; // POR PONER ALGO, BIEN????????????
 		return (0);
 	}
 	return (1);

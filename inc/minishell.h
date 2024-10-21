@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 12:12:15 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 01:58:51 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,7 @@ void 	free_xtkns_list(t_general *data);
 void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);
+void 	free_expansor_splited_content (char **splited_content);
 
 
 #endif

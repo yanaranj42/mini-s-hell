@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 15:47:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 02:51:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ t_xtkn *create_xtoken (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
 
 	tmp_xtkn = malloc (sizeof(t_xtkn) * 1);
 	if (!tmp_xtkn)
-	{
-		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
 		return (NULL);
-	}
 	return (tmp_xtkn);
 
 }
@@ -70,12 +67,7 @@ t_xtkn *token_to_xtoken(t_token *token, t_general *data)
 
 	xtkn = create_xtoken ();
 	if (!xtkn)
-	{
-		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-		//CUIDADO NO HACER DOUBLE FREE
 		return (0);
-	}
-	
 	//relleno xtkn
 	xtkn->content = NULL;
 	xtkn->type = token->type;
@@ -235,11 +227,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				{
 					tmp = strjoinchar (tmp, token->content[i]);
 					if (!tmp)
-					{
-						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 						return (0);
-					}
-					
 					i++;
 				}
 				printf ("  Contenido del xtkn después del $: |%s|\n", tmp);
@@ -248,7 +236,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					xtkn->content = adapted_strjoin(xtkn->content, tmp);
 					if (!xtkn->content)
 					{
-						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						free(tmp);
+						tmp = NULL;
 						return (0);
 					}
 				}
@@ -259,13 +248,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						xtkn->content = strjoinchar (xtkn->content, '$');
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 						xtkn->content = adapted_strjoin(xtkn->content, tmp);
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 					}
@@ -276,7 +267,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 							xtkn->content = adapted_strjoin(xtkn->content, "");
 							if (!xtkn->content)
 							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								free(tmp);
+								tmp = NULL;
 								return (0);
 							}
 						}
@@ -284,7 +276,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						{
 							if (change_expansor_variable(xtkn,tmp, env) == 0)
 							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								free(tmp);
+								tmp = NULL;
 								return (0);
 							}
 						}	
@@ -297,13 +290,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						xtkn->content = strjoinchar (xtkn->content, '$'); 
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 						xtkn->content = adapted_strjoin(xtkn->content, tmp);
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 					}
@@ -318,7 +313,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 								xtkn->content = ft_strdup (token->content);
 								if (!xtkn->content)
 								{
-									//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+									free(tmp);
+									tmp = NULL;
 									return (0);
 								}
 							}
@@ -350,13 +346,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 								xtkn->content = ft_strdup (token->content);
 								if (!xtkn->content)
 								{
-									//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+									free(tmp);
+									tmp = NULL;
 									return (0);
 								}
 							}
 							else if (change_expansor_variable(xtkn,tmp, env) == 0)
 							{
-								//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+								free(tmp);
+								tmp = NULL;
 								return (0);
 							}
 						}
@@ -368,13 +366,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				exit_number = ft_itoa (exit_status);
 				if (!exit_number)
 				{
-					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					free(tmp);
+					tmp = NULL;
 					return (0);
 				}
 				xtkn->content = adapted_strjoin(xtkn->content, exit_number);
 				if (!xtkn->content)
 				{
-					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					free(tmp);
+					tmp = NULL;
 					free (exit_number);
 					return (0);
 				}
@@ -388,13 +388,15 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 					xtkn->content = strjoinchar (xtkn->content, '$');
 					if (!xtkn->content)
 					{
-						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						free(tmp);
+						tmp = NULL;
 						return (0);
 					}
 					xtkn->content = strjoinchar (xtkn->content, token->content[i]);
 					if (!xtkn->content)
 					{
-						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+						free(tmp);
+						tmp = NULL;
 						return (0);
 					}
 					i++;
@@ -406,7 +408,8 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						xtkn->content = adapted_strjoin(xtkn->content, "✌️ bash");
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 						i++;
@@ -416,18 +419,24 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 						xtkn->content = adapted_strjoin(xtkn->content, "");
 						if (!xtkn->content)
 						{
-							//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+							free(tmp);
+							tmp = NULL;
 							return (0);
 						}
 						i++;
 					}
 				}
-				
 			}
 			else if (token->content[i] && token->content[i] == '"' && data->qdata.miniquotes == 0 && data->qdata.quotes == 0)
 			{
 				account_quotes (token->content[i], data);
 				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+				if (!xtkn->content)
+				{
+					free(tmp);
+					tmp = NULL;
+					return (0);
+				}
 				i++;
 
 			}
@@ -435,6 +444,12 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 			{
 				account_quotes (token->content[i], data);
 				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
+				if (!xtkn->content)
+				{
+					free(tmp);
+					tmp = NULL;
+					return (0);
+				}
 				i++;
 			}
 			else if (token->content[i] && (token->content[i] == '"' || token->content[i] == '\''))
@@ -442,14 +457,16 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 				account_quotes (token->content[i], data);
 				xtkn->content = strjoinchar (xtkn->content, '$');
 				if (!xtkn->content)
-					{
-						//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
-						return (0);
-					}
+				{
+					free(tmp);
+					tmp = NULL;
+					return (0);
+				}
 				xtkn->content = strjoinchar (xtkn->content, token->content[i]);
 				if (!xtkn->content)
 				{
-					//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+					free(tmp);
+					tmp = NULL;
 					return (0);
 				}
 				i++;
@@ -460,13 +477,10 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, int exit_status, t_env
 		}
 		xtkn->content = strjoinchar (xtkn->content, token->content[i]);
 		if (!xtkn->content)
-		{
-			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 			return (0);
-		}
 		i++;
 	}
-	printf("  hay que expandir en heredoc?: %d\n", xtkn->heardoc_expansion);
+	printf("  Hay que expandir en heredoc?: %d\n", xtkn->heardoc_expansion);
 	return (1);
 }
 
@@ -477,12 +491,12 @@ t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data
 	xtkn = token_to_xtoken(token, data);
 	if (!xtkn)
 	{
-		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		printf("Error: There have been problems creating expanded tokens\n");
 		return (NULL);
 	}
 	if (build_expanded_content (xtkn, token, exit_status, env, data) == 0)
 	{
-		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		printf("Error: There have been problems building the content of the expanded tokens\n");
 		return (NULL);
 	}
 	return (xtkn);
@@ -518,7 +532,6 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 	if (!splited_content)
 	{
 		printf("Error: There have been problems doing the xtoken content split\n");
-		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 		return (0);
 	}
 	i = 0;
@@ -527,8 +540,14 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 
 	if (i > 1)
 	{
-		free (xtkn->content); //NECESARIO???
+		free (xtkn->content); 
 		xtkn->content = ft_strdup (splited_content[0]);
+		if (!xtkn->content)
+		{
+			printf("Error: There have been problems retokenizing\n");
+			free_splited_content (splited_content);
+			return (0);
+		}
 		printf ("\nRETOKENIZACION\n");
 		i = 1;
 		while (splited_content[i])
@@ -536,8 +555,8 @@ int split_xtkn(t_xtkn	*xtkn, t_general *data)
 			tmp_xtkn = create_xtoken ();
 			if (!tmp_xtkn)
 			{
-				//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-				//CUIDADO NO HACER DOUBLE FREE
+				printf("Error: There have been problems retokenizing\n");
+				free_splited_content (splited_content);
 				return (0);
 			}
 
@@ -572,6 +591,8 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 	//printf("\n# Remove quotes\n");
 	init_quote_values(data);
 	tmp = ft_strdup (""); //IMPORTANTISIMO inicializar, le meto un string vacio para que ya empiece con \0 en caso de que no haya nada mas que las comillas y el contenido se quede en \0, en vez de NULL. Ahora de este modo tengo un malloc. Es lo que me interesa, porque si esta entre comillas, aunque dentro no tenga nada, tengo que mantener el xtoken con un \0 dentro.
+	if (!tmp)
+		return (0);
 	while (xtkn->content[i])
 	{
 		account_quotes (xtkn->content[i], data);
@@ -588,17 +609,14 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 		
 		tmp = strjoinchar (tmp, xtkn->content[i]);
 		if (!tmp)
-		{
-			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
 			return (0);
-		}
 		i++;
 	}
 	free (xtkn->content);
 	xtkn->content = ft_strdup (tmp);
 	if (!xtkn->content)
 	{
-		//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+		free(tmp);
 		return (0);
 	}
 	free(tmp);
@@ -630,7 +648,10 @@ int finish_xtkn (t_xtkn	*first_xtkn, t_general *data)
 	while (xtkn)
 	{
 		if (remove_quotes (xtkn, data) == 0)
+		{
+			printf("Error: There have been problems finishing the expansion\n");
 			return (0);
+		}
 		//FALTA CAMBIAR LOS CHARS NO IMPRIMIBLES POR COMILLAS SIMPLES O DOBLES
 		change_non_printable_chars (xtkn);
 		printf (" ----> Token final |%s|\n\n", xtkn->content);
@@ -653,14 +674,21 @@ int expansor (t_general *data)
 		xtkn = expand_xtkn(token, data->exit_status, data->env_lst, data);
 		if (!xtkn)
 		{
-			//MIRAR LO QUE HAYA QUE LIBERAR Y MENSAJES DE ERROR
+			data->exit_status = 1;
+			free_tokens_list(data);
+			free_xtkns_list(data);
 			return (0);
 		}
 		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);
-		if (xtkn->content)
+		if (xtkn->content) // puede que al expandir el contenido haya pasado a ser null, por lo que tendria que quitarlo de la lista, sino miro si hay que splitear
 		{
 			if (split_xtkn (xtkn, data) == 0)
+			{
+				data->exit_status = 1;
+				free_tokens_list(data);
+				free_xtkns_list(data);
 				return (0);
+			}
 		}
 		else
 		{
@@ -674,8 +702,13 @@ int expansor (t_general *data)
 	}
 
 	if (finish_xtkn (data->first_xtkn, data) == 0) // RECORRER LA LISTA ENTERA, POR CADA UNO LE QUITO QUOTES Y LE CAMBIO LOS CHARS NO IPRIMIBLES, Y PASO AL SIGUIENTE	
+	{
+		data->exit_status = 1;
+		free_tokens_list(data);
+		free_xtkns_list(data);
 		return (0);
-		
+	}
+
 	free_tokens_list(data);
 
 	//Al acabar de crear todos los xtokens puedo liberar los tokens
@@ -683,4 +716,3 @@ int expansor (t_general *data)
 }
 
 
-// DESPUES DEL SPLIT PIERDO TOKENS PPOR EL CAMINO

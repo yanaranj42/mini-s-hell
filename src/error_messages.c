@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 11:36:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:16:55 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	no_such_file_or_directory(char *start)
 	write(2, RED, ft_strlen(RED)); // BORRAR
 	write(2, "💀 bash: ", 11);
 	write(2, start, ft_strlen(start));
-	write(2, ": No such FILE_REDIRECTION or directory", 27);
+	write(2, ": No such file or directory", 27);
 	write(2, END, ft_strlen(END)); // BORRAR
 	write(2, "\n", 1);
 	exit(127);

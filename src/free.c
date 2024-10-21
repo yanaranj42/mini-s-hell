@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/14 11:20:52 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 02:51:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ void free_splited_content (char **content)
 		i++;
 	}
 	free(content);
+	content = NULL;
 }
-
 
 
 
@@ -161,13 +161,15 @@ void 	free_pretoken_argv (char **argv)
 {
 	int i;
 	i = 0;
-		while (argv && argv[i]) // SI??????????
-		{
-			free(argv[i]);
-			i++;
-		}
-		free(argv); // SI??????????
+	while (argv && argv[i]) // SI??????????
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv); // SI??????????
+	argv = NULL; // SI??????????
 }
+
 void	free_matrix_env(t_general *data)
 {
 	int	i;

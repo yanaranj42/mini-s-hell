@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/22 17:50:01 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:01:11 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 		data->env_matrix = malloc (sizeof(char*) * (env_matrix_base(env_lst) + 1));
 		if (!data->env_matrix)
 		{
-			perror_message(NULL, "Failure in matrix enviroment creation");
+			free_xtkns_list(data);
 			return (0);
 		}
 		while (tmp)
@@ -72,8 +72,7 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 			half_str = ft_strjoin (tmp->name, "=");
 			if (!half_str)
 			{
-				//MENSAJE ERROR
-				data->env_matrix[i] = NULL;
+				free_xtkns_list(data);
 				free_matrix_env(data); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
 				return (0);
 			}

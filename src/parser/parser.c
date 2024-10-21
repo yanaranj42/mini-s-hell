@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 12:37:37 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/20 22:45:52 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,7 @@ int parser(t_general *data)
 		if (take_pretoken (data, &i) == 0)
 		{
 			printf("Error: There have been problems preparing tokens\n");
+			data->exit_status = 1;
 			return (0);
 		}
 		printf ("  Pretoken final: |%s|\n\n", data->pretoken); 
@@ -303,7 +304,9 @@ int parser(t_general *data)
 		if (!argv)
 		{
 			printf("Error: There have been problems doing the argv token split\n");
+			data->exit_status = 1;
 			free(data->pretoken);
+			data->pretoken = NULL;
 			free_tokens_list(data);
 			return (0);
 		}
@@ -316,7 +319,9 @@ int parser(t_general *data)
 			if (!new_token)
 			{
 				//REVISAR SI ESTOY HACIENDO DOUBLE FREES
+				data->exit_status = 1;
 				free(data->pretoken); // SI??????????
+				data->pretoken = NULL;
 				free_pretoken_argv (argv); // SI??????????
 				free_tokens_list(data); // SI??????????
 				return (0);
@@ -327,6 +332,7 @@ int parser(t_general *data)
 			new_token->content = strdup (argv[j]);	//Estoy diciendo que apunte al mismo sitio que argv [j], no lo estoy generando de nuevo, ya he hecho el malloc al hacer el split	
 			if (!new_token->content)
 			{
+				data->exit_status = 1;
 				free(data->pretoken); // SI??????????
 				free_pretoken_argv (argv); // SI??????????
 				free_tokens_list(data); // SI??????????
@@ -339,9 +345,8 @@ int parser(t_general *data)
 		}
 		//destruyo pretoken para volver a crearlo en la siguiente vuelta
 		free(data->pretoken);
-		free_pretoken_argv (argv); // SI??????????
 		data->pretoken = NULL;
-		argv = NULL; // SI??????????
+		free_pretoken_argv (argv); // SI??????????
 	}
 	return (1);
 }

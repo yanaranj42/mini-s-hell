@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 17:54:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:01:08 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,23 @@ int main(int argc, char **argv, char **env)
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 		{
 			free (data.line);
+			free_env (data->env_lst)
 			continue; // para volver a empezar el while
 		}
 		
 		//PARSER
 		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
+			free_env (data->env_lst)
 			free (data.line);
 			continue; // para volver a empezar el while
 		}
 	
 
-		//EXPANDER
+		//EXPANSOR
 		if (expansor(&data)== 0)
 		{
+			free_env (data->env_lst)
 			free (data.line);
 			continue; // para volver a empezar el while
 		}

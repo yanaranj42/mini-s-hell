@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/20 15:19:32 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:01:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -671,14 +671,17 @@ int executor (t_general *data)
 	// else
 	// 	printf("soy null :c \n");
 	if (get_matrix_env (data, data->env_lst) == 0) // ESTO SE HARA EN INICIALIZACIONES
-		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
+	{
+		perror_message(NULL, "Failure in matrix enviroment creation");
+		return (0); 
+	}
 	if (get_all_paths(data->env_lst, data) == 0)
-		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
+		return (0);       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
 	if (get_command(data, data->first_xtkn) == 0)
-		return (0); // TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO 
+		return (0); 
 	free_xtkns_list(data); // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA XTOKEN, NO????
 	if (do_heredoc(data) == 0)
-		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
+		return (0);
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
 	{
 		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
