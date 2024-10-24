@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 17:01:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:55:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int main(int argc, char **argv, char **env)
 	t_general	data; 
 
 	(void)argv; 
-
 	if (argc != 1)
 	{
 		printf("To run the program, no parameters are needed other than the executable itself\n");
@@ -60,14 +59,12 @@ int main(int argc, char **argv, char **env)
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line
 		{
 			free (data.line);
-			free_env (data->env_lst)
 			continue; // para volver a empezar el while
 		}
 		
 		//PARSER
 		if (parser(&data) == 0 || check_syntax_errors(&data) == 0) 
 		{
-			free_env (data->env_lst)
 			free (data.line);
 			continue; // para volver a empezar el while
 		}
@@ -76,7 +73,6 @@ int main(int argc, char **argv, char **env)
 		//EXPANSOR
 		if (expansor(&data)== 0)
 		{
-			free_env (data->env_lst)
 			free (data.line);
 			continue; // para volver a empezar el while
 		}
@@ -108,11 +104,12 @@ int main(int argc, char **argv, char **env)
 		free_xtkns_list(&data);
 		free_matrix_env(&data);
 		free_cmd(&data);
+		free_data_paths (&data); //Creo unos paths con malloc, y al acabar los tengo que eliminar, independientemente de que el comando exista o no. Lo hago en el padre porque lo creo en el padre, el hijo tiene una copia, no tiene que destruirlo.
 		free(data.line);
 		data.line = NULL;
 		// }
 	}
-	free_before_end(&data);
+	free_before_end(&data); // Hasta el final no hay que liberar env list, porque sino me quedo sin para el resto del programa, eso no se genera a cada bucle, solo al principio
     return (0);	
 }
 

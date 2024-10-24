@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 17:01:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 22:01:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,7 @@
 
 
 
-//FUNCION TEMPORAL PARA DEBUGAR. LUEGO BORRAR
-void debug_cmd(t_cmd *cmd, int num)
-{
-	int i;
-	t_redir *redir = cmd->first_redir;
-	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
 
-	i = 0;
-	
-	printf("\n    >> Contenido del comando %d:\n", num);
-	while (cmd->argv[i])
-	{
-		printf("        argv[%d] = |%s|\n", i, cmd->argv[i]);
-		i++;
-	}
-	printf("\n");
-	if (cmd->first_redir == NULL)
-		printf("        No hay redirecciones\n");
-	else
-	{
-		i = 0;
-		while (redir)
-		{
-			printf("        redir[%d] es de tipo = |%s|\n", i, type[redir->type]);
-			printf("        nombre del archivo = |%s|\n", redir->file_name);
-			i++;
-			redir = redir->next;
-		}
-	}
-}
 
 
 void create_pipe(t_general *data)
@@ -268,7 +239,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 		printf(PURPLE"\n# Resultado del Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 		{
-			perror_message(NULL, "Execve failed");
+			printf ("Execve failed");// ??????????????
 			exit(1);
 		}
 	}
@@ -370,6 +341,7 @@ int	get_children(t_general *data)
 	printf ("\n# Revisar tokens para hacer fork en cuanto sea un comando\n");
 	data->pipe_fd[0] = -1; 
 	data->pipe_fd[1] = -1; 
+	data->next_cmd_input_fd = -1;
 	while (i < n)
 	{
 		//fd [0] = lectura
@@ -377,6 +349,14 @@ int	get_children(t_general *data)
 		if (data->pipe_fd[0] >= 0)
 		{
 				data->next_cmd_input_fd = dup(data->pipe_fd [0]); // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura. Con el dup creo una copia del fd, ya que si solo lo igualo hago que los dos apunten al mismo espacio de memoria, y si cierro uno jodo el otro. Asi son dos espacios de memoria distintos
+				if (data->next_cmd_input_fd == -1)
+				{
+					free_matrix_env(data);
+					free_data_paths (data);
+					free_cmd(data);
+					data->exit_status = 1;
+					return (0);
+				}
 				close(data->pipe_fd[0]); // tengo que cerrar este fd en el padre, pero despues de hacer la copia
 				
 		}
@@ -397,7 +377,14 @@ int	get_children(t_general *data)
 		if (cmd->pid == -1)
 		{
 			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
+			free_matrix_env(data);
+			free_data_paths (data);
+			free_cmd(data);
+			data->exit_status = 1;
 			perror_message(NULL, "Fork");
+			close(data->pipe_fd[1]);
+			close(data->pipe_fd[0]);
+			close(data->next_cmd_input_fd);
 			return (0); 
 		}
 		// hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
@@ -420,243 +407,6 @@ int	get_children(t_general *data)
 	return (1);
 }
 
-t_cmd *create_command (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
-{
-	t_cmd 	*new_cmd;
-
-	new_cmd = malloc (sizeof(t_cmd) * 1);
-	if (!new_cmd)
-	{
-		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-		return (NULL);
-	}
-	return (new_cmd);
-
-}
-
-void put_new_list_cmd_node (t_general *data, t_cmd *new_cmd)
-{
-	t_cmd  *tmp_cmd;
-
-	if (!data->first_cmd)
-	{
-		data->first_cmd = new_cmd;
-		//data->first_cmd->back = NULL; CREO QUE NO LO NECESITO
-		data->first_cmd->next = NULL;
-	}
-	else
-	{
-	//	(addback)
-		tmp_cmd = data->first_cmd;
-		while (tmp_cmd && tmp_cmd->next)
-			tmp_cmd = tmp_cmd->next;
-		tmp_cmd->next = new_cmd;
-		//new_cmd->back = tmp_cmd; CREO QUE NO LO NECESITO
-		new_cmd->next = NULL;
-	}
-}
-
-t_redir *create_redir (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
-{
-	t_redir 	*new_redir;
-
-	new_redir = malloc (sizeof(t_redir) * 1);
-	if (!new_redir)
-	{
-		//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-		return (NULL);
-	}
-	return (new_redir);
-
-}
-
-void put_new_list_redir_node (t_cmd *new_cmd, t_redir *new_redir)
-{
-	t_redir  *tmp_redir;
-
-	if (!new_cmd->first_redir)
-	{
-		new_cmd->first_redir = new_redir;
-		//new_cmd->first_redir->back = NULL; CREO QUE NO LO NECESITO
-		new_cmd->first_redir->next = NULL;
-	}
-	else
-	{
-	//	(addback)
-		tmp_redir = new_cmd->first_redir;
-		while (tmp_redir && tmp_redir->next)
-			tmp_redir = tmp_redir->next;
-		tmp_redir->next = new_redir;
-		//new_redir->back = tmp_redir; CREO QUE NO LO NECESITO
-		new_redir->next = NULL;
-	}
-}
-
-int get_command (t_general *data, t_xtkn	*first_xtkn)
-{
-	t_xtkn *count_xtkn;
-	t_xtkn *tmp_xtkn;
-	t_cmd 	*new_cmd;
-	t_redir *new_redir;
-	int  	count;
-	int i;
-	// char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"}; // BORRAR
-	int num; //borrar
-
-	count_xtkn = first_xtkn;
-	tmp_xtkn = first_xtkn;
-	num = 1; // borrar
-	printf("\n# Get commands\n");
-	while (tmp_xtkn)
-	{
-		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
-		
-		//crear un cmd 
-		new_cmd = create_command (); //(data);
-		if (!new_cmd)
-		{
-			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-			//CUIDADO NO HACER DOUBLE FREE
-			return (0);
-		}
-		
-		//ubico el nuevo cmd
-		put_new_list_cmd_node (data, new_cmd);
-		
-		//contar cuantos argumentos tiene el comando 
-		
-		count = 0;
-		// printf ("\n Argumentos del comando %d:\n", num);
-		while (count_xtkn && count_xtkn->type != PIPE)
-		{
-			if (count_xtkn->type == CMD_ARGV)
-				count++;
-			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
-			count_xtkn = count_xtkn->next;
-		}
-		printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
-		
-		//crear el malloc para los argumentos
-		
-		new_cmd->argv = malloc (sizeof (char *) * (count + 1));
-		if (!new_cmd->argv) 
-			//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-			return (0);
-
-		//rellenar contenido del comando en si (argumentos y redirecciones)
-		new_cmd->first_redir = NULL; // PARA INICIALIZAR EN CADA NODO, NO?
-		i = 0;
-		while (tmp_xtkn && tmp_xtkn->type != PIPE)
-		{
-			if (tmp_xtkn && tmp_xtkn->type == CMD_ARGV)
-			{
-				new_cmd->argv[i] = ft_strdup (tmp_xtkn->content);
-				if (!new_cmd->argv[i])
-				{
-					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-					return (0);
-				}
-				i++;
-			}
-			
-			// else if (tmp_tkn && tmp_tkn->type == FILE_REDIRECTION)
-			// 	continue;
-			else
-			{
-				//crear un nodo redireccion 
-				new_redir = create_redir (); //(data);
-				if (!new_redir)
-				{
-					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-					//CUIDADO NO HACER DOUBLE FREE
-					return (0);
-				}
-				
-				//ubico el nuevo nodo
-				put_new_list_redir_node (new_cmd, new_redir); // SE PUEDE OPTIMIZAR PASANDO UN PUNTERO VOID Y ASI USAR LA MISMA FUNCION? O PASO? TENGO LA MISMA FUNCION 3 VECES CON DIFERENTES ESTRUCTURAS
-
-				//rellenar nuevo nodo
-				new_redir->type = tmp_xtkn->type;
-				printf("tipo de redireccion: %d\n", new_redir->type);
-				new_redir->file_name = ft_strdup(tmp_xtkn->next->content);
-				printf("nombre archivo: %s\n", new_redir->file_name);
-				if (!new_redir->file_name)
-				{
-					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-					return (0);
-				}
-				new_redir->heardoc_expansion = tmp_xtkn->next->heardoc_expansion;
-				printf("hay que expandir en heredoc?: %d\n", new_redir->heardoc_expansion);
-				tmp_xtkn = tmp_xtkn->next;
-			}
-			if (tmp_xtkn)
-				tmp_xtkn = tmp_xtkn->next;
-		}
-		new_cmd->argv[i] = NULL;
-		debug_cmd(new_cmd, num); // PARA CHECKEAR, LUEGO BORRAR
-		num++;
-		if (count_xtkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
-			count_xtkn = count_xtkn->next;
-		if (tmp_xtkn) // si en el ultimo while ya ha llegado al final, aqui le estaria forzando a avanzar mas y me da segfault
-			tmp_xtkn = tmp_xtkn->next;
-	}
-	return (1);
-}
-
-
-int do_heredoc(t_general *data)
-{
-	t_cmd 		*cmd;
-	t_redir 	*redir;
-	int			pipe_fd[2];
-	char 		*line;
-
-	cmd = data->first_cmd;
-	redir = cmd->first_redir;
-	while (cmd)
-	{
-		while (redir)
-		{
-			if (redir->type == HEREDOC)
-			{
-				if (pipe(pipe_fd) == -1)
-				{
-					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
-					perror_message(NULL, "Heredoc pipe");
-					return (0);
-				}
-				while (1) // esto es lo que deja abierto el proceso para poder escribir eternamente, hasta que no escriba el limitador el programa no se seguira ejecutando
- 				{
-					// leo de terminal
-					line =  readline(YELLOW"> "END);
-					// si la linea leida de terminal es = al limitador, cierro el fd de escritura y paro el bucle de lectura
-					if (ft_strncmp(line, redir->file_name, ft_strlen(redir->file_name) + 1) == 0)
-					{
-						free(line);
-						close(pipe_fd[1]);
-						break ;
-					}
-					//escribo la linea en el archivo pipe.txt, por el fd de escritura
-					printf ("expansion heredoc %d\n", redir->heardoc_expansion);
-					if (redir->heardoc_expansion == 1 && ft_strchr(line, '$')) // Hay que expandir el contenido de la linea
-						line = expand_line (line, data->env_lst, data->exit_status);
-					write(pipe_fd[1], line, ft_strlen(line));
-					write(pipe_fd[1], "\n", 1);
-					redir->fd = dup (pipe_fd[0]);
-					free (line);
-				}
-			}
-			redir = redir->next;
-		}
-		cmd = cmd->next;
-	}
-	return (1);
-}
-
-
-
-
-
 
 
 //Cuando en pipex poniamos exit (1), es 1 porque es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
@@ -666,31 +416,35 @@ int executor (t_general *data)
 {
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
 	
-	// if (data->line)
-	// 	printf("soy la line %s\n", data->line);
-	// else
-	// 	printf("soy null :c \n");
 	if (get_matrix_env (data, data->env_lst) == 0) // ESTO SE HARA EN INICIALIZACIONES
 	{
-		perror_message(NULL, "Failure in matrix enviroment creation");
+		printf("Failure in matrix enviroment creation");
+		data->exit_status = 1;
 		return (0); 
 	}
 	if (get_all_paths(data->env_lst, data) == 0)
 		return (0);       // Voy al siguiente readline porque si falla sera por un malloc, entonces puede que a la siguiente salga bien.
 	if (get_command(data, data->first_xtkn) == 0)
+	{
+		printf("Error: There have been problems creating commands");
 		return (0); 
-	free_xtkns_list(data); // UNA VEZ OBTENIDOS LOS COMANDOS, PODRIA BORRAR LA ESTRUCTURA XTOKEN, NO????
+	}
+	free_xtkns_list(data); // UNA VEZ OBTENIDOS LOS COMANDOS, PUEDO BORRAR LA ESTRUCTURA XTOKEN
 	if (do_heredoc(data) == 0)
+	{
+		printf("Error: There have been problems doing the heredoc");
 		return (0);
+	}
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
 	{
 		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
 		execute_builtin(data, data->first_cmd);
 	}
 	else if (get_children(data) == 0)
-		return (0);// TENGO QUE EMPEZAR EL NUEVO READLINE? O NO Y SIGO
+	{
+		return (0);
+	}
 	father_status(data);
-	free_data_paths (data->paths); //Creo unos paths con malloc, y al acabar los tengo que eliminar, independientemente de que el comando exista o no. Lo hago en el padre porque lo creo en el padre, el hijo tiene una copia, no tiene que destruirlo.
 	return (1);
 
 }

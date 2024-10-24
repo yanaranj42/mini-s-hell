@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 02:51:18 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:54:40 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,7 @@ void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT 
 }
 
 
-void	free_data_paths (char **paths)
-{
-	int i;
 
-	i = 0;
-	if (paths == NULL)
-		return ;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
-	free(paths);
-}
 
 
 
@@ -184,6 +171,24 @@ void	free_matrix_env(t_general *data)
 	}
 	free(data->env_matrix);
 	data->env_matrix = NULL; // libero la matriz y la vuelvo a poner a null, para proteger que si en otra parte del codigo la intento liberar cuando ya estaba liberada, que no me de un double free (si hago free de null no pasa nada). O si en otra parte del codigo quiero usar el enviroment, ver que no hay, que es null.
+	//Cuando libero, libero la memoria, pero el puntero sigue apuntando a ese espacio. Al ponerlo a NULL lo que hago es que el puntero ya no apunte a ninguna parte.
+}
+
+
+void	free_data_paths (t_general *data)
+{
+	int i;
+
+	i = 0;
+	if (data->paths == NULL)
+		return ;
+	while (data->paths[i])
+	{
+		free(data->paths[i]);
+		i++;
+	}
+	free(data->paths);
+	data->paths = NULL; // libero la matriz y la vuelvo a poner a null, para proteger que si en otra parte del codigo la intento liberar cuando ya estaba liberada, que no me de un double free (si hago free de null no pasa nada). O si en otra parte del codigo quiero usar el enviroment, ver que no hay, que es null.
 	//Cuando libero, libero la memoria, pero el puntero sigue apuntando a ese espacio. Al ponerlo a NULL lo que hago es que el puntero ya no apunte a ninguna parte.
 }
 

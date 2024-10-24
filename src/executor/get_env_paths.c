@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:28:30 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/04 16:35:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:03:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ int	get_all_paths(t_env	*env_lst, t_general *data)
 		data->paths = ft_split(path_node->value, ':');
 		if (!data->paths)
 		{
-			perror_message(NULL, "Malloc failure in take path");
+			free_xtkns_list(data);
+			perror_message(NULL, "Malloc failure to get all paths");
+			data->exit_status = 1;
 			return (0);
 		}
 		//BORRAR

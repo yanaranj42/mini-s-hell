@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 01:58:51 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 22:03:07 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ typedef struct s_cmd
 	int		fd_out; // para las redirs de output
 //(se van actualizando prq los voy sobreescribiendo)
 	
-	//int			indx; // cuál comando es
 
 }				t_cmd;
 
@@ -214,6 +213,10 @@ int 	env_matrix_base (t_env *env_lst);
 void 	print_matrix_env(char **matrix_env); //borrar
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
+int get_command (t_general *data, t_xtkn	*first_xtkn);
+int do_heredoc(t_general *data);
+
+
 char *expand_line (char *line, t_env *env, int exit_status);
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
@@ -275,7 +278,7 @@ char	**arr_clean(char **arr);
 void	*ft_memdel(void *ptr);
 void	unset_free(t_env *env);
 void	free_exit(t_general *data);
-void	free_data_paths (char **paths);
+void	free_data_paths (t_general *data);
 void	free_env(t_env *head);
 void free_splited_content (char **content);
 void	free_before_end(t_general *data);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix_enviroment.c                                :+:      :+:    :+:   */
+/*   get_matrix_enviroment.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 17:01:11 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:02:52 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 			{
 				//MENSAJE ERROR
 				free (half_str);
-				data->env_matrix[i] = NULL;
 				free_matrix_env(data);
+				free_xtkns_list(data);
 				return (0);
 			}
 			free (half_str);
