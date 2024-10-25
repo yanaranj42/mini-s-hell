@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 22:03:07 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/25 01:54:22 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,13 +197,17 @@ char	**ft_token_split(char const *s, char del, t_general *data);
 
 int 	check_syntax_errors (t_general *data);
 int 	check_pipe (t_general *data, t_token *token);
-int 	check_stdin_redirection (t_general *data, t_token *token);
-int 	check_stdin_double_redirection (t_general *data, t_token *token);
-int 	check_stdout_redirection (t_general *data, t_token *token);
-int 	check_stdout_double_redirection (t_general *data, t_token *token);
+int 	check_input (t_general *data, t_token *token);
+int 	check_heredoc (t_general *data, t_token *token);
+int 	check_output (t_general *data, t_token *token);
+int 	check_append (t_general *data, t_token *token);
 
 //EXPANSOR
 int 	expansor(t_general *data);
+t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data);
+t_xtkn *token_to_xtoken(t_token *token, t_general *data);
+t_xtkn *create_xtoken (void);
+void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn);
 char	*adapted_strjoin(char *s1, char *s2); //LLEVAR A LIBFT
 
 //EXECUTOR
