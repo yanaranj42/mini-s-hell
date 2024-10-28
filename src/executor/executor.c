@@ -183,7 +183,40 @@ void check_heredoc_redir (t_cmd *cmd, t_redir *redir)
 	close(cmd->fd_in);
 }
 
+void check_redirs (t_cmd *cmd, t_redir *redir)
+{
+	if (redir->type == OUTPUT) // >
+		check_output_redir (cmd, redir);
+	if (redir->type == APPEND) // >>
+		check_append_redir  (cmd, redir);
+	if (redir->type == INPUT) // <
+		check_input_redir (cmd, redir);
+	if (redir->type == HEREDOC) // <<
+		check_heredoc_redir (cmd, redir);
+}
 
+
+
+void execute_cmd (t_general *data, t_cmd *cmd)
+{
+	data->builtin = is_builtin(cmd);
+	if (cmd->argv[0] && data->builtin == 0) // Y NO ERES BUILTIN
+	{
+		printf("\nComo no soy un builtin haré el execve\n");
+		printf(PURPLE"\n# Resultado del Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
+		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
+		{
+			printf ("Execve failed");// ??????????????
+			exit(1);
+		}
+	}
+	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
+	else if (cmd->argv[0] && data->builtin != 0)
+	{
+		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
+		execute_builtin(data, cmd);
+	}
+}
 
 int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
@@ -216,14 +249,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	cmd->fd_out = -1;
 	while (redir)
 	{
-		if (redir->type == OUTPUT) // >
-			check_output_redir (cmd, redir);
-		if (redir->type == APPEND) // >>
-			check_append_redir  (cmd, redir);
-		if (redir->type == INPUT) // <
-			check_input_redir (cmd, redir);
-		if (redir->type == HEREDOC) // <<
-			check_heredoc_redir (cmd, redir);
+		check_redirs (cmd, redir);
 		redir = redir->next;
 	}
 	//Si en algun momento tengo problemas en el programa, DESCOMENTAR para comprobar si el problema son los fd. Si descomento y sigue fallando, sabre que no son los fd.
@@ -232,23 +258,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 
 
 	/*CHECKING BUILTINS WORK*/
-	data->builtin = is_builtin(cmd);
-	if (cmd->argv[0] && data->builtin == 0) // Y NO ERES BUILTIN
-	{
-		printf("\nComo no soy un builtin haré el execve\n");
-		printf(PURPLE"\n# Resultado del Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
-		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
-		{
-			printf ("Execve failed");// ??????????????
-			exit(1);
-		}
-	}
-	//IF EXISTE COMANDO Y ERES BUILTIN -> llamar a una funcion generica de builtins (le paso argv y el enviroment de listas) y dentro detectar cual.
-	else if (cmd->argv[0] && data->builtin != 0)
-	{
-		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
-		execute_builtin(data, cmd);
-	}
+	execute_cmd (data, cmd);
 	
 	printf("SOY UN HIJO Y ME VOY A MORIR\n");
 	exit (0);
@@ -322,7 +332,39 @@ int	check_executor_type (t_general *data)
 	return (0);
 }
 
+int duplicate_pipe_fd0 (t_general *data)
+{
+	data->next_cmd_input_fd = dup(data->pipe_fd [0]); // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura. Con el dup creo una copia del fd, ya que si solo lo igualo hago que los dos apunten al mismo espacio de memoria, y si cierro uno jodo el otro. Asi son dos espacios de memoria distintos
+	if (data->next_cmd_input_fd == -1)
+	{
+		free_matrix_env(data);
+		free_data_paths (data);
+		free_cmd(data);
+		data->exit_status = 1;
+		return (0);
+	}
+	close(data->pipe_fd[0]); // tengo que cerrar este fd en el padre, pero despues de hacer la copia
+	return (1);
+}
 
+int init_new_process (t_general *data, t_cmd *cmd)
+{
+	cmd->pid = fork();
+	if (cmd->pid == -1)
+	{
+		//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
+		free_matrix_env(data);
+		free_data_paths (data);
+		free_cmd(data);
+		data->exit_status = 1;
+		perror_message(NULL, "Fork");
+		close(data->pipe_fd[1]);
+		close(data->pipe_fd[0]);
+		close(data->next_cmd_input_fd);
+		return (0); 
+	}
+	return (1);
+}
 
 int	get_children(t_general *data)
 {
@@ -348,17 +390,8 @@ int	get_children(t_general *data)
 		//fd [1] = escritura
 		if (data->pipe_fd[0] >= 0)
 		{
-				data->next_cmd_input_fd = dup(data->pipe_fd [0]); // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura. Con el dup creo una copia del fd, ya que si solo lo igualo hago que los dos apunten al mismo espacio de memoria, y si cierro uno jodo el otro. Asi son dos espacios de memoria distintos
-				if (data->next_cmd_input_fd == -1)
-				{
-					free_matrix_env(data);
-					free_data_paths (data);
-					free_cmd(data);
-					data->exit_status = 1;
-					return (0);
-				}
-				close(data->pipe_fd[0]); // tengo que cerrar este fd en el padre, pero despues de hacer la copia
-				
+			if (duplicate_pipe_fd0 (data) == 0)
+				return (0);	
 		}
 				
 		if (n > 1 && i < (n - 1))
@@ -373,20 +406,9 @@ int	get_children(t_general *data)
 		//Si es el primer comando i es un builtin i no hay pipes hago eso:
 		
 		//else:
-		cmd->pid = fork();
-		if (cmd->pid == -1)
-		{
-			//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
-			free_matrix_env(data);
-			free_data_paths (data);
-			free_cmd(data);
-			data->exit_status = 1;
-			perror_message(NULL, "Fork");
-			close(data->pipe_fd[1]);
-			close(data->pipe_fd[0]);
-			close(data->next_cmd_input_fd);
-			return (0); 
-		}
+		if (init_new_process (data, cmd) == 0)
+			return (0);
+		
 		// hasta aqui, lo van haciendo paralelamente padre e hijo, por eso ambos tienen el pid y es la manera de comunicarse entre ellos
 	
 		if (cmd->pid == 0) // tengo que decirle que lo que viene a continuacion se haga en el hijo, distinguir entre el hijo y padre a traves del pid.
