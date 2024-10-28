@@ -233,7 +233,7 @@ int expansor (t_general *data)
 	token = data->first_token;
 	while (token)
 	{
-		xtkn = expand_xtkn(token, data->exit_status, data->env_lst, data);
+		xtkn = expand_xtkn(token, data->env_lst, data);
 		if (!xtkn)
 		{
 			data->exit_status = 1;

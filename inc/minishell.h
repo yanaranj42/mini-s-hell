@@ -204,7 +204,7 @@ int 	check_append (t_general *data, t_token *token);
 
 //EXPANSOR
 int 	expansor(t_general *data);
-t_xtkn *expand_xtkn(t_token *token, int exit_status, t_env *env, t_general *data);
+t_xtkn *expand_xtkn(t_token *token, t_env *env, t_general *data);
 t_xtkn *token_to_xtoken(t_token *token, t_general *data);
 t_xtkn *create_xtoken (void);
 void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn);
