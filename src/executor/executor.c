@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 22:01:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/28 21:33:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void execute_cmd (t_general *data, t_cmd *cmd)
 		printf(PURPLE"\n# Resultado del Excecve:\n"END"\n"); // me lo pone en el archivo porque al tener el stdoutput redirigido, en vez de mostrar por pantalla lo mete en el archivo (AUNQUE TAMBIEN LO PRINTA POR PANTALLA Y NO SE PORQUE, EN FIN)
 		if (execve(cmd->path, cmd->argv, data->env_matrix) == -1) // si el execve no puede ejecutar el comando con la info que le hemos dado (ej: ls sin ningun path), nos da -1. El execve le dara un valor que recogera el padre para el exit status.
 		{
-			printf ("Execve failed");// ??????????????
+			printf ("Execve failed");// ?????????????? Potser millor perror, perque aixi sortira per el stderror, en canvi el printf surt perl stdoutput, i al ser un hijo potser no arribaria a imprimirse
 			exit(1);
 		}
 	}

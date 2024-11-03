@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 15:02:52 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/29 02:24:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,35 @@ void print_matrix_env(char **env_matrix)
 		printf("    %s\n", env_matrix[i]);
 		i++;
 	}
+}
+
+int fill_matrix (t_env 	*tmp, t_general *data, int *i)
+{
+	char 	*half_str;
+
+	while (tmp)
+	{
+		half_str = ft_strjoin (tmp->name, "=");
+		if (!half_str)
+		{
+			free_xtkns_list(data);
+			free_matrix_env(data); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
+			return (0);
+		}
+		data->env_matrix[*i] = ft_strjoin (half_str, tmp->value);
+		if (!data->env_matrix[*i])
+		{
+			//MENSAJE ERROR
+			free (half_str);
+			free_matrix_env(data);
+			free_xtkns_list(data);
+			return (0);
+		}
+		free (half_str);
+		(*i)++;
+		tmp = tmp->next;
+	}
+	return (1);
 }
 
 
@@ -48,7 +77,7 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 {
 	int		i;
 	t_env 	*tmp;
-	char 	*half_str;
+	
 
 	i = 0;
 	tmp = env_lst;
@@ -67,28 +96,9 @@ int		get_matrix_env(t_general *data, t_env *env_lst)
 			free_xtkns_list(data);
 			return (0);
 		}
-		while (tmp)
-		{
-			half_str = ft_strjoin (tmp->name, "=");
-			if (!half_str)
-			{
-				free_xtkns_list(data);
-				free_matrix_env(data); // no hace falta proteger que se haga solo si existe, porque la propia funcion lo gestiona
-				return (0);
-			}
-			data->env_matrix[i] = ft_strjoin (half_str, tmp->value);
-			if (!data->env_matrix[i])
-			{
-				//MENSAJE ERROR
-				free (half_str);
-				free_matrix_env(data);
-				free_xtkns_list(data);
-				return (0);
-			}
-			free (half_str);
-			i++;
-			tmp = tmp->next;
-		}
+		if (fill_matrix (tmp, data, &i) == 0)
+			return (0);
+		
 		data->env_matrix[i] = NULL;
 		//borrar
 		// printf("# Get matrix enviroment:\n\n");

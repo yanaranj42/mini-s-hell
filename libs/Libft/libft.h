@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:57:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/02/06 21:11:37 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:35:33 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 void	ft_write(int fd, const char *str, int size);
+
+/*-------------------------------EXTRA---------------------------*/
+char	*adapted_strjoin(char *s1, char *s2);
+char 	*strjoinchar (char *str, char c);
 
 /*-------------------------------BONUS---------------------------*/
 typedef struct s_list

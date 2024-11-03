@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 16:54:40 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/29 02:00:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,12 @@ void	free_exit(t_general *data) //PARA LIBERAR  EL READLINE ANTES DE HACER EXIT 
 }
 
 
-
-
+void free_expansor (t_general *data)
+{
+	data->exit_status = 1;
+	free_tokens_list(data);
+	free_xtkns_list(data);
+}
 
 
 void	free_env(t_env *head)

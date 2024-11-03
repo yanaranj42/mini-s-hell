@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 22:14:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/28 23:19:39 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	permission_denied(char *start)
 	exit(126);
 }
 
-void	command_not_found(char *start)
+void	command_not_found(char *start) //Como estas funciones con exit se llaman des de los hijos, ese exit se guarda en mi exit status gracias al wifexit que hay en el padre mientras espera que los hijos acaben. Cuando estos acaban rejoge el valor del exit y lo almacena en mi exitstatus y de ahi ya sale todo como toca
 {
 	write(2, RED, ft_strlen(RED)); // BORRAR
 	write(2, "💀 bash: ", 11);
@@ -63,7 +63,7 @@ void	unexpected_token_message(char *message)
 	write(2, END, ft_strlen(END));
 }
 
-void	perror_message(char *start, char *message)
+void	perror_message(char *start, char *message) // importante por ejemplo en los redirs
 {
 	if (start)
 	{

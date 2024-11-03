@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/25 01:54:22 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/10/29 02:31:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void 	debug_token(t_token *token, int num); // BORRAR
 char	**ft_token_split(char const *s, char del, t_general *data);
 
 	//UTILS
-	char 	*strjoinchar (char *str, char c); //IRA EN LIBFT, BORRAR LUEGO DE AQUI
+	
 	void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
 
 int 	check_syntax_errors (t_general *data);
@@ -204,24 +204,55 @@ int 	check_append (t_general *data, t_token *token);
 
 //EXPANSOR
 int 	expansor(t_general *data);
+int start_xtkns (t_general *data);
 t_xtkn *expand_xtkn(t_token *token, t_env *env, t_general *data);
 t_xtkn *token_to_xtoken(t_token *token, t_general *data);
 t_xtkn *create_xtoken (void);
-void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn);
-char	*adapted_strjoin(char *s1, char *s2); //LLEVAR A LIBFT
+void 	put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn);
+int 	build_expanded_content (t_xtkn	*xtkn, t_token *token, t_env *env, t_general *data);
+int 	there_is_expansion_to_manage (t_xtkn *xtkn, t_token *token, t_env *env, int * i, t_general *data);
+int 	there_is_expansion_to_manage_2 (t_xtkn *xtkn, t_token *token, int * i, t_general *data);
+int 	expand_regular_variable(t_token *token, t_xtkn	*xtkn,  t_env *env, int * i, t_general *data);
+char 	*identify_variable_to_expand (t_token *token, int *i);
+int 	miniquotes_conversion (t_xtkn	*xtkn, char *tmp);
+int 	quotes_conversion (t_xtkn	*xtkn, char *tmp, t_env *env);
+int 	build_heredoc_delimiter (t_xtkn	*xtkn, char *tmp);
+int 	manage_quotes_variable (t_xtkn	*xtkn, char *tmp, t_env *env);
+int 	regular_conversion (t_token *token, t_xtkn	*xtkn, char *tmp, t_env *env, int *i);
+int 	manage_inexistent_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, int *i);
+int 	manage_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, t_env *env);
+int 	expansor_variable_has_space (char *tmp, t_env *env);
+int 	expand_exit_status_variable (t_xtkn	*xtkn, int exit_status, int *i);
+int 	expand_digit_variable (t_general *data, t_token *token, t_xtkn	*xtkn, int *i);
+int 	manage_quotes_after_dollar (t_general *data, t_token *token, t_xtkn	*xtkn, int *i);
+int 	manage_miniquotes_after_dollar (t_general *data, t_token *token, t_xtkn	*xtkn, int *i);
+int 	manage_dollar_variable_between_quotes (t_general *data, t_token *token, t_xtkn	*xtkn, int *i);
+int 	check_expansor_variable_exists (char *tmp, t_env *env);
+int 	change_expansor_variable(t_xtkn *xtkn, char *tmp, t_env *env);
+int 	expand_final_value (t_xtkn *xtkn, t_env *env_tmp, int *i);
+int 	split_xtkn(t_xtkn	*xtkn, t_general *data);
+int 	retokenize_same_xtoken (t_xtkn	*xtkn, char **splited_content);
+int 	enlarge_xtkns_list (t_xtkn	*xtkn, t_general *data, int *i, char **splited_content, t_xtkn	*new_xtkn);
+int 	finish_xtkns (t_xtkn	*first_xtkn, t_general *data);
+int 	remove_quotes(t_xtkn	*xtkn, t_general *data);
+int 	build_content_without_quotes (t_xtkn *xtkn, t_general *data, char *tmp);
+void 	change_non_printable_chars(t_xtkn	*xtkn);
+
 
 //EXECUTOR
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
-void 	print_matrix_env(char **matrix_env); //borrar
+int 	fill_matrix (t_env 	*tmp, t_general *data, int *i)
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
-int get_command (t_general *data, t_xtkn	*first_xtkn);
-int do_heredoc(t_general *data);
+int 	get_command (t_general *data, t_xtkn	*first_xtkn);
 
 
-char *expand_line (char *line, t_env *env, int exit_status);
+int 	do_heredoc(t_general *data);
+
+
+char 	*expand_line (char *line, t_env *env, int exit_status);
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
 int		create_child(t_general *data, t_cmd *cmd, int i, int n);
@@ -284,7 +315,7 @@ void	unset_free(t_env *env);
 void	free_exit(t_general *data);
 void	free_data_paths (t_general *data);
 void	free_env(t_env *head);
-void free_splited_content (char **content);
+void 	free_splited_content (char **content);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 void 	free_xtkns_list(t_general *data);
@@ -292,6 +323,6 @@ void 	free_pretoken_argv (char **argv);
 void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);
 void 	free_expansor_splited_content (char **splited_content);
-
+void free_expansor (t_general *data);
 
 #endif

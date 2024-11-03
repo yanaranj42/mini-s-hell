@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/25 01:31:21 by mfontser         ###   ########.fr        #
+#    Updated: 2024/10/29 02:00:22 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ FILES += lexer/lexer.c
 
 FILES += parser/parser.c  parser/check_syntax_errors_1.c parser/check_syntax_errors_2.c
 
-FILES += expansor/expansor.c expansor/expand_xtkn.c
+FILES += expansor/expansor.c expansor/expand/expand_xtkn.c expansor/expand/token_to_xtoken.c expansor/expand/build_expanded_content.c expansor/expand/expand_regular_variable.c expansor/expand/miniquotes_conversion.c expansor/expand/quotes_conversion.c expansor/expand/regular_conversion.c expansor/expand/expand_special_variables.c expansor/expand/check_expansor_variable_exists.c expansor/expand/change_expansor_variable.c expansor/split/split_xtkn.c expansor/quotes/finish_xtkns.c
 
 #FILES += executor/pseudoexecutor.c
 FILES += executor/executor.c executor/get_matrix_enviroment.c executor/get_env_paths.c executor/get_command.c executor/do_heredoc.c executor/child_utils.c executor/father_status.c executor/heredoc_expansion.c
