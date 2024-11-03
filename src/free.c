@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/29 02:00:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:36:27 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,3 +251,12 @@ void free_cmd(t_general *data)
 // }
 
 //ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
+
+void	free_get_cmd_process(t_general *data)
+{
+	free_xtkns_list(data);
+	free_matrix_env(data);
+	free_data_paths (data);
+	free_cmd(data);
+	data->exit_status = 1;
+}

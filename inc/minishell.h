@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/29 02:31:42 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:40:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void 	change_non_printable_chars(t_xtkn	*xtkn);
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
-int 	fill_matrix (t_env 	*tmp, t_general *data, int *i)
+int 	fill_matrix (t_env 	*tmp, t_general *data, int *i);
 int		get_all_paths(t_env	*env_lst, t_general *data);
 t_env 	*there_is_path(t_env	*env_lst);
 int 	get_command (t_general *data, t_xtkn	*first_xtkn);
@@ -324,5 +324,7 @@ void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);
 void 	free_expansor_splited_content (char **splited_content);
 void free_expansor (t_general *data);
+void	free_get_cmd_process(t_general *data);
+
 
 #endif
