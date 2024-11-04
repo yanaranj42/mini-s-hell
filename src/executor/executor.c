@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 21:33:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/04 23:06:17 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ void check_input_redir (t_cmd *cmd, t_redir *redir)
 void check_heredoc_redir (t_cmd *cmd, t_redir *redir)
 {
 	cmd->fd_in = dup (redir->fd);
+	printf ("valor de redir->fd %d\n", redir->fd);
 	close (redir->fd);
 	if (dup2(cmd->fd_in, 0) == -1)
 	{
@@ -187,11 +188,11 @@ void check_redirs (t_cmd *cmd, t_redir *redir)
 {
 	if (redir->type == OUTPUT) // >
 		check_output_redir (cmd, redir);
-	if (redir->type == APPEND) // >>
+	else if (redir->type == APPEND) // >>
 		check_append_redir  (cmd, redir);
-	if (redir->type == INPUT) // <
+	else if (redir->type == INPUT) // <
 		check_input_redir (cmd, redir);
-	if (redir->type == HEREDOC) // <<
+	else if (redir->type == HEREDOC) // <<
 		check_heredoc_redir (cmd, redir);
 }
 

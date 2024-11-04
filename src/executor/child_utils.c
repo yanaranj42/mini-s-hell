@@ -6,13 +6,27 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/09/14 23:06:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/04 19:24:59 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 #include "libft.h"
+
+int build_command_path (char	**tmp, char	**tmp2, char *str, char *cmd_argv)
+{
+	*tmp = ft_strjoin(str, "/"); //cojo el path del directorio actual y pongo / al final
+	if (!*tmp)
+		return (0);
+	*tmp2 = ft_strjoin(*tmp, cmd_argv); // a lo anterior le añado el comando que tengo en la línea
+	if (!*tmp2)
+	{
+		free(*tmp);
+		return (0);
+	}
+	return (1);
+}
 
 
 char *check_cmd_current_directory(char *cmd_argv)
@@ -27,19 +41,9 @@ char *check_cmd_current_directory(char *cmd_argv)
 	if(getcwd(cwd, PATH_MAX))
 	{
 		printf ("     >>> El cwd es: %s\n", cwd);
-		tmp = ft_strjoin(cwd, "/"); //cojo el path del directorio actual y pongo / al final
-		if (!tmp)
-		{
-			//MENSAJE ERROR
+		
+		if (build_command_path (&tmp, &tmp2, cwd, cmd_argv) == 0)
 			return (NULL);
-		}
-		tmp2 = ft_strjoin(tmp, cmd_argv); // a lo anterior le añado el comando que tengo en la línea
-		if (!tmp2)
-		{
-			free(tmp);
-			//MENSAJE ERROR
-			return (NULL);
-		}
 		printf ("       Pruebo el path relativo: %s\n", tmp2);
 		printf ("       Al comprobar si se puede acceder...\n");
 		if (access(tmp2, F_OK) == 0)
@@ -69,19 +73,8 @@ char	*check_cmd_relative_path(char *cmd_argv, char *path)
 	char	*tmp;
 	char	*tmp2;
 	printf("\n       En la linea de comandos me han pasado un comando a secas -> CHECK RUTA RELATIVA\n");
-	tmp = ft_strjoin(path, "/"); //cojo el path entero, pongo / al final
-	if (!tmp)
-	{
-		//MENSAJE ERROR
-		return (NULL);
-	}
-	tmp2 = ft_strjoin(tmp, cmd_argv); // a lo anterior le añado el comando que tengo en la línea
-	if (!tmp2)
-	{
-		free(tmp);
-		//MENSAJE ERROR
-		return (NULL);
-	}
+	if (build_command_path (&tmp, &tmp2, path, cmd_argv) == 0)
+			return (NULL);
 	printf ("         Pruebo el path relativo: %s\n", tmp2);
 	printf ("           Al comprobar si se puede acceder...\n");
 	if (access(tmp2, F_OK) == 0)
@@ -108,7 +101,6 @@ char	*check_cmd_relative_path(char *cmd_argv, char *path)
 
 char	*check_cmd_absolut_path(char *cmd_argv) // puede ser que en la linea de comandos nos pasen la ruta absoluta directa, y que no haya path en el enviroment no impediria ejecutar el comando.
 {
-
 	if (ft_strchr(cmd_argv, '/'))
 	{
 		printf("\n       En la linea de comandos me han pasado una RUTA ABSOLUTA...\n");

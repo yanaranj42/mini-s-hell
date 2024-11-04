@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/03 19:40:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/04 20:35:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int 	retokenize_same_xtoken (t_xtkn	*xtkn, char **splited_content);
 int 	enlarge_xtkns_list (t_xtkn	*xtkn, t_general *data, int *i, char **splited_content, t_xtkn	*new_xtkn);
 int 	finish_xtkns (t_xtkn	*first_xtkn, t_general *data);
 int 	remove_quotes(t_xtkn	*xtkn, t_general *data);
-int 	build_content_without_quotes (t_xtkn *xtkn, t_general *data, char *tmp);
+int 	build_content_without_quotes (t_xtkn *xtkn, t_general *data, char **tmp);
 void 	change_non_printable_chars(t_xtkn	*xtkn);
 
 
@@ -252,7 +252,7 @@ int 	get_command (t_general *data, t_xtkn	*first_xtkn);
 int 	do_heredoc(t_general *data);
 
 
-char 	*expand_line (char *line, t_env *env, int exit_status);
+char 	*expand_line (char *line, t_general *data);
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
 int		create_child(t_general *data, t_cmd *cmd, int i, int n);
@@ -325,6 +325,7 @@ void 	free_cmd(t_general *data);
 void 	free_expansor_splited_content (char **splited_content);
 void free_expansor (t_general *data);
 void	free_get_cmd_process(t_general *data);
+void free_heredoc_process (t_general *data);
 
 
 #endif

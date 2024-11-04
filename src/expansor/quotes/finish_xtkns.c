@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/29 01:34:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/04 20:32:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void change_non_printable_chars(t_xtkn	*xtkn)
 }
 
 
-int build_content_without_quotes (t_xtkn *xtkn, t_general *data, char *tmp)
+int build_content_without_quotes (t_xtkn *xtkn, t_general *data, char **tmp)
 {
 	int i;
 
@@ -49,8 +49,8 @@ int build_content_without_quotes (t_xtkn *xtkn, t_general *data, char *tmp)
 			continue ;
 		}
 		
-		tmp = strjoinchar (tmp, xtkn->content[i]);
-		if (!tmp)
+		*tmp = strjoinchar (*tmp, xtkn->content[i]);
+		if (!*tmp)
 			return (0);
 		i++;
 	}
@@ -67,11 +67,10 @@ int remove_quotes(t_xtkn	*xtkn, t_general *data)
 	tmp = ft_strdup (""); //IMPORTANTISIMO inicializar, le meto un string vacio para que ya empiece con \0 en caso de que no haya nada mas que las comillas y el contenido se quede en \0, en vez de NULL. Ahora de este modo tengo un malloc. Es lo que me interesa, porque si esta entre comillas, aunque dentro no tenga nada, tengo que mantener el xtoken con un \0 dentro.
 	if (!tmp)
 		return (0);
-
-
-	if (build_content_without_quotes (xtkn, data, tmp) == 0)
+	printf ("valor tmp %s\n", tmp);
+	if (build_content_without_quotes (xtkn, data, &tmp) == 0)
 		return (0);
-	
+	printf ("valor tmp %s\n", tmp);
 	free (xtkn->content);
 	xtkn->content = ft_strdup (tmp);
 	if (!xtkn->content)

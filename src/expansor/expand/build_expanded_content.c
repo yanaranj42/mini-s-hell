@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 19:03:22 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:21:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int build_expanded_content (t_xtkn	*xtkn, t_token *token, t_env *env, t_general 
 {
 	int i;
 	
-	printf ("\n🟠 Toquen \n"); //BORRAR
+	printf ("\n🟠 Token \n"); //BORRAR
 	printf("\n# Expandir contenido del token |%s|\n", token->content);
 	i = 0;
 	xtkn->heardoc_expansion = 1;
