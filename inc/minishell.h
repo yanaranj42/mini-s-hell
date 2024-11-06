@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 04:23:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:20:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,14 @@
 #define PURPLE 	"\e[1;95m"
 #define ORANGE  "\e[1;38;2;255;128;0m"
 
-/*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
-#define	ERR01	"Malloc error\n"
-#define ERR02	"ENV creation failiure"
-
-
-
-
+/*STANDARD*/
 #define STDIN	0
 #define STDOUT	1
 #define STDERR	2
 
+/*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
+#define	ERR01	"Malloc error\n"
+#define ERR02	"ENV creation failiure"
 
 /*PARSING*/
 #define PIPE 1
@@ -53,10 +50,6 @@
 #define APPEND 5 // >>  STDOUT_DOUBLE_REDIRECTION
 #define FILE_REDIRECTION 6
 #define CMD_ARGV 7
-
-/*OTROS
-#define LONG_MIN "-9223372036854775807"
-#define LONG_MAX "9223372036854775807"*/
 
 
 typedef struct s_quotes
@@ -74,8 +67,6 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	//char 		**argv;
-	//int 		argc;
 	char 		*content; 
 	struct 		s_token *back;
 	struct 		s_token *next;
@@ -139,86 +130,68 @@ typedef struct s_general
 	int 		exit_status;
 	int			pipe_fd[2];
 	int 		next_cmd_input_fd;
-
 }				t_general;
 
-
-// | | -> error 2
-// g_exit_status = 2;
-// readline drakishell: $? // en la fase de expansor sustituyo $? por el valor de g_exit_status, osea 2 en este caso.
-// despues de expansor , viene ejecutor, que estoy ejecutando , un token que antes tenia argv[0] -> $? pero ahora es argv[0] -> 2
-//por lo tanto lo que estoy ejecutando es como si directamente hubiera puesto un 2
-
-// | | -> error 2
-// g_exit_status = 2;
-// echo $?
-// En el expansor me queda echo 2, porque se ha expandido al valor de g_exit_status y me imprime el 2 que le he pedido con el echo
-
-
-
-
-//creo la variable como tal vs un puntero, pero la variable me faltaria crearla en la funcion que toque, no?
-
-
-
-
-
-//CREATE OWN ENVIROMENT
-int		get_own_env(t_general *data, char **env);
-void	env_to_lst(t_general *data, t_env *new_env);
 
 
 //INITIALITATIONS
 void 	init_data_values(t_general *data);
 void	init_quote_values(t_general *data); 
 
+//CREATE OWN ENVIROMENT
+int		get_own_env(t_general *data, char **env);
+void	env_to_lst(t_general *data, t_env *new_env);
 
 //LEXER
 int 	lexer (t_general *data);
 void 	delete_spaces (t_general *data);
+int 	fill_updated_line (t_general *data);
 int 	review_closed_quotes (t_general *data);
 int 	delete_useless_spaces (t_general *data);
 
 
 //PARSER
 int 	parser(t_general *data);
-int 	is_real_separator(char c, t_general *data);
+int		prepare_pretoken(t_general *data, int *i, char ***argv);
 int 	take_pretoken (t_general *data, int *i);
+int		fill_separator_pretoken(t_general *data, int *i);
+int		fill_word_pretoken(t_general *data, int *i);
+int		is_real_separator(char c, t_general *data);
+int		build_tokens_list(t_general *data, char ***argv);
 t_token	*create_token (t_general *data);
 void 	put_new_list_node (t_general *data, t_token *new_token);
-//t_token *create_token_content (t_general *data, t_token *new_token);
 void 	classify_token_type (t_token *new_token);
-void 	debug_token(t_token *token, int num); // BORRAR
-char	**ft_token_split(char const *s, char del, t_general *data);
-
-	//UTILS
-	
-	void 	account_quotes (char c, t_general *data); //revisar si hay que reubicar
-
 int 	check_syntax_errors (t_general *data);
+int		check_syntax_errors_2(t_general *data, t_token *tmp_token);
+void	check_number_of_heredocs(t_general *data);
 int 	check_pipe (t_general *data, t_token *token);
 int 	check_input (t_general *data, t_token *token);
 int 	check_heredoc (t_general *data, t_token *token);
 int 	check_output (t_general *data, t_token *token);
 int 	check_append (t_general *data, t_token *token);
 
+//UTILS
+char	**ft_token_split(char const *s, char del, t_general *data);
+
+
+
 //EXPANSOR
 int 	expansor(t_general *data);
-int start_xtkns (t_general *data);
-t_xtkn *expand_xtkn(t_token *token, t_env *env, t_general *data);
+int 	start_xtkns (t_general *data);
+t_xtkn *expand_xtkn(t_token *token, t_general *data);
 t_xtkn *token_to_xtoken(t_token *token, t_general *data);
 t_xtkn *create_xtoken (void);
 void 	put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn);
-int 	build_expanded_content (t_xtkn	*xtkn, t_token *token, t_env *env, t_general *data);
-int 	there_is_expansion_to_manage (t_xtkn *xtkn, t_token *token, t_env *env, int * i, t_general *data);
+int 	build_expanded_content (t_xtkn *xtkn, t_token *token, t_general *data);
+int 	there_is_expansion_to_manage (t_xtkn *xtkn, t_token *token, int * i, t_general *data);
 int 	there_is_expansion_to_manage_2 (t_xtkn *xtkn, t_token *token, int * i, t_general *data);
-int 	expand_regular_variable(t_token *token, t_xtkn	*xtkn,  t_env *env, int * i, t_general *data);
+int 	expand_regular_variable(t_token *token, t_xtkn	*xtkn, int * i, t_general *data);
 char 	*identify_variable_to_expand (t_token *token, int *i);
 int 	miniquotes_conversion (t_xtkn	*xtkn, char *tmp);
-int 	quotes_conversion (t_xtkn	*xtkn, char *tmp, t_env *env);
+int 	quotes_conversion (t_xtkn *xtkn, char *tmp, t_env *env);
 int 	build_heredoc_delimiter (t_xtkn	*xtkn, char *tmp);
 int 	manage_quotes_variable (t_xtkn	*xtkn, char *tmp, t_env *env);
-int 	regular_conversion (t_token *token, t_xtkn	*xtkn, char *tmp, t_env *env, int *i);
+int 	regular_conversion (t_token *token, t_xtkn	*xtkn, char *tmp,  t_env *env, int *i);
 int 	manage_inexistent_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, int *i);
 int 	manage_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, t_env *env);
 int 	expansor_variable_has_space (char *tmp, t_env *env);
@@ -233,20 +206,20 @@ int 	expand_final_value (t_xtkn *xtkn, t_env *env_tmp, int *i);
 int 	split_xtkn(t_xtkn	*xtkn, t_general *data);
 int 	retokenize_same_xtoken (t_xtkn	*xtkn, char **splited_content);
 int 	enlarge_xtkns_list (t_xtkn	*xtkn, t_general *data, int *i, char **splited_content, t_xtkn	*new_xtkn);
-int 	finish_xtkns (t_xtkn	*first_xtkn, t_general *data);
-int 	remove_quotes(t_xtkn	*xtkn, t_general *data);
+int 	finish_xtkns (t_xtkn *first_xtkn, t_general *data);
+int 	remove_quotes(t_xtkn *xtkn, t_general *data);
 int 	build_content_without_quotes (t_xtkn *xtkn, t_general *data, char **tmp);
-void 	change_non_printable_chars(t_xtkn	*xtkn);
+void 	change_non_printable_chars(t_xtkn *xtkn);
 
 
 //EXECUTOR
 int 	executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
-int 	fill_matrix (t_env 	*tmp, t_general *data, int *i);
+int 	fill_matrix (t_env *tmp, t_general *data, int *i);
 int		get_all_paths(t_env	*env_lst, t_general *data);
-t_env 	*there_is_path(t_env	*env_lst);
-int 	get_command (t_general *data, t_xtkn	*first_xtkn);
+t_env 	*there_is_path(t_env *env_lst);
+int 	get_command (t_general *data, t_xtkn *first_xtkn);
 
 
 int 	do_heredoc(t_general *data);
@@ -298,6 +271,9 @@ void	father_status(t_general *data);
 	void	add_upd_env(t_general *data, char *name, char *value);
 
 
+//UTILS
+void 	account_quotes (char c, t_general *data);
+
 //ERROR_MESSAGES
 void	perror_message(char *start, char *message);
 void 	ambiguous_redirect (char *start);
@@ -321,11 +297,12 @@ void 	free_splited_content (char **content);
 void	free_before_end(t_general *data);
 void 	free_tokens_list(t_general *data);
 void 	free_xtkns_list(t_general *data);
-void 	free_pretoken_argv (char **argv);
+void 	free_pretoken_argv (char ***argv);
 void	free_matrix_env(t_general *data);
 void 	free_cmd(t_general *data);
 void 	free_expansor_splited_content (char **splited_content);
 void free_expansor (t_general *data);
+void free_parsing_process (t_general *data, char ***argv);
 void	free_get_cmd_process(t_general *data);
 void free_executor_process (t_general *data);
 

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 23:11:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:10:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int manage_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, t_env *env
 }
 
 int manage_inexistent_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp, int *i)
-{
-	//si hay un $nada y luego cosas, no entra y simplemente no se mete nada en content. Si lo siguiente es un $nada y ya no hay nada mas, entonces metera de golpe los dos $nada juntos en el contenido. Si en cambio despues de este segundo hay algo mas, simplemente saltara y se metera unicamente lo que hay a continuacion
+{ 
 	if (!xtkn->content && !token->content[*i] && token->back && (token->back->type == INPUT || token->back->type == OUTPUT || token->back->type == APPEND))
 	{
 		xtkn->content = ft_strdup (token->content);
@@ -71,7 +70,7 @@ int manage_inexistent_regular_variable (t_xtkn	*xtkn, t_token *token, char *tmp,
 int regular_conversion (t_token *token, t_xtkn	*xtkn, char *tmp, t_env *env, int *i)
 {
 
-	if (xtkn->back && xtkn->back->type == HEREDOC) // Si antes tiene un heredoc quiere decir que es un limitador y no se tiene que expandir
+	if (xtkn->back && xtkn->back->type == HEREDOC)
 	{
 		
 		if (build_heredoc_delimiter (xtkn, tmp) == 0)

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 21:16:42 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:14:34 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 char *identify_variable_to_expand (t_token *token, int *i)
 {
 	char *tmp;
-	tmp = NULL; //IMPORTANTISIMO inicializar, sino la primera vez que hago el strjoinchar coge un valor random y no funciona bien.
+	tmp = NULL;
 
 	while (token->content[*i] && (ft_isalpha(token->content[*i]) == 1 || ft_isdigit(token->content[*i]) == 1 || token->content[*i] == '_'))
 	{
@@ -30,7 +30,7 @@ char *identify_variable_to_expand (t_token *token, int *i)
 	return (tmp);
 }
 
-int expand_regular_variable(t_token *token, t_xtkn	*xtkn,  t_env *env, int *i, t_general *data)
+int expand_regular_variable(t_token *token, t_xtkn	*xtkn, int *i, t_general *data)
 {
 	char *tmp;
 
@@ -45,12 +45,12 @@ int expand_regular_variable(t_token *token, t_xtkn	*xtkn,  t_env *env, int *i, t
 	}
 	else if (data->qdata.quotes == 1)
 	{
-		if (quotes_conversion (xtkn, tmp, env) == 0)
+		if (quotes_conversion (xtkn, tmp, data->env_lst) == 0)
 			return (0);
 	}
 	else
 	{
-		if (regular_conversion (token, xtkn, tmp, env, i) == 0)
+		if (regular_conversion (token, xtkn, tmp, data->env_lst, i) == 0)
 			return (0);
 	}
 	free(tmp);

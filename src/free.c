@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 03:08:07 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 23:55:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,17 +115,9 @@ void free_tokens_list(t_general *data)
  	while (data->first_token)
 	{
 		tmp_token = data->first_token->next;
-		// printf ("token actual es = %p\n", data->first_token);
-		// while (data->first_token->argv && data->first_token->argv[i]) 
-		// {
-		// 	printf("limpio argv[%d] = %s\n", i, data->first_token->argv[i]);
-		// 	free(data->first_token->argv[i]);
-		// 	i++;
-		// }
-		// free(data->first_token->argv); //me cargo el argv del token
 		printf("limpio el contenido del token = %s\n", data->first_token->content);
-		free(data->first_token->content); //SI?????????????????????//me cargo el contenido del token
-		free(data->first_token); //mato el token actual
+		free(data->first_token->content); 
+		free(data->first_token); 
 		data->first_token = NULL;
 		data->first_token = tmp_token;
 		printf("next token es = %p\n\n", data->first_token);
@@ -148,17 +140,19 @@ void free_xtkns_list(t_general *data)
 }
 
 
-void 	free_pretoken_argv (char **argv)
+void 	free_pretoken_argv (char ***argv)
 {
 	int i;
 	i = 0;
-	while (argv && argv[i]) // SI??????????
+	char **tmp = *argv;
+	
+	while (tmp && tmp[i]) // SI??????????
 	{
-		free(argv[i]);
+		free(tmp[i]);
 		i++;
 	}
-	free(argv); // SI??????????
-	argv = NULL; // SI??????????
+	free(tmp); // SI??????????
+	tmp = NULL; // SI??????????
 }
 
 void	free_matrix_env(t_general *data) //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
@@ -251,6 +245,15 @@ void free_cmd(t_general *data)
 // }
 
 //ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
+
+void free_parsing_process (t_general *data, char ***argv)
+{
+	free(data->pretoken);
+	data->pretoken = NULL;
+	free_pretoken_argv(argv);
+	free_tokens_list(data);
+	data->exit_status = 1;
+}
 
 void	free_get_cmd_process(t_general *data)
 {

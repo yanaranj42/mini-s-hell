@@ -6,12 +6,12 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/10 00:15:29 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:44:15 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 void	env_to_lst(t_general *data, t_env *my_env)
 {
@@ -39,7 +39,7 @@ int	get_own_env(t_general *data, char **env)
 
 	i = -1;
 	if (!env)
-		return (0); //Primero asegurarse de que hay env, antes de intentar recorrerlo
+		return (0);
 	while (env[++i])
 	{
 		s_env = malloc(sizeof(t_env));
@@ -50,12 +50,11 @@ int	get_own_env(t_general *data, char **env)
 		s_env->next = NULL;
 		env_to_lst(data, s_env);
 		if (!s_env->name || !s_env->value)
+		{
+			printf("Error: It's not possible to copy the enviroment\n");
+			data->exit_status = 1;
 			return (free_env(data->env_lst), 0);
-			//FALTARIA EL MENSAJE DE ERROR, NO?
+		}
 	}
-	//borrar:
-	ft_env(data->env_lst); 
-	printf("\n");
 	return (1);
 }
- 

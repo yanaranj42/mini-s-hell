@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/29 02:04:08 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:14:11 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int start_xtkns (t_general *data)
 	token = data->first_token;
 	while (token)
 	{
-		xtkn = expand_xtkn(token, data->env_lst, data);
+		xtkn = expand_xtkn(token, data);
 		if (!xtkn)
 			return (0);
 		printf (" *-._.-* Token expandido |%s|\n\n", xtkn->content);

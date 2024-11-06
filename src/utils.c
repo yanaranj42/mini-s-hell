@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_parser_utils.c                               :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:50:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 18:49:43 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 05:52:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,3 @@ void account_quotes (char c, t_general *data)
 				data->qdata.miniquotes  = 0;
 		}
 }
-
-
-
-
-// En cuanto a gestionar memoria, antes igualaba una variable temporal a pretoken para que a la siguiente vuelta de entrar en strjoinchar alguien siguiera apuntando al antiguo malloc (porque al entrar en la funcion le digo que cree un nuevo malloc para añadir un nuevo caracter y pretoken apunta al nuevo malloc)
-// Entonces, tengo que gestionar que si al entrar a la funcion el malloc falla, si pretoken se convierte en null, que alguien libere lo que habia antes.
-// Por otro lado, tengo que asegurarme tambien de que si todo va bien, antes de retornar el nuevo string, se libere el viejo. 
-// Asi ya no hace falta usar ningun tmp, que lo usaba solo para poder liberar la memoria antigua.

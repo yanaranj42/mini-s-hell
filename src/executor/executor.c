@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 03:09:02 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 06:36:36 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -478,7 +478,7 @@ int executor (t_general *data)
 			close (copy_stdout);
 			exit (1);	
 		}
-		dup2 (copy_stdout, 1);
+		if (dup2 (copy_stdout, 1) == -1)
 		{
 			perror_message(NULL, "Problem with dup2 of builtin std_output");
 			free_executor_process (data);
