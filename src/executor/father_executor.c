@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 02:01:38 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 02:59:18 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int check_father_output_redir (t_cmd *cmd, t_redir *redir, t_general *data)
 		free_executor_process (data);
 		return (0);
 	}
-	printf ("llego3\n");
 	if (dup2(cmd->fd_out, 1) == -1)
 	{
 		perror_message(NULL, "Problem with dup2 of file std_output");
 		free_executor_process (data);
+		close(cmd->fd_out);
 		return (0);
 	}
 	
@@ -94,6 +94,7 @@ int check_father_append_redir (t_cmd *cmd, t_redir *redir, t_general *data)
 	{
 		perror_message(NULL, "Problem with dup2 of file std_output");
 		free_executor_process (data);
+		close(cmd->fd_out);
 		return (0);
 	}
 	close(cmd->fd_out);
@@ -131,6 +132,7 @@ int check_father_input_redir (t_cmd *cmd, t_redir *redir, t_general *data)
 	{
 		perror_message(NULL, "Problem with dup2 of file std_input");
 		free_executor_process (data);
+		close(cmd->fd_in);
 		return (0);
 	}
 	close(cmd->fd_in);
@@ -147,6 +149,7 @@ int check_father_heredoc_redir (t_cmd *cmd, t_redir *redir, t_general *data)
 	{
 		perror_message(NULL, "Problem with dup2 of heredoc std_input");
 		free_executor_process (data);
+		close(cmd->fd_in);
 		return (0);
 	}
 	close(cmd->fd_in);
@@ -185,3 +188,6 @@ int check_father_redirs (t_general *data, t_cmd *first_cmd)
 	}
 	return (1);
 }
+
+
+//Estoy en el padre, por lo que si redirigo el stdoutput , todos los printfs y que haga desde ahi se redirigiran. En el hijo no pasa porque luego se muere, pero aqui se queda el cambio permanente.

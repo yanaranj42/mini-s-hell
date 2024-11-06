@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/06 01:26:36 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/06 03:32:33 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ FILES += own_env/own_enviroment.c
 
 FILES += lexer/lexer.c 
 
-FILES += parser/parser.c  parser/check_syntax_errors_1.c parser/check_syntax_errors_2.c
+FILES += parser/parser.c  parser/prepare_syntax_errors_checking.c parser/check_syntax_errors.c
 
 FILES += expansor/expansor.c expansor/expand/expand_xtkn.c expansor/expand/token_to_xtoken.c expansor/expand/build_expanded_content.c expansor/expand/expand_regular_variable.c expansor/expand/miniquotes_conversion.c expansor/expand/quotes_conversion.c expansor/expand/regular_conversion.c expansor/expand/expand_special_variables.c expansor/expand/check_expansor_variable_exists.c expansor/expand/change_expansor_variable.c expansor/split/split_xtkn.c expansor/quotes/finish_xtkns.c
 

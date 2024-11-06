@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_syntax_errors_1.c                            :+:      :+:    :+:   */
+/*   prepare_syntax_errors_checking.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/25 00:04:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 04:24:27 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,27 @@
 // Entoces generar una funcion void syntax_error (int i), y segun el int que le llega printa un error u otro, para agrupar. 
 // Sino lo dejamos tal cual dentro de las funciones aqui, ya que es una linea y no cambia nada a nivel de espacio.
 
+void check_number_of_heredocs (t_general *data)
+{
+	t_token *tmp_token;
+	int count;
 
+	tmp_token = data->first_token;
+	count = 0;
+	while (tmp_token)
+	{
+		if (tmp_token->type == HEREDOC)
+			count++;
+		tmp_token = tmp_token->next;
+	}
+	if (count > 16)
+	{
+		free (data->line);
+		free_tokens_list(data);
+		maximum_heredoc_exceeded ();
+		exit (1);
+	}
+}
 
 int check_syntax_errors_2 (t_general *data, t_token *tmp_token)
 {
@@ -68,5 +88,6 @@ int check_syntax_errors (t_general *data)
 		}
 		tmp_token = tmp_token->next;
 	}
+	check_number_of_heredocs (data);
 	return (1);
 }

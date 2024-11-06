@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 00:02:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 03:08:07 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void 	free_pretoken_argv (char **argv)
 	argv = NULL; // SI??????????
 }
 
-void	free_matrix_env(t_general *data)
+void	free_matrix_env(t_general *data) //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
 {
 	int	i;
 
@@ -268,4 +268,3 @@ void free_executor_process (t_general *data)
 	free_cmd(data);
 	data->exit_status = 1;
 }
-

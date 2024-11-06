@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 02:01:38 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 03:09:02 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,12 +433,14 @@ int	get_children(t_general *data)
 }
 
 
-
 //Cuando en pipex poniamos exit (1), es 1 porque es el valor que solemos dar cuando fallan procesos internos tipo malloc, fork, dup2... 
 //En el return del main hacemos lo mismo
 
 int executor (t_general *data)
 {
+	int copy_stdin;
+	int copy_stdout;
+
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
 
 	if (get_matrix_env (data, data->env_lst) == 0) // ESTO SE HARA EN INICIALIZACIONES
@@ -463,10 +465,29 @@ int executor (t_general *data)
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
 	{
 		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
+		copy_stdin = dup(STDIN_FILENO); //STDIN_FILENO es el descriptor para el standard input defniido en el header unistd.
+		copy_stdout = dup(STDOUT_FILENO);
 		if (check_father_redirs(data, data->first_cmd) == 0)
-			return (0);
-		write (2, "hola\n", 5);
+		 	return (0);
 		execute_builtin(data, data->first_cmd);
+		if (dup2 (copy_stdin, 0) == -1)
+		{
+			perror_message(NULL, "Problem with dup2 of builtin std_input");
+			free_executor_process (data);
+			close (copy_stdin);
+			close (copy_stdout);
+			exit (1);	
+		}
+		dup2 (copy_stdout, 1);
+		{
+			perror_message(NULL, "Problem with dup2 of builtin std_output");
+			free_executor_process (data);
+			close (copy_stdin);
+			close (copy_stdout);
+			exit (1);
+		}
+		close (copy_stdin);
+		close (copy_stdout);
 	}
 	else if (get_children(data) == 0)
 		return (0);

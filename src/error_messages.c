@@ -6,13 +6,21 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 00:02:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 04:23:07 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "libft.h"
 #include "minishell.h"
+
+void maximum_heredoc_exceeded (void)
+{
+	write(2, RED, ft_strlen(RED));
+	write(2, "💀 bash: ", 11);
+	write(2, ": maximum here-document count exceeded", 38);
+	write(2, END, ft_strlen(END));
+}
 
 void	no_such_file_or_directory(char *start)
 {
