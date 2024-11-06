@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/04 04:25:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 00:02:16 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,10 +261,11 @@ void	free_get_cmd_process(t_general *data)
 	data->exit_status = 1;
 }
 
-void free_heredoc_process (t_general *data)
+void free_executor_process (t_general *data)
 {
 	free_matrix_env(data);
 	free_data_paths (data);
 	free_cmd(data);
 	data->exit_status = 1;
 }
+

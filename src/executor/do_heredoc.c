@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/04 22:19:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 00:01:37 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int create_heredoc_pipe(t_general *data, int *pipe_fd)
 {
 	if (pipe(pipe_fd) == -1)
 	{
-		free_heredoc_process (data);
+		free_executor_process (data);
 		return (0);
 	}
 	return (1);

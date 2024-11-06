@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/24 16:55:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 01:25:17 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int main(int argc, char **argv, char **env)
 		//EXIT STATUS!!!!!!!!!!!!
 		if (executor (&data)== 0)
 		{
-			free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
+			//free_matrix_env(&data); //Podria ser que hubiese fallado al hacer el env y ya estuviese freeseado, por lo que estaria volviendo a intentar a hacer un free de lo mismo. Para protegerlo, dentro de la funcion free siempre lo acabo igualando a null, asi aunque vuelva a hacer free del env no habra double free.
 			free (data.line);
-			free_cmd(&data);
+			//free_cmd(&data);
 			continue; // para volver a empezar el while
 		}
 		printf (GREEN"\n******************* FREE *******************\n"END);

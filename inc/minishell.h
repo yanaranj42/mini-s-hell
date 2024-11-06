@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/04 20:35:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 01:28:04 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,7 @@ char	*check_cmd_absolut_path(char *cmd_argv);
 char	*check_cmd_relative_path(char *cmd_argv, char *path);
 void	execute_builtin(t_general *data, t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
+int check_father_redirs (t_general *data,t_cmd *first_cmd);
 void	father_status(t_general *data);
 
 
@@ -325,7 +326,7 @@ void 	free_cmd(t_general *data);
 void 	free_expansor_splited_content (char **splited_content);
 void free_expansor (t_general *data);
 void	free_get_cmd_process(t_general *data);
-void free_heredoc_process (t_general *data);
+void free_executor_process (t_general *data);
 
 
 #endif

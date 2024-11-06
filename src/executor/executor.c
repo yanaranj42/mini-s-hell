@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/04 23:06:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/06 02:01:38 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	/*CHECKING BUILTINS WORK*/
 	execute_cmd (data, cmd);
 	
-	printf("SOY UN HIJO Y ME VOY A MORIR\n");
+	printf("SOY UN HIJO Y ME MUERO\n");
 	exit (0);
 }
 
@@ -338,10 +338,7 @@ int duplicate_pipe_fd0 (t_general *data)
 	data->next_cmd_input_fd = dup(data->pipe_fd [0]); // el fd output del primer comando sera el fd input del segundo comando y lo va a leer del fd[0], el de lectura. Con el dup creo una copia del fd, ya que si solo lo igualo hago que los dos apunten al mismo espacio de memoria, y si cierro uno jodo el otro. Asi son dos espacios de memoria distintos
 	if (data->next_cmd_input_fd == -1)
 	{
-		free_matrix_env(data);
-		free_data_paths (data);
-		free_cmd(data);
-		data->exit_status = 1;
+		free_executor_process (data);
 		return (0);
 	}
 	close(data->pipe_fd[0]); // tengo que cerrar este fd en el padre, pero despues de hacer la copia
@@ -354,10 +351,7 @@ int init_new_process (t_general *data, t_cmd *cmd)
 	if (cmd->pid == -1)
 	{
 		//SI FALLA EL FORK TENGO QUE HACER CLOSE DE LOS FD???
-		free_matrix_env(data);
-		free_data_paths (data);
-		free_cmd(data);
-		data->exit_status = 1;
+		free_executor_process (data);
 		perror_message(NULL, "Fork");
 		close(data->pipe_fd[1]);
 		close(data->pipe_fd[0]);
@@ -372,6 +366,7 @@ int	get_children(t_general *data)
 	int			i;
 	int 		n;
 	t_cmd 		*cmd;
+	t_redir *redir;
 
 	printf ("\n# Get children:\n");
 	i = 0;
@@ -387,6 +382,7 @@ int	get_children(t_general *data)
 	data->next_cmd_input_fd = -1;
 	while (i < n)
 	{
+		redir = cmd->first_redir;
 		//fd [0] = lectura
 		//fd [1] = escritura
 		if (data->pipe_fd[0] >= 0)
@@ -424,6 +420,12 @@ int	get_children(t_general *data)
 		//Si no lo inicializo, al usarlo le da un valor random y si coincide con el 0 (stdin), al cerrar el fd1 de forma indiscriminada, haya creado pipe o no, cerrare el stdin y en la siguiente vuelta el readline inicial del main no podra acceder a la linea.
 		close(data->pipe_fd[1]); // cierro el fd en el padre. Si no cierro la pipe de escritura del cmd anterior, el siguiente cmd piensa que aun le pueden escribir cosas y se queda eternamente escuchando desde el fd 0, por eso no me escribe nunca el resultado, porque el wc hasta que no acaba el archivo no escribe nada, en cambio otros comandos como el cat escriben linea a linea, por eso el cat si funcionaba igualmente.
 		close(data->next_cmd_input_fd); // cierro el fd en el padre
+		while (redir)
+		{
+			if (redir->type == HEREDOC)
+				close(redir->fd);
+			redir = redir->next;
+		}
 		cmd = cmd->next;
 		i++;
 	}
@@ -438,7 +440,7 @@ int	get_children(t_general *data)
 int executor (t_general *data)
 {
 	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
-	
+
 	if (get_matrix_env (data, data->env_lst) == 0) // ESTO SE HARA EN INICIALIZACIONES
 	{
 		printf("Failure in matrix enviroment creation");
@@ -461,12 +463,13 @@ int executor (t_general *data)
 	if (check_executor_type (data) == 1) //Solo tiene que hacerse el builtin en el padre si es el unico comando, sin ninguna pipe. Si hay pipe ya se hace en el hijo directamente, independientemente de que sea el primer o el ultimo comando
 	{
 		printf (PURPLE"\n# Resultado de la ejecución con built-in:\n"END"\n");
+		if (check_father_redirs(data, data->first_cmd) == 0)
+			return (0);
+		write (2, "hola\n", 5);
 		execute_builtin(data, data->first_cmd);
 	}
 	else if (get_children(data) == 0)
-	{
 		return (0);
-	}
 	father_status(data);
 	return (1);
 
