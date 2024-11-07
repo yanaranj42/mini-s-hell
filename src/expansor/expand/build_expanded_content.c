@@ -6,14 +6,15 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 16:11:47 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:10:45 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-int	there_is_expansion_to_manage_2(t_xtkn *xtkn, t_token *token, int *i, t_general *data)
+int	there_is_expansion_to_manage_2(t_xtkn *xtkn, t_token *token, int *i,
+		t_general *data)
 {
 	if (token->content[*i] && token->content[*i] == '"'
 		&& data->qdata.miniquotes == 0 && data->qdata.quotes == 0)
@@ -36,7 +37,8 @@ int	there_is_expansion_to_manage_2(t_xtkn *xtkn, t_token *token, int *i, t_gener
 	return (1);
 }
 
-int	there_is_expansion_to_manage(t_xtkn *xtkn, t_token *token, int *i, t_general *data)
+int	there_is_expansion_to_manage(t_xtkn *xtkn, t_token *token, int *i,
+		t_general *data)
 {
 	if (token->content[*i] && (ft_isalpha(token->content[*i]) == 1
 			|| token->content[*i] == '_'))
