@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 15:29:40 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:40:15 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	struct s_env	*next;
+	int				hidden;
 }					t_env;
 
 typedef struct s_token
@@ -228,21 +229,22 @@ void	father_status(t_general *data);
 
 
 	//BUILT-INS
-	//void 	pseudoexecutor(t_general *data, t_cmd *cmd);
 	int		is_builtin(t_cmd *cmd);
+	int		ft_strcmp(const char *s1, const char *s2);
+	int		do_oldpwd(t_general *data, char	**arg);
 	
 	int		ft_env(t_env *env);
 	int		ft_pwd(void);
 	
-	int		ft_cd(t_general *data);
+	int		ft_cd(t_general *data, char **argv);
 	/*utils cd*/
-	void	set_oldpwd(t_general *data);
+	//void	set_oldpwd(t_general *data);
 	int		error_dir(t_general *data, char *str);
 	int		check_dir(char *path);
 
 	
 	int		go_to_path(int opt, t_general *data);
-	void	update_pwd(t_general *data); //puede ser void
+	void	upd_oldpwd(t_general *data); //puede ser void
 	int		env_update(t_general *data, char *k_word, char *n_value);
 	char	*get_env_path(t_general *data, char *k_word);
 
@@ -257,7 +259,7 @@ void	father_status(t_general *data);
 	/*export utils*/
 	void	print_env(t_general *data, t_env *tmp);//MODIFF
 	void	print_sort(t_env *own_env);
-	int		print_export_lst(t_general *data, t_env *own_env);//inicia con la flag en 1
+	int		print_export_lst(t_env *own_env);//quitamos data porque no usamos equal en esta zona
 	int		export_opt(char *name, char *argv);
 	void	export_plus_var(t_general *data, char *name, char *value);
 	char	*find_env_var(t_general *data, char *var_name);

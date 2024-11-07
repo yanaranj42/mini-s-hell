@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 11:22:56 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:35:39 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void debug_cmd(t_cmd *cmd, int num)
 	} */
 	printf("\n");
 	if (cmd->first_redir == NULL)
-		printf("        No hay redirecciones\n");
+		//printf("        No hay redirecciones\n");
+		printf("");
 	else
 	{
 		i = 0;
@@ -505,7 +506,7 @@ int get_command (t_general *data, t_xtkn *first_xtkn)
 	count_xtkn = first_xtkn;
 	tmp_xtkn = first_xtkn;
 	num = 1; // borrar
-	printf("\n# Get commands\n");
+	//printf("\n# Get commands\n");
 	while (tmp_xtkn)
 	{
 		//SIEMPRE VA A HABER MINIMO 1 COMANDO O PUEDE QUE HAYA SOLO UN TOKEN SIN NADA???? SI NO HUBIERA NADA NO HABRIA TOKENS DIRECTAMENTE, SI LLEGO AQUI MINIMO HABRA UN COMANDO, NO?????
@@ -533,7 +534,7 @@ int get_command (t_general *data, t_xtkn *first_xtkn)
 			// printf("    %s (tipo: %s)\n", count_tkn->content, type[count_tkn->type]);
 			count_xtkn = count_xtkn->next;
 		}
-		printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
+		//printf("  Cantidad final de argumentos que van a formar el comando: |%d|\n", count);	
 		
 		//crear el malloc para los argumentos
 		
@@ -576,9 +577,9 @@ int get_command (t_general *data, t_xtkn *first_xtkn)
 
 				//rellenar nuevo nodo
 				new_redir->type = tmp_xtkn->type;
-				printf("tipo de redireccion: %d\n", new_redir->type);
+				//printf("tipo de redireccion: %d\n", new_redir->type);
 				new_redir->file_name = ft_strdup(tmp_xtkn->next->content);
-				printf("nombre archivo: %s\n", new_redir->file_name);
+				//printf("nombre archivo: %s\n", new_redir->file_name);
 				if (!new_redir->file_name)
 				{
 					//REVISAR MENSAJE DE ERROR, Y SI HAY QUE LIBERAR COSAS
@@ -658,7 +659,7 @@ int do_heredoc(t_general *data)
 
 int executor (t_general *data)
 {
-	printf (GREEN"\n******************* EXECUTOR *******************\n"END);
+	//printf (GREEN"\n******************* EXECUTOR *******************\n"END);
 	
 	// if (data->line)
 	// 	printf("soy la line %s\n", data->line);

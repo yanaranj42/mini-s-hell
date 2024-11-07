@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/21 13:37:44 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:45:50 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	env_add_last(t_general *data, char *name, char *value)
 		new_env->value = NULL; 
 	else
 		new_env->value = ft_strdup(value);
+	new_env->hidden = 0;//<-<-<-<-<-
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
 	return (1);
@@ -80,6 +81,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 			}
 			if(value && ft_strlen(value) == 0)
 				free(value);
+			env->hidden = 0;//decimos que la var esta visible en la lista
 			return ;
 		}
 		env = env->next;

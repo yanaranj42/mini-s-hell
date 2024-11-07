@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/16 12:39:46 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:52:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 	if (data->builtin == 1)
 		ft_echo(cmd->argv);
 	else if (data->builtin == 2)
-		ft_cd(data);
+		ft_cd(data, cmd->argv);
 	else if (data->builtin == 3)
 		ft_pwd();
 	else if (data->builtin == 4)
@@ -43,7 +43,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 
 int	is_builtin(t_cmd *cmd)
 {
-	printf("\nSoy un builtin?\n");
+	//printf("\nSoy un builtin?\n");
 	if (!cmd || !cmd->argv[0])
 		return (0);
 	else if (ft_strncmp("echo", cmd->argv[0], 5) == 0)

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/15 15:35:47 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:12:43 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	handle_args(t_general *data, char *argv)
 	return (arr_clean(arr), 0);
 }
 
+
+/*DEBUGEAR "export a". DEJA DE FUNCIONAR TODO MINISHELL*/
 int	ft_export(t_general *data)
 {
 	t_env	*tmp_env;
@@ -52,7 +54,7 @@ int	ft_export(t_general *data)
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
-		print_export_lst(data, tmp_env);//add data para la estructura y flag equal
+		print_export_lst(tmp_env);
 	while (argv[i])
 	{
 		if (argv[i][0] == '=')
@@ -63,5 +65,5 @@ int	ft_export(t_general *data)
 			handle_args(data, argv[i]);
 		i++;
 	}
-	return (data->exit_status);//este return sirve para cuando se hace echo $?
+	return (0);
 }

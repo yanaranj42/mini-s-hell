@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 11:18:20 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:31:20 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv, char **env)
 			do_eof(&data);
 		}
 		add_history (data.line); // para poder acceder al historial de comandos
-		printf("\nLinea de comando original: |%s|\n", data.line); // borrar
+		//printf("\nLinea de comando original: |%s|\n", data.line); // borrar
 
 		//LEXER
 		if (lexer(&data) == 0) //Un char * es un string, si lo quiero pasar por referencia tengo que pasar un puntero al string, osea un char **, por eso paso la direccion de memoria de line

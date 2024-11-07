@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/16 11:37:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:59:10 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	print_sort(t_env *own_env)
 	char	*tmp_value;
 	
 	tmp = own_env;
-	while (tmp != NULL)
+	while (tmp)//si existe y la flag que tiene es 0, lo ordenas
 	{
-		if (tmp->next != NULL)
+		if (tmp->next && tmp->hidden == 0)
 		{
 			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
 			{
@@ -51,28 +51,30 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_general *data, t_env *own_env)
+int	print_export_lst(t_env *own_env)
 {
 	t_env	*tmp;
 	
-	(void)data;
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
 	tmp = own_env;
 	while (tmp)
 	{
-		ft_putstr_fd(" declare -x ", STDOUT);
-		ft_putstr_fd(tmp->name, STDOUT);
-		if (tmp->value)
+		if (tmp->hidden == 0)
 		{
-			ft_putstr_fd("=", STDOUT);
-			ft_putstr_fd("\"", STDOUT);
-			if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
-				ft_putstr_fd(tmp->value, STDOUT);
-			ft_putstr_fd("\"", STDOUT);
+			ft_putstr_fd(" declare -x ", STDOUT);
+			ft_putstr_fd(tmp->name, STDOUT);
+			if (tmp->value)
+			{
+				ft_putstr_fd("=", STDOUT);
+				ft_putstr_fd("\"", STDOUT);
+				if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
+					ft_putstr_fd(tmp->value, STDOUT);
+				ft_putstr_fd("\"", STDOUT);
+			}
+			ft_putstr_fd("\n", STDOUT);	
 		}
-		ft_putstr_fd("\n", STDOUT);
 		tmp = tmp->next;
 	}
 	tmp = own_env;

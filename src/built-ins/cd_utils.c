@@ -6,22 +6,45 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/21 15:29:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:30:20 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-void	set_oldpwd(t_general *data)
+void	upd_oldpwd(t_general *data)
 {
-    char	old_value[PATH_MAX];
+	char	cwd[PATH_MAX];
 
-	data->equal = 1;
-	getcwd(old_value, PATH_MAX);
-	env_add_last(data, "OLDPWD", old_value);
+	getcwd(cwd, PATH_MAX);
+	env_update(data, "OLDPWD", cwd);
 }
 
+/*actualiza los valores del PWD y OLDPWD*/
+int	env_update(t_general *data, char *k_word, char *n_value)
+{
+	t_env	*tmp;
+	size_t	len;
+
+	tmp = data->env_lst;
+	len = ft_strlen(k_word);
+	while (tmp != NULL)
+	{
+		if ((ft_strncmp(tmp->name, k_word, len) == 0) \
+				&& (len = ft_strlen(tmp->name)))
+		{
+			tmp->value = ft_strdup(n_value);
+			if (!tmp->value)
+				return (0);
+			tmp->hidden = 0; //para que al movernos, la var vuelva a estar visible
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	printf("VAR: %s [%s]\n", k_word, data->env_lst->value);
+	return (0);
+}
 
 int	check_dir(char *path)
 {

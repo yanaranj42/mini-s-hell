@@ -19,12 +19,12 @@ yaja 12/08: BUILTINS - he creado ya la copia del env con nodos. Y tambien ya me
 	 29/08: he separado los builtins de pwd y env. Y el exit ya funciona. Solo
 			quedaria limpiar los mensajes y mirar si queremos controlar el exit
 			de LONG MIN
-yaja 12/09: export: ya funciona el parseo del argv recibido cuando llamamos al export.
-	Ya agrega el nuevo valor a la variable que si existe en la lista.
-	En principio no hay error de malloc ni nada.(testear)
-	Estoy checkeando que agrege la nueva variable en la lista en caso de que
-	esta no exista.
-	Hay que limpiar los mensajes y comentarios que tengan los archivos.
+yaja 12/09:	export: ya funciona el parseo del argv recibido cuando llamamos al export.
+			Ya agrega el nuevo valor a la variable que si existe en la lista.
+			En principio no hay error de malloc ni nada.(testear)
+			Estoy checkeando que agrege la nueva variable en la lista en caso de que
+			esta no exista.
+			Hay que limpiar los mensajes y comentarios que tengan los archivos.
 yaja 14/09: Ha dejado de funcionar el export. Cuando le pasamos un var que ya existe,
 			y no le ponemos un valor, nos la elimina de la lista de export, cuando
 			deberia estar pero con valor "".
@@ -54,8 +54,15 @@ yaja 16/10: el export ya acepta a23=... y a13vb=...
 			oldpwd, que tiene que ver con el update_pwd.
 yaja 17/10: el OLDPWD ya funciona bien. Falta eliminar los leaks. Mirar comentario
 			L51 env_add_last();
-yaja 21/0:	problemas de cd arreglados, ya funciona el OLDPWD.
+yaja 21/10:	problemas de cd arreglados, ya funciona el OLDPWD.
 			CD: ya controla el error si no es o existe el directorio.
 			Parece que ya funciona si eliminamos el dir actual. Solo tenemos que
 			guardar el dir actual en un PWD temp para que al llamar a la funcion
-			me indique algo. 
+			me indique algo.
+yaja 07/11:	he agregado la flag hidden con exito en el export y unset (igual
+			quedamos a espera de que lo testeen). Ya printa las listas del env y
+			export ocultando las vars que se han hecho unset.
+			19:35 - he agregado el hidden en el expansor y CD.
+			Creo que lo podemos pasar a testeo para ver por donde mas nos puede
+			fallar. Ocultamos y modificamos el PWD y OLD aunque no veamos el
+			resultado

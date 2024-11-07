@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/21 10:53:36 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:36:12 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,19 @@
 
 void	do_unset(t_general *data, char *var)
 {
-	t_env	*tmp;//
 	t_env	*head;//tiene la ref al inicio de la lista y se  va modificando
 	
-	head = data->env_lst;
-	tmp = NULL;
-	if (ft_strncmp(head->name, var, ft_strlen(var)) == 0)
+	head = data->env_lst;//el puntero esta al inicio de la lista y es este el que estoy moviendo
+	while (head) //agrego la condicion para que no entre una y otra vez si llamamos a la misma var
 	{
-		printf("Match found: %s - %s", head->name, var);
-		data->env_lst = data->env_lst->next;
-		unset_free(head);
-		return ;
-	}
-	while (head != NULL && ft_strncmp(head->name, var, ft_strlen(var)) != 0)
-	{
-		tmp = head;
+		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0 && head->hidden == 0)
+		{
+			head->hidden = 1;
+			return ;
+		}
 		head = head->next;
 	}
-	if (head == NULL)
-		return ;
-	tmp->next = head->next;
-	unset_free(head);
+	printf("NO  HAGO NADA\n");
 }
 int	ft_unset(t_general *data, t_cmd *cmd)
 {
@@ -48,22 +40,15 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 	head = data->env_lst;
 	if (!argv[i])
 		;
-	//BORRAR prints
-	/* printf(BLUE"Matrix before unset:\n\n");
-	print_matrix_env(data->env_matrix);
-	printf("\n\n"END); */
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);
 		i++;
 	}
-	if (data->env_matrix)
+	/*if (data->env_matrix)
 		data->env_matrix = arr_clean(data->env_matrix);
 	get_matrix_env(data, data->env_lst);
-	/* printf(YELLOW"Matrix after unset:\n\n");
-	print_matrix_env(data->env_matrix);
-	printf("\n"END); */
 	if (!data->env_lst)
-		return ((void)error_brk(data, "Malloc Error", NULL, 12), 0);
+		return ((void)error_brk(data, "Malloc Error", NULL, 12), 0); */
 	return (1);
 }

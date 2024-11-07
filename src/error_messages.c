@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 13:52:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:29:06 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	error_cd_last(t_general *data, char c, int flag)
 		ft_putstr_fd("too many arguments", STDOUT);
 		data->exit_status = 2;
 	}
+	ft_putendl_fd("\n", STDOUT);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/21 11:15:35 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:03:38 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*adapted_strjoin(char *s1, char *s2) //LLEVAR A LIBFT
 	free (s1);
 	return (fusion);
 }
-
+/*7/11: 18:45-> agrego la flag hidden para que no expanda si esta es 1*/
 int check_expansor_variable_exists (char *tmp, t_env *env)
 {
 	t_env *env_tmp;
@@ -131,11 +131,11 @@ int check_expansor_variable_exists (char *tmp, t_env *env)
 		return (0);
 	while (env_tmp)
 	{
-		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0))
+		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0) && env_tmp->hidden == 0)//AGREGO FLAG HIDDEN
 			return (1);
 		env_tmp = env_tmp->next;
 	}
-
+	printf("soy %s y estoy oculta\n", tmp);//BORRAR
 	return (0);
 }
 
@@ -545,14 +545,14 @@ int finish_xtkn (t_xtkn	*first_xtkn, t_general *data)
 	t_xtkn	*xtkn;
 
 	xtkn = first_xtkn;
-	printf ("#Lista final de xtokens:\n");
+	//printf ("#Lista final de xtokens:\n");
 	while (xtkn)
 	{
 		if (remove_quotes (xtkn, data) == 0)
 			return (0);
 		//FALTA CAMBIAR LOS CHARS NO IMPRIMIBLES POR COMILLAS SIMPLES O DOBLES
 		change_non_printable_chars (xtkn);
-		printf (" ----> Token final |%s|\n\n", xtkn->content);
+		//printf (" ----> Token final |%s|\n\n", xtkn->content);
 		xtkn = xtkn->next;
 	}
 	return (1);
@@ -565,7 +565,7 @@ int expansor (t_general *data)
 	t_token *token;
 	t_xtkn	*xtkn;
 
-	printf (GREEN"\n******************* EXPANSOR *******************"END);
+	//printf (GREEN"\n******************* EXPANSOR *******************"END);
 	token = data->first_token;
 	while (token)
 	{
