@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniquotes_conversion.c                            :+:      :+:    :+:   */
+/*   count_cmd_argvs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 21:15:21 by mfontser         ###   ########.fr       */
+/*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
+/*   Updated: 2024/11/04 03:13:26 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
+#include "libft.h"
 
-int	miniquotes_conversion(t_xtkn *xtkn, char *tmp)
+
+int count_cmd_argvs (t_xtkn **count_xtkn)
 {
-	xtkn->content = adapted_strjoin(xtkn->content, tmp);
-	if (!xtkn->content)
+	int  	count;
+
+	count = 0;
+	while (*count_xtkn && (*count_xtkn)->type != PIPE)
 	{
-		free(tmp);
-		return (0);
+		if ((*count_xtkn)->type == CMD_ARGV)
+			count++;
+		*count_xtkn = (*count_xtkn)->next;
 	}
-	return (1);
+	return (count);
 }

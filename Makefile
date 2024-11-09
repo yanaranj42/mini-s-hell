@@ -38,7 +38,10 @@ FILES += expansor/expansor.c expansor/expand/expand_xtkn.c expansor/expand/token
 		 expansor/expand/check_expansor_variable_exists.c expansor/expand/change_expansor_variable.c \
 		 expansor/split/split_xtkn.c expansor/quotes/finish_xtkns.c
 
-FILES += executor/executor.c executor/get_matrix_enviroment.c executor/get_env_paths.c executor/get_command.c executor/do_heredoc.c executor/child_utils.c executor/father_status.c executor/heredoc_expansion.c executor/father_executor.c
+FILES += executor/executor.c executor/preparations_for_the_executor/get_matrix_enviroment.c \
+		 executor/preparations_for_the_executor/get_env_paths.c executor/preparations_for_the_executor/get_command.c \
+		 executor/do_heredoc/do_heredoc.c executor/do_heredoc/heredoc_expansion.c executor/do_execution/check_cmd_path.c \
+		 executor/do_execution/father_executor.c executor/do_execution/father_status.c 
 
 FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c 
 

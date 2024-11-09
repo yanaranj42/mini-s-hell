@@ -10,60 +10,62 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-int manage_dollar_variable_between_quotes (t_general *data, t_token *token, t_xtkn	*xtkn, int *i)
+int	manage_dollar_variable_between_quotes(t_general *data, t_token *token,
+		t_xtkn *xtkn, int *i)
 {
-	account_quotes (token->content[*i], data);
-	xtkn->content = strjoinchar (xtkn->content, '$');
+	account_quotes(token->content[*i], data);
+	xtkn->content = strjoinchar(xtkn->content, '$');
 	if (!xtkn->content)
 		return (0);
-	xtkn->content = strjoinchar (xtkn->content, token->content[*i]);
+	xtkn->content = strjoinchar(xtkn->content, token->content[*i]);
 	if (!xtkn->content)
 		return (0);
 	(*i)++;
 	return (1);
 }
 
-int manage_miniquotes_after_dollar (t_general *data, t_token *token, t_xtkn	*xtkn, int *i)
+int	manage_miniquotes_after_dollar(t_general *data, t_token *token,
+		t_xtkn *xtkn, int *i)
 {
-	account_quotes (token->content[*i], data);
-	xtkn->content = strjoinchar (xtkn->content, token->content[*i]);
+	account_quotes(token->content[*i], data);
+	xtkn->content = strjoinchar(xtkn->content, token->content[*i]);
 	if (!xtkn->content)
 		return (0);
 	(*i)++;
 	return (1);
 }
 
-int manage_quotes_after_dollar (t_general *data, t_token *token, t_xtkn	*xtkn, int *i)
+int	manage_quotes_after_dollar(t_general *data, t_token *token, t_xtkn *xtkn,
+		int *i)
 {
-	account_quotes (token->content[*i], data);
-	xtkn->content = strjoinchar (xtkn->content, token->content[*i]);
+	account_quotes(token->content[*i], data);
+	xtkn->content = strjoinchar(xtkn->content, token->content[*i]);
 	if (!xtkn->content)
 		return (0);
 	(*i)++;
 	return (1);
 }
 
-int expand_digit_variable (t_general *data, t_token *token, t_xtkn	*xtkn, int *i)
+int	expand_digit_variable(t_general *data, t_token *token, t_xtkn *xtkn, int *i)
 {
 	if (data->qdata.miniquotes == 1)
 	{
-		xtkn->content = strjoinchar (xtkn->content, '$');
+		xtkn->content = strjoinchar(xtkn->content, '$');
 		if (!xtkn->content)
 			return (0);
-		xtkn->content = strjoinchar (xtkn->content, token->content[*i]);
+		xtkn->content = strjoinchar(xtkn->content, token->content[*i]);
 		if (!xtkn->content)
 			return (0);
 	}
-	else 
+	else
 	{
 		if (token->content[*i] == '0')
 			xtkn->content = adapted_strjoin(xtkn->content, "✌️ bash");
-		else 
+		else
 			xtkn->content = adapted_strjoin(xtkn->content, "");
-
 		if (!xtkn->content)
 			return (0);
 	}
@@ -71,20 +73,20 @@ int expand_digit_variable (t_general *data, t_token *token, t_xtkn	*xtkn, int *i
 	return (1);
 }
 
-int expand_exit_status_variable (t_xtkn	*xtkn, int exit_status, int *i)
+int	expand_exit_status_variable(t_xtkn *xtkn, int exit_status, int *i)
 {
-	char *exit_number;
+	char	*exit_number;
 
-	exit_number = ft_itoa (exit_status);
+	exit_number = ft_itoa(exit_status);
 	if (!exit_number)
 		return (0);
 	xtkn->content = adapted_strjoin(xtkn->content, exit_number);
 	if (!xtkn->content)
 	{
-		free (exit_number);
+		free(exit_number);
 		return (0);
 	}
-	free (exit_number);
+	free(exit_number);
 	(*i)++;
 	return (1);
 }

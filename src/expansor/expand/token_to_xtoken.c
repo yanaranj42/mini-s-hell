@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn)
+void	put_new_list_xtoken_node(t_general *data, t_xtkn *xtkn)
 {
-	t_xtkn  *tmp_xtkn;
+	t_xtkn	*tmp_xtkn;
 
 	if (!data->first_xtkn)
 	{
@@ -25,42 +25,34 @@ void put_new_list_xtoken_node (t_general *data, t_xtkn *xtkn)
 	}
 	else
 	{
-	//	(addback)
 		tmp_xtkn = data->first_xtkn;
 		while (tmp_xtkn && tmp_xtkn->next)
 			tmp_xtkn = tmp_xtkn->next;
 		tmp_xtkn->next = xtkn;
-		xtkn->back = tmp_xtkn; 
+		xtkn->back = tmp_xtkn;
 		xtkn->next = NULL;
 	}
 }
 
-
-t_xtkn *create_xtoken (void) //(t_general *data) SEGURAMENTE PARA ALGUN FREE
+t_xtkn	*create_xtoken(void)
 {
-	t_xtkn 	*new_xtkn;
+	t_xtkn	*new_xtkn;
 
-	new_xtkn = malloc (sizeof(t_xtkn) * 1);
+	new_xtkn = malloc(sizeof(t_xtkn) * 1);
 	if (!new_xtkn)
 		return (NULL);
 	return (new_xtkn);
-
 }
 
-t_xtkn *token_to_xtoken(t_token *token, t_general *data)
+t_xtkn	*token_to_xtoken(t_token *token, t_general *data)
 {
 	t_xtkn	*xtkn;
 
-	xtkn = create_xtoken ();
+	xtkn = create_xtoken();
 	if (!xtkn)
 		return (0);
-	//relleno xtkn
 	xtkn->content = NULL;
 	xtkn->type = token->type;
-
-
-	//ubico el nuevo cmd
-	put_new_list_xtoken_node (data, xtkn);
-	return(xtkn);
-		
+	put_new_list_xtoken_node(data, xtkn);
+	return (xtkn);
 }

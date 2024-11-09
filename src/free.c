@@ -230,22 +230,6 @@ void free_cmd(t_general *data)
 	data->first_cmd = NULL;
 }
 
-// void free_token(t_token *token) // esta funcion solo limpia un nodo de la lista, un token
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (token->argv[i])
-// 	{
-// 		free(token->argv[i]);
-// 		i++;
-// 	}
-// 	free(token->argv);
-// 	free(token);
-// }
-
-//ahora solo tengo un token, pero cuando tenga mas tendre que iterar en un wihile para liberar todos los tokens
-
 void free_parsing_process (t_general *data, char ***argv)
 {
 	free(data->pretoken);
@@ -270,4 +254,12 @@ void free_executor_process (t_general *data)
 	free_data_paths (data);
 	free_cmd(data);
 	data->exit_status = 1;
+}
+
+void free_builtin_execution_only (t_general *data, int *copy_stdin, int *copy_stdout, char *message)
+{
+	perror_message(NULL, message);
+	free_executor_process (data);
+	close (*copy_stdin);
+	close (*copy_stdout);
 }

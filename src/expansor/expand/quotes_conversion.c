@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-int manage_quotes_variable (t_xtkn	*xtkn, char *tmp, t_env *env)
+int	manage_quotes_variable(t_xtkn *xtkn, char *tmp, t_env *env)
 {
-	if (check_expansor_variable_exists (tmp, env) == 0)
+	if (check_expansor_variable_exists(tmp, env) == 0)
 	{
 		xtkn->content = adapted_strjoin(xtkn->content, "");
 		if (!xtkn->content)
@@ -26,18 +26,18 @@ int manage_quotes_variable (t_xtkn	*xtkn, char *tmp, t_env *env)
 	}
 	else
 	{
-		if (change_expansor_variable(xtkn,tmp, env) == 0)
+		if (change_expansor_variable(xtkn, tmp, env) == 0)
 		{
 			free(tmp);
 			return (0);
 		}
 	}
-	return (1);		
+	return (1);
 }
 
-int build_heredoc_delimiter (t_xtkn	*xtkn, char *tmp)
+int	build_heredoc_delimiter(t_xtkn *xtkn, char *tmp)
 {
-	xtkn->content = strjoinchar (xtkn->content, '$');
+	xtkn->content = strjoinchar(xtkn->content, '$');
 	if (!xtkn->content)
 	{
 		free(tmp);
@@ -52,17 +52,17 @@ int build_heredoc_delimiter (t_xtkn	*xtkn, char *tmp)
 	return (1);
 }
 
-int quotes_conversion (t_xtkn	*xtkn, char *tmp, t_env *env)
+int	quotes_conversion(t_xtkn *xtkn, char *tmp, t_env *env)
 {
-	if (xtkn->back && xtkn->back->type == HEREDOC) // Si antes tiene un heredoc quiere decir que es un limitador y no se tiene que expandir
+	if (xtkn->back && xtkn->back->type == HEREDOC)
 	{
-		if (build_heredoc_delimiter (xtkn, tmp) == 0)
+		if (build_heredoc_delimiter(xtkn, tmp) == 0)
 			return (0);
 	}
 	else
 	{
-		if (manage_quotes_variable (xtkn,tmp, env) == 0)
+		if (manage_quotes_variable(xtkn, tmp, env) == 0)
 			return (0);
 	}
-	return (1);	
+	return (1);
 }

@@ -204,6 +204,7 @@ int 	check_expansor_variable_exists (char *tmp, t_env *env);
 int 	change_expansor_variable(t_xtkn *xtkn, char *tmp, t_env *env);
 int 	expand_final_value (t_xtkn *xtkn, t_env *env_tmp, int *i);
 int 	split_xtkn(t_xtkn	*xtkn, t_general *data);
+int		adapt_xtkn_list(t_xtkn *xtkn, t_general *data, char **splited_content, t_xtkn *new_xtkn);
 int 	retokenize_same_xtoken (t_xtkn	*xtkn, char **splited_content);
 int 	enlarge_xtkns_list (t_xtkn	*xtkn, t_general *data, int *i, char **splited_content, t_xtkn	*new_xtkn);
 int 	finish_xtkns (t_xtkn *first_xtkn, t_general *data);
@@ -214,6 +215,7 @@ void 	change_non_printable_chars(t_xtkn *xtkn);
 
 //EXECUTOR
 int 	executor (t_general *data);
+int 	preparations_for_the_executor (t_general *data);
 int		get_matrix_env(t_general *data, t_env *env_lst);
 int 	env_matrix_base (t_env *env_lst);
 int 	fill_matrix (t_env *tmp, t_general *data, int *i);
@@ -229,7 +231,7 @@ char 	*expand_line (char *line, t_general *data);
 int 	get_children(t_general *data);
 int 	count_commands(t_general *data);
 int		create_child(t_general *data, t_cmd *cmd, int i, int n);
-void	check_cmd(t_cmd *cmd, char **paths);
+void	check_cmd_path(t_cmd *cmd, char **paths);
 char	*check_cmd_access(char **paths, char *cmd_argv);
 char 	*check_cmd_current_directory(char *cmd_argv);
 char	*check_cmd_absolut_path(char *cmd_argv);
@@ -305,6 +307,7 @@ void free_expansor (t_general *data);
 void free_parsing_process (t_general *data, char ***argv);
 void	free_get_cmd_process(t_general *data);
 void free_executor_process (t_general *data);
+void free_builtin_execution_only (t_general *data, int *copy_stdin, int *copy_stdout, char *message);
 
 
 #endif

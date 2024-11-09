@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-t_xtkn *expand_xtkn(t_token *token, t_general *data)
+t_xtkn	*expand_xtkn(t_token *token, t_general *data)
 {
 	t_xtkn	*xtkn;
 
@@ -23,9 +23,10 @@ t_xtkn *expand_xtkn(t_token *token, t_general *data)
 		printf("Error: There have been problems creating expanded tokens\n");
 		return (NULL);
 	}
-	if (build_expanded_content (xtkn, token, data) == 0)
+	if (build_expanded_content(xtkn, token, data) == 0)
 	{
-		printf("Error: There have been problems building the content of the expanded tokens\n");
+		printf("Error:\n");
+		printf("It's not possible to build the expanded tokens content\n");
 		return (NULL);
 	}
 	return (xtkn);

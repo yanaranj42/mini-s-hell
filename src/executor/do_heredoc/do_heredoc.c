@@ -91,7 +91,5 @@ int do_heredoc(t_general *data)
 		}
 		cmd = cmd->next;
 	}
-	printf ("   valor de fd[0]: %d\n",  pipe_fd [0]);
-		printf ("   valor de fd[1]: %d\n",  pipe_fd [1]);
 	return (1);
 }

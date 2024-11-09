@@ -10,16 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-
-int check_expansor_variable_exists (char *tmp, t_env *env)
+int	check_expansor_variable_exists(char *tmp, t_env *env)
 {
-	t_env *env_tmp;
+	t_env	*env_tmp;
 
 	env_tmp = env;
-
 	if (!tmp)
 		return (0);
 	while (env_tmp)
@@ -28,6 +26,5 @@ int check_expansor_variable_exists (char *tmp, t_env *env)
 			return (1);
 		env_tmp = env_tmp->next;
 	}
-
 	return (0);
 }
