@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 int	handle_args(t_general *data, char *argv)
 {
@@ -41,14 +41,13 @@ int	handle_args(t_general *data, char *argv)
 	return (arr_clean(arr), 0);
 }
 
-
 /*DEBUGEAR "export a". DEJA DE FUNCIONAR TODO MINISHELL*/
 int	ft_export(t_general *data)
 {
 	t_env	*tmp_env;
 	char	**argv;
 	int		i;
-	
+
 	i = 1;
 	data->exit_status = 0;
 	argv = data->first_cmd->argv;
@@ -60,7 +59,8 @@ int	ft_export(t_general *data)
 		if (argv[i][0] == '=')
 			error_opt("", "\'", NULL, argv[i]);
 		else if (!data->exit_status)
-			data->exit_status = handle_args(data, argv[i]);//el argv puede ser: LOG+=hola//LOG//LOG=//LOG$
+			data->exit_status = handle_args(data, argv[i]);
+				// el argv puede ser: LOG+=hola//LOG//LOG=//LOG$
 		else
 			handle_args(data, argv[i]);
 		i++;

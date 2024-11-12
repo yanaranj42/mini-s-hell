@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/07 17:59:10 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:41:27 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-/* Una vez empecemos con las pipes, checkear si debemos incluir las salidas 
- *	de los fds. Por ahora lo tenemos en todos los builtins de forma manual
-*/
 void	print_env(t_general *data, t_env *tmp)
 {
 	ft_putstr_fd("\"", STDOUT);
@@ -30,13 +27,14 @@ void	print_sort(t_env *own_env)
 	t_env	*tmp;
 	char	*tmp_name;
 	char	*tmp_value;
-	
+
 	tmp = own_env;
-	while (tmp)//si existe y la flag que tiene es 0, lo ordenas
+	while (tmp)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name,
+					ft_strlen(tmp->name)) > 0)
 			{
 				tmp_name = tmp->name;
 				tmp_value = tmp->value;
@@ -54,7 +52,7 @@ void	print_sort(t_env *own_env)
 int	print_export_lst(t_env *own_env)
 {
 	t_env	*tmp;
-	
+
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
@@ -73,7 +71,7 @@ int	print_export_lst(t_env *own_env)
 					ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
 			}
-			ft_putstr_fd("\n", STDOUT);	
+			ft_putstr_fd("\n", STDOUT);
 		}
 		tmp = tmp->next;
 	}
@@ -85,7 +83,7 @@ int	export_opt(char *name, char *argv)
 {
 	int	i;
 	int	end;
-	
+
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (0);
 	i = 1;
@@ -98,20 +96,15 @@ int	export_opt(char *name, char *argv)
 				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
 				return (0);
-			if (name[end] != '+' && name[end] != '=' && !(ft_isalnum(name[end])))
+			if (name[end] != '+' && name[end] != '='
+				&& !(ft_isalnum(name[end])))
 				return (0);
 		}
 		i++;
 	}
 	return (1);
 }
-/* Busca si la var esta en la lista. Si no esta, la agregamos a la lista env
-	Si la encuentra, y el valor es NULL, hacemos un dup de "".
-	Mientras la lista exista, cuando haya match en una variable, hacemos un join
-	del anterior valor, y e""
-no tenemos valor en la variableAQUI VA ERROR
-l nuevo. Y si este es NULL, el join funciona gracia al dup
-*/
+
 void	export_plus_var(t_general *data, char *name, char *value)
 {
 	t_env	*env;
@@ -120,7 +113,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 
 	env_var = find_env_var(data, name);
 	if (!env_var)
-		return ((void)add_upd_env(data, name, value));//void porque esta funcion lo es
+		return ((void)add_upd_env(data, name, value));
 	else
 	{
 		env = data->env_lst;
@@ -128,7 +121,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 			value = ft_strdup("");
 		while (env != NULL)
 		{
-			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0 \
+			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))
 			{
 				old_val = env->value;

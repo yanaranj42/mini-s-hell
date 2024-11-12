@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 07:09:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:50:55 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	minishell_loop(t_general *data)
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
 	if (!data->line)
 	{
-	 	printf (PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
+		printf(PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 		do_eof(data);
 	}
 	add_history(data->line);

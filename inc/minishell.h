@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:14:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:20:53 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					do_oldpwd(t_general *data, char **arg);
 
 int					ft_env(t_env *env);
-int					ft_pwd(void);
+int					ft_pwd(t_env *env);
 
 int					ft_cd(t_general *data, char **argv);
 /*utils cd*/
