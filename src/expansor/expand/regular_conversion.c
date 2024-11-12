@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 23:10:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/09 23:26:10 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,25 @@ int	manage_inexistent_regular_variable(t_xtkn *xtkn, t_token *token, char *tmp,
 	return (1);
 }
 
-int	regular_conversion(t_token *token, t_xtkn *xtkn, char *tmp, t_env *env,
-		int *i)
+int	regular_conversion(t_convert *info, t_token *token, t_xtkn *xtkn,
+		t_env *env)
 {
 	if (xtkn->back && xtkn->back->type == HEREDOC)
 	{
-		if (build_heredoc_delimiter(xtkn, tmp) == 0)
+		if (build_heredoc_delimiter(xtkn, info->tmp) == 0)
 			return (0);
 	}
 	else
 	{
-		if (check_expansor_variable_exists(tmp, env) == 0)
+		if (check_expansor_variable_exists(info->tmp, env) == 0)
 		{
-			if (manage_inexistent_regular_variable(xtkn, token, tmp, i) == 0)
+			if (manage_inexistent_regular_variable(xtkn, token, info->tmp,
+					info->i) == 0)
 				return (0);
 		}
 		else
 		{
-			if (manage_regular_variable(xtkn, token, tmp, env) == 0)
+			if (manage_regular_variable(xtkn, token, info->tmp, env) == 0)
 				return (0);
 		}
 	}

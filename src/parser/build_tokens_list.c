@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 20:05:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 23:56:27 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/12 04:57:55 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ int	build_tokens_list(t_general *data, char ***argv)
 {
 	int		j;
 	t_token	*new_token;
-	char **tmp = *argv;
+	char	**tmp;
 
+	tmp = *argv;
 	j = 0;
 	printf ("puntero: %p\n", &argv[j]);
 	printf ("puntero contenido: %s\n", *argv[j]);
@@ -103,7 +104,6 @@ int	build_tokens_list(t_general *data, char ***argv)
 		j++;
 	printf ("puntero: %p\n", &argv[j]);
 	printf ("puntero contenido: %s\n", *argv[j]);
-
 	}
 	return (1);
 }
@@ -113,10 +113,10 @@ int	build_tokens_list(t_general *data, char ***argv)
 {
 	int		j;
 	t_token	*new_token;
-	char **tmp = *argv;
+	char	**tmp;
 
+	tmp = *argv;
 	j = 0;
-	
 	while (tmp[j])
 	{
 		new_token = create_token(data);
@@ -126,9 +126,7 @@ int	build_tokens_list(t_general *data, char ***argv)
 			return (0);
 		}
 		put_new_list_token_node(data, new_token);
-
 		new_token->content = strdup(tmp[j]);
-
 		if (!new_token->content)
 		{
 			free_parsing_process(data, argv);
@@ -136,8 +134,6 @@ int	build_tokens_list(t_general *data, char ***argv)
 		}
 		classify_token_type(new_token);
 		j++;
-	
-	
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/10/10 11:38:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:45:50 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*find_env_var(t_general *data, char *var_name)
 	}
 	return (NULL);
 }
-
+/*TENGO QUE HACER UNA COPIA*/
 int	env_add_last(t_general *data, char *name, char *value)
 {
 	t_env	*new_env;
@@ -43,14 +43,12 @@ int	env_add_last(t_general *data, char *name, char *value)
 		return (0);
 	new_env->name = ft_strdup(name);
 	if (data->equal == 0)
-		new_env->value = NULL;
+		new_env->value = NULL; 
 	else
 		new_env->value = ft_strdup(value);
+	new_env->hidden = 0;//<-<-<-<-<-
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
-	printf(YELLOW"NEW VAR ON ENV  LST\n"END);
-	//print_env(data, new_env);
-	data->equal = 1;
 	return (1);
 }
 /*	CASOS:
@@ -83,6 +81,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 			}
 			if(value && ft_strlen(value) == 0)
 				free(value);
+			env->hidden = 0;//decimos que la var esta visible en la lista
 			return ;
 		}
 		env = env->next;

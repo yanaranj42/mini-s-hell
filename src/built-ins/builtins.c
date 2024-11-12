@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/13 22:41:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/12 06:41:55 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 	if (data->builtin == 1)
 		ft_echo(cmd->argv);
 	else if (data->builtin == 2)
-		ft_cd(data);
+		ft_cd(data, cmd->argv);
 	else if (data->builtin == 3)
 		ft_pwd();
 	else if (data->builtin == 4)
@@ -37,13 +37,13 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 		ft_exit(data);
 	else if (data->builtin == 6)
 		ft_export(data);
-	/* else if (data->builtin == 7)
-		return (ft_unset(data)); */ 
+	 else if (data->builtin == 7)
+		ft_unset(data, cmd);
 }
 
 int	is_builtin(t_cmd *cmd)
 {
-	printf("\n#Revisar si soy un built-in\n");
+	//printf("\nSoy un builtin?\n");
 	if (!cmd || !cmd->argv[0])
 		return (0);
 	else if (ft_strncmp("echo", cmd->argv[0], 5) == 0)
@@ -60,8 +60,6 @@ int	is_builtin(t_cmd *cmd)
 		return (6);
 	else if (ft_strncmp("unset", cmd->argv[0], 6) == 0)
 		return (7);
-	else
-		printf(RED"%s: No soy un builtin \n\n"END, cmd->argv[0]);
 	return (0);
 }
 

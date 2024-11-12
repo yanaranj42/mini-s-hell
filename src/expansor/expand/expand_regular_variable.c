@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 16:14:34 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/09 23:26:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,27 @@ char	*identify_variable_to_expand(t_token *token, int *i)
 int	expand_regular_variable(t_token *token, t_xtkn *xtkn, int *i,
 		t_general *data)
 {
-	char	*tmp;
+	t_convert	info;
 
-	tmp = identify_variable_to_expand(token, i);
-	if (!tmp)
+	info.i = i;
+	info.tmp = identify_variable_to_expand(token, i);
+	if (!info.tmp)
 		return (0);
 	if (data->qdata.miniquotes == 1)
 	{
-		if (miniquotes_conversion(xtkn, tmp) == 0)
+		if (miniquotes_conversion(xtkn, info.tmp) == 0)
 			return (0);
 	}
 	else if (data->qdata.quotes == 1)
 	{
-		if (quotes_conversion(xtkn, tmp, data->env_lst) == 0)
+		if (quotes_conversion(xtkn, info.tmp, data->env_lst) == 0)
 			return (0);
 	}
 	else
 	{
-		if (regular_conversion(token, xtkn, tmp, data->env_lst, i) == 0)
+		if (regular_conversion(&info, token, xtkn, data->env_lst) == 0)
 			return (0);
 	}
-	free(tmp);
+	free(info.tmp);
 	return (1);
 }

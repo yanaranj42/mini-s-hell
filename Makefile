@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/06 16:00:53 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/12 06:07:53 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,13 @@ YELLOW = \e[1;93m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
 
-FILES = minishell.c error_messages.c utils.c ft_token_split.c free.c
+FILES =  minishell.c
+
+FILES += utils/general_utils.c utils/ft_token_split.c utils/split_utils.c
 
 FILES += initializations/initializations.c
+
+FILES += signals/signals.c
 
 FILES += own_env/own_enviroment.c
 
@@ -38,12 +42,26 @@ FILES += expansor/expansor.c expansor/expand/expand_xtkn.c expansor/expand/token
 		 expansor/expand/check_expansor_variable_exists.c expansor/expand/change_expansor_variable.c \
 		 expansor/split/split_xtkn.c expansor/quotes/finish_xtkns.c
 
-FILES += executor/executor.c executor/preparations_for_the_executor/get_matrix_enviroment.c \
-		 executor/preparations_for_the_executor/get_env_paths.c executor/preparations_for_the_executor/get_command.c \
-		 executor/do_heredoc/do_heredoc.c executor/do_heredoc/heredoc_expansion.c executor/do_execution/check_cmd_path.c \
-		 executor/do_execution/father_executor.c executor/do_execution/father_status.c 
+FILES += executor/executor.c executor/preparations_for_the_executor/preparations_for_the_executor.c \
+		 executor/preparations_for_the_executor/get_matrix_enviroment.c executor/preparations_for_the_executor/get_env_paths.c \
+		 executor/preparations_for_the_executor/get_command/get_command.c executor/preparations_for_the_executor/get_command/new_cmd_node.c \
+		 executor/preparations_for_the_executor/get_command/count_cmd_argvs.c executor/preparations_for_the_executor/get_command/fill_cmd_argvs.c \
+		 executor/preparations_for_the_executor/get_command/fill_cmd_redirs.c executor/do_heredoc/do_heredoc.c \
+		 executor/do_heredoc/heredoc_expansion.c executor/do_heredoc/expand_specific_variables.c \
+		 executor/do_execution/do_execution.c executor/do_execution/builtin_execution_only.c \
+		 executor/do_execution/check_father_input_redirs.c executor/do_execution/check_father_output_redirs.c \
+		 executor/do_execution/get_children.c executor/do_execution/create_child.c executor/do_execution/check_cmd_path.c \
+		 executor/do_execution/check_cmd_access.c executor/do_execution/check_input_redirs.c \
+		 executor/do_execution/check_output_redirs.c executor/do_execution/execute_cmd_execve.c executor/do_execution/father_status.c 
 
-FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/pwd.c built-ins/exit.c built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c 
+FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c built-ins/cd_utils.c built-ins/pwd.c built-ins/exit.c \
+		 built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c built-ins/unset.c
+
+
+FILES += error_messages/initial_error_messages.c error_messages/parser_error_messages.c error_messages/executor_error_messages.c \
+		 error_messages/builtins_error_messages.c
+
+FILES += free/free_main.c free/free_parser.c free/free_expansor.c free/free_executor.c free/free_executor_2.c free/free_builtins.c
 
 
 SRCDIR = src/

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-void put_new_list_cmd_node (t_general *data, t_cmd *new_cmd)
+void	put_new_list_cmd_node(t_general *data, t_cmd *new_cmd)
 {
-	t_cmd  *tmp_cmd;
+	t_cmd	*tmp_cmd;
 
 	if (!data->first_cmd)
 	{
@@ -32,27 +32,26 @@ void put_new_list_cmd_node (t_general *data, t_cmd *new_cmd)
 	}
 }
 
-t_cmd *create_command (void)
+t_cmd	*create_command(void)
 {
-	t_cmd 	*new_cmd;
+	t_cmd	*new_cmd;
 
-	new_cmd = malloc (sizeof(t_cmd) * 1);
+	new_cmd = malloc(sizeof(t_cmd) * 1);
 	if (!new_cmd)
 		return (NULL);
 	return (new_cmd);
-
 }
 
-t_cmd *create_and_put_new_cmd_node (t_general *data)
+t_cmd	*create_and_put_new_cmd_node(t_general *data)
 {
-	t_cmd 	*new_cmd;
+	t_cmd	*new_cmd;
 
-		new_cmd = create_command ();
-		if (!new_cmd)
-		{
-			free_get_cmd_process(data);
-			return (NULL);
-		}
-		put_new_list_cmd_node (data, new_cmd);
-		return (new_cmd);
+	new_cmd = create_command();
+	if (!new_cmd)
+	{
+		free_get_cmd_process(data);
+		return (NULL);
+	}
+	put_new_list_cmd_node(data, new_cmd);
+	return (new_cmd);
 }

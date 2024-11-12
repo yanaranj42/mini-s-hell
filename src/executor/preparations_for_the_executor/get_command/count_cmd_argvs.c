@@ -10,13 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
-
-int count_cmd_argvs (t_xtkn **count_xtkn)
+int	count_cmd_argvs(t_xtkn **count_xtkn)
 {
-	int  	count;
+	int	count;
 
 	count = 0;
 	while (*count_xtkn && (*count_xtkn)->type != PIPE)

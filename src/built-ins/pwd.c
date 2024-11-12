@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/10 00:23:22 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:38:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 int	ft_pwd(void)
 {
 	char	cwd[PATH_MAX];
-
+	
 	if (getcwd(cwd, PATH_MAX))
 	{
-		ft_putendl_fd(cwd, 1);
+		//ft_putendl_fd(cwd, 1);
 		printf(BLUE"PWD: %s\n"END, cwd);
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:57:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/10/28 18:35:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/12 03:45:43 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_write(int fd, const char *str, int size);
 
 /*-------------------------------EXTRA---------------------------*/
 char	*adapted_strjoin(char *s1, char *s2);
-char 	*strjoinchar (char *str, char c);
+char	*strjoinchar(char *str, char c);
 
 /*-------------------------------BONUS---------------------------*/
 typedef struct s_list
