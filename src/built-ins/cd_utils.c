@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/07 18:30:20 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:36:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,13 @@ int	check_dir(char *path)
 int	error_dir(t_general *data, char *path)
 {
 	ft_putstr_fd("minishell: cd: ", STDOUT);
-	ft_putstr_fd(path, STDOUT);
+	if (path)
+		ft_putstr_fd(path, STDOUT);
+	else
+	{
+		ft_putstr_fd("error retrieving current directory: ", STDERR);
+		ft_putstr_fd("getcwd: cannot access parent directories", STDERR);
+	}
 	ft_putstr_fd(": No such file or directory\n", STDOUT);
 	data->exit_status = 1;
 	return (0);

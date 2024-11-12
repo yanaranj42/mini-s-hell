@@ -65,4 +65,7 @@ yaja 07/11:	he agregado la flag hidden con exito en el export y unset (igual
 			19:35 - he agregado el hidden en el expansor y CD.
 			Creo que lo podemos pasar a testeo para ver por donde mas nos puede
 			fallar. Ocultamos y modificamos el PWD y OLD aunque no veamos el
-			resultado
+			resultado.
+yaja 12/11:	CD actualizado. Si eliminamos un directorio, ya nos sale en msj de
+			error. Y si volvemos al anterior y no existe, ya tenemos error de 
+			"retrueving dir".

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/07 13:52:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:45:21 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 	else if (data->builtin == 2)
 		ft_cd(data, cmd->argv);
 	else if (data->builtin == 3)
-		ft_pwd();
+		ft_pwd(data->env_lst);
 	else if (data->builtin == 4)
 		ft_env(data->env_lst);
 	else if (data->builtin == 5)

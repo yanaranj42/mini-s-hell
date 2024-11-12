@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/07 19:40:15 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:45:01 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ void	father_status(t_general *data);
 	int		do_oldpwd(t_general *data, char	**arg);
 	
 	int		ft_env(t_env *env);
-	int		ft_pwd(void);
+	int		ft_pwd(t_env *env);
 	
 	int		ft_cd(t_general *data, char **argv);
 	/*utils cd*/

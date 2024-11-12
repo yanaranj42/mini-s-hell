@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/07 19:38:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:38:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int go_to_path(int opt, t_general *data)
 	}
 	ret = chdir(env_path);
 	env_update(data, "PWD", env_path);//actualiza PWD con el dir env_path
-	ft_pwd();
+	//borrar ft_pwd
+	ft_pwd(data->env_lst);
 	return (ret);
 }
 
@@ -80,7 +81,6 @@ int ft_cd(t_general *data, char **arg)
     int		cd_ret = 0;
     char	dir[PATH_MAX];
     
-    getcwd(dir, PATH_MAX);//saber el current directory
     if (!arg[1] || arg[1][0] == '~')//HOME
         return (go_to_path(0, data));
 	else if (arg[1][0] == '-' && !arg[2])
@@ -89,16 +89,21 @@ int ft_cd(t_general *data, char **arg)
 		return (error_cd_last(data, '\0', 0));
 	else
 	{
-		if (!check_dir(arg[1]))
+		//si hemos eliminado el directorio al que queremos acceder, tendra
+		//que aparecer el msj de cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+		if (!check_dir(arg[1]))//este solo esta funcionando si el path que le pasamos es un str
 			return (error_dir(data, arg[1]));
 		upd_oldpwd(data);
 		cd_ret = chdir(arg[1]);
 		if (cd_ret < 0)
 			cd_ret *= -1;
-		else if (cd_ret != 0)
+		else if (cd_ret != 0) //
 			printf(RED"ERROR de args"END);
+    	getcwd(dir, PATH_MAX);//saber el current directory despues de moverse
+		if (!check_dir(dir))
+			return (error_dir(data, NULL));
 		env_update(data, "PWD", dir);
-		ft_pwd();
+		ft_pwd(data->env_lst);
 	}
 	return (cd_ret);
 }
