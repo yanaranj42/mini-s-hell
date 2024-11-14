@@ -32,15 +32,15 @@ void	do_unset(t_general *data, char *var)
 
 int	ft_unset(t_general *data, t_cmd *cmd)
 {
-	t_env	*head;
+	//t_env	*head; //EL COMPILADOR DICE QUE ESTA VARIABLE NO SE USA, LA COMENTO PARA PODER COMPILAR. REVISAR
 	char	**argv;
 	int		i;
 
 	i = 1;
 	argv = cmd->argv;
-	head = data->env_lst;
-	if (!argv[i])
-		;
+	//head = data->env_lst;
+	// if (!argv[i])
+	// 	;  //AQUI FALTA O SOBRA ALGO. LO COMENTO PARA QUE ME DEJE COMPILAR
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);

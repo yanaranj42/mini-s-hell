@@ -37,7 +37,7 @@ int	env_update(t_general *data, char *k_word, char *n_value)
 			if (!tmp->value)
 				return (0);
 			tmp->hidden = 0;
-			la var vuelva a estar visible return (1);
+			return (1);
 		}
 		tmp = tmp->next;
 	}

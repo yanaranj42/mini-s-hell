@@ -178,6 +178,9 @@ void				norm_sig_handle(int sig);
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);
 void				env_to_lst(t_general *data, t_env *new_env);
+void				update_lvl(t_general *data);
+int					set_empty_env(t_general *data);
+int					fill_empty_env(t_general *data, char *name, char *value);
 
 // LEXER
 int					lexer(t_general *data);
@@ -388,6 +391,7 @@ void				add_upd_env(t_general *data, char *name, char *value);
 
 // ERROR_MESSAGES
 void				too_many_parameters(void);
+void				error_lvl(char *i);
 void				perror_message(char *start, char *message);
 void				maximum_heredoc_exceeded(void);
 void				unexpected_token_message(char *message);
