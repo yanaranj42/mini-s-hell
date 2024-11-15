@@ -171,9 +171,11 @@ void				init_fd_values(t_general *data);
 void				init_signal(t_general *data);
 
 // SIGNALS
+extern int			g_error;
 void				norm_sig_heredoc(int sig);
 void				do_eof(t_general *data);
 void				norm_sig_handle(int sig);
+void				set_sig_default();
 
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);

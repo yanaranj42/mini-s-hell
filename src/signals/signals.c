@@ -15,6 +15,12 @@
 
 int		g_error = 0;
 
+void	set_sig_default()
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
 void	norm_sig_handle(int sig)
 {
 	if (sig == SIGINT)
@@ -41,8 +47,10 @@ void	norm_sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_putendl_fd("", 1);
 		rl_replace_line("", 1);
-		g_error = 130;
+		ft_putendl_fd("", 1);
+		g_error = 1;
+		//exit(130);
 	}
+	return ;
 }

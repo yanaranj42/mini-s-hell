@@ -54,7 +54,13 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 	redir->fd = dup(pipe_fd[0]);
 	while (1)
 	{
+		signal(SIGINT, norm_sig_heredoc);
 		line = readline(YELLOW "> " END);
+		if (g_error)
+		{
+			free(line);
+			break ;
+		}
 		if (check_limitter_word(line, pipe_fd, redir) == 1)
 			break ;
 		print_line_in_file(redir, line, pipe_fd, data);

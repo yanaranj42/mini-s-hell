@@ -80,7 +80,7 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LDFLAGS = -lreadline
 
-LIBS = libs/Libft/libft.a -ldl -lglfw -lm
+LIBS = libs/Libft/libft.a -ldl -lm #-lglfw -lm
 
 #--------------------------------------------------NORMAS----------------------------------------------------#
 
