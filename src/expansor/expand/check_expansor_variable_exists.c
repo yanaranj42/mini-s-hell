@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*   check_expansor_variable_exists.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/08 03:01:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/08/08 03:12:50 by mfontser         ###   ########.fr       */
+/*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
+/*   Updated: 2024/11/12 06:19:23 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//funcion para recibir un string (argv[0] del token) y determino si se corresponde a un builtin o no devolviendo true o false (strcmp)
-//si es un builin, llamare a executor builtin, sino, en un futuro llamare executor command (que tendra execve)
+#include "libft.h"
+#include "minishell.h"
 
+int	check_expansor_variable_exists(char *tmp, t_env *env)
+{
+	t_env	*env_tmp;
 
+	env_tmp = env;
+	if (!tmp)
+		return (0);
+	while (env_tmp)
+	{
+		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0)
+			&& env_tmp->hidden == 0)
+			return (1);
+		env_tmp = env_tmp->next;
+	}
+	return (0);
+}

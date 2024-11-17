@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 static int	args_counter(char **argv)
 {
@@ -23,7 +23,7 @@ static int	args_counter(char **argv)
 	return (i);
 }
 
-static	int	n_flag(char *argv)
+static int	n_flag(char *argv)
 {
 	int	i;
 
@@ -32,7 +32,7 @@ static	int	n_flag(char *argv)
 		i++;
 	while (argv[i] == 'n')
 		i++;
-	if (argv[i] !=  '\0')
+	if (argv[i] != '\0')
 		return (0);
 	return (1);
 }

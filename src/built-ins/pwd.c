@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 12:50:18 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:42:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 int	ft_pwd(t_env *env)
 {
 	char	cwd[PATH_MAX];
-	
+
 	if (getcwd(cwd, PATH_MAX))
 	{
-		//ft_putendl_fd(cwd, 1);
-		printf(BLUE"PWD: %s\n"END, cwd);
+		printf(BLUE "PWD: %s\n" END, cwd);
 		return (1);
 	}
 	else
