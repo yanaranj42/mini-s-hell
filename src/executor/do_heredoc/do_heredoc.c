@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 02:21:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 05:05:20 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	print_line_in_file(t_redir *redir, char *line, int *pipe_fd,
 
 int	check_limitter_word(char *line, int *pipe_fd, t_redir *redir)
 {
+	if (!line)
+	{
+		end_of_file_in_heredoc(redir->file_name);
+		return (1);
+	}
 	if (ft_strncmp(line, redir->file_name, ft_strlen(redir->file_name)
 			+ 1) == 0)
 	{

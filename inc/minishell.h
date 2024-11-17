@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 02:38:24 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 05:04:31 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,6 +396,7 @@ void				error_lvl(char *i);
 void				perror_message(char *start, char *message);
 void				maximum_heredoc_exceeded(void);
 void				unexpected_token_message(char *message);
+void				end_of_file_in_heredoc(char *limitter_word);
 void				no_such_file_or_directory(char *start);
 void				permission_denied(char *start);
 void				command_not_found(char *start);

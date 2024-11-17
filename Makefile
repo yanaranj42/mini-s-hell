@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/12 06:07:53 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/17 04:58:11 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,8 +58,8 @@ FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c bu
 		 built-ins/export.c built-ins/export_utils.c built-ins/export_utils2.c built-ins/unset.c
 
 
-FILES += error_messages/initial_error_messages.c error_messages/parser_error_messages.c error_messages/executor_error_messages.c \
-		 error_messages/builtins_error_messages.c
+FILES += error_messages/initial_error_messages.c error_messages/parser_error_messages.c error_messages/heredoc_error_messages.c \
+		 error_messages/executor_error_messages.c error_messages/builtins_error_messages.c
 
 FILES += free/free_main.c free/free_parser.c free/free_expansor.c free/free_executor.c free/free_executor_2.c free/free_builtins.c
 
