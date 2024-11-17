@@ -19,6 +19,10 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 
 	while (tmp)
 	{
+		//ya no hay error 22. Falta check para que no lo printe en el
+		//env lst y quite el = en export list
+		if (!tmp->value && data->equal == 0)
+			tmp->value = ft_strdup("");
 		half_str = ft_strjoin(tmp->name, "=");
 		if (!half_str)
 		{
@@ -26,11 +30,10 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 			free_matrix_env(data);
 			return (0);
 		}
-		
 		data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
 		if (!data->env_matrix[*i])
 		{
-			printf("fallo aqui_25\n");
+			printf("error_22\n");
 			free(half_str);
 			free_matrix_env(data);
 			free_xtkns_list(data);
