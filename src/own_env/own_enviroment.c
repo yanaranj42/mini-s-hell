@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 16:22:38 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:44:57 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,29 @@ void	update_lvl(t_general *data)
 		}
 		env = env->next;
 	}
+}
+
+int fill_oldpwd(t_general *data, char *name)
+{
+	t_env	*s_env;
+
+	s_env = malloc(sizeof(t_env));
+	{
+		if (!s_env)
+			return (perror_message(NULL, ERR02), 0);
+	}
+	s_env->name = ft_strdup(name);
+	s_env->value = getcwd(NULL, 0);
+	s_env->hidden = 1;
+	s_env->next = NULL;
+	if (!s_env->name || !s_env->value)
+	{
+		printf("Error: It's not possible to set the enviroment\n");
+		data->exit_status = 1;
+		return (free_env(data->env_lst), 0);
+	}
+	env_to_lst(data, s_env);
+	return (1);
 }
 
 int fill_empty_env(t_general *data, char *name, char *value)
