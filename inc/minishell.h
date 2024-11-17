@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 16:20:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 02:38:24 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@
 # define APPEND 5  // >>  STDOUT_DOUBLE_REDIRECTION
 # define FILE_REDIRECTION 6
 # define CMD_ARGV 7
+
+/*VARIABLE GLOBAL*/
+extern int   g_error;
+
 
 typedef struct s_quotes
 {
@@ -171,18 +175,13 @@ void				init_fd_values(t_general *data);
 void				init_signal(t_general *data);
 
 // SIGNALS
-extern int			g_error;
 void				norm_sig_heredoc(int sig);
 void				do_eof(t_general *data);
 void				norm_sig_handle(int sig);
-void				set_sig_default();
 
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);
 void				env_to_lst(t_general *data, t_env *new_env);
-void				update_lvl(t_general *data);
-int					set_empty_env(t_general *data);
-int					fill_empty_env(t_general *data, char *name, char *value);
 
 // LEXER
 int					lexer(t_general *data);

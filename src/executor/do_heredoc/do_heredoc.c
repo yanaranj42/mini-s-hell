@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 20:00:53 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 02:21:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,7 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 	redir->fd = dup(pipe_fd[0]);
 	while (1)
 	{
-		signal(SIGINT, norm_sig_heredoc);
 		line = readline(YELLOW "> " END);
-		if (g_error)
-		{
-			free(line);
-			break ;
-		}
 		if (check_limitter_word(line, pipe_fd, redir) == 1)
 			break ;
 		print_line_in_file(redir, line, pipe_fd, data);

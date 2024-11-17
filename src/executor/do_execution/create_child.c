@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/11 12:16:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 02:25:10 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
 	t_redir	*redir;
 
-	set_sig_default();//REINICIA LAS SSIGNAS A DEFAULT
 	data->builtin = is_builtin(cmd);
 	if (cmd->argv[0] && data->builtin == 0)
 		check_cmd_path(cmd, data->paths);
