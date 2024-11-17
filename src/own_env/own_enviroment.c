@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 01:40:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:24:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,30 @@ int fill_empty_env(t_general *data, char *name, char *value)
 	else
 		s_env->value = ft_strdup(value);
 	s_env->hidden = 0;
-	s_env->next = NULL;	
+	s_env->next = NULL;
+	if (!s_env->name || !s_env->value)
+	{
+		printf("Error: It's not possible to set the enviroment\n");
+		data->exit_status = 1;
+		return (free_env(data->env_lst), 0);
+	}
+	env_to_lst(data, s_env);
+	return (1);
+}
+//volvemos a tener el leak al setear el oldpwd
+int fill_oldpwd(t_general *data, char *name)
+{
+	t_env	*s_env;
+
+	s_env = malloc(sizeof(t_env));
+	{
+		if (!s_env)
+			return (perror_message(NULL, ERR02), 0);
+	}
+	s_env->name = ft_strdup(name);
+	s_env->value = getcwd(NULL, 0);
+	s_env->hidden = 1;
+	s_env->next = NULL;
 	if (!s_env->name || !s_env->value)
 	{
 		printf("Error: It's not possible to set the enviroment\n");
@@ -67,9 +90,13 @@ int fill_empty_env(t_general *data, char *name, char *value)
 	return (1);
 }
 
+
+
 int set_empty_env(t_general *data)
 {
 	if (fill_empty_env(data, "PWD", NULL) == 0)
+		return (0);
+	if (fill_oldpwd(data, "OLDPWD") == 0)
 		return (0);
 	if (fill_empty_env(data, "LS_COLORS", "\0") == 0)
 		return (0);
@@ -103,7 +130,7 @@ void	env_to_lst(t_general *data, t_env *my_env)
 		tmp = tmp->next;
 	tmp->next = my_env;
 }
-//NO SE  LIBERA BIEN EL STRDUP line:123
+/*recibir el i por param para cortar lines*/
 int	get_own_env(t_general *data, char **env)
 {
 	t_env	*s_env;

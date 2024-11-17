@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:37:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:09:07 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	env_update(t_general *data, char *k_word, char *n_value)
 		if ((ft_strncmp(tmp->name, k_word, len) == 0)
 			&& (len = ft_strlen(tmp->name)))
 		{
+			free(tmp->value);
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
 				return (0);
@@ -41,7 +42,6 @@ int	env_update(t_general *data, char *k_word, char *n_value)
 		}
 		tmp = tmp->next;
 	}
-	printf("VAR: %s [%s]\n", k_word, data->env_lst->value); // BORRAR???
 	return (0);
 }
 

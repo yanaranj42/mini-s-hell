@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 05:20:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:33:31 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@
 # define APPEND 5  // >>  STDOUT_DOUBLE_REDIRECTION
 # define FILE_REDIRECTION 6
 # define CMD_ARGV 7
-# define NORM 1
+
+/*VARIABLE GLOBAL*/
+extern int   g_error;
+
 
 typedef struct s_quotes
 {
@@ -166,15 +169,14 @@ void				skip_delimiter(int *i, const char *s, char del,
 void				free_token_matrix(char **res, int num_col);
 
 // INITIALITATIONS
-void				init_data_values(t_general *data);
+void				init_data_values(t_general *data, char **env);
 void				init_quote_values(t_general *data);
 void				init_fd_values(t_general *data);
+//void				init_signal(t_general *data);
 
 // SIGNALS
-extern int			g_error;
 void				init_signal();
 void				norm_sig_handle(int sig);
-//void				handle_sig_quit(int sig);
 
 void				handle_sig_heredoc(int sig);
 void				do_eof();
@@ -183,9 +185,6 @@ void				set_sig_default();
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);
 void				env_to_lst(t_general *data, t_env *new_env);
-void				update_lvl(t_general *data);
-int					set_empty_env(t_general *data);
-int					fill_empty_env(t_general *data, char *name, char *value);
 
 // LEXER
 int					lexer(t_general *data);
@@ -400,6 +399,7 @@ void				error_lvl(char *i);
 void				perror_message(char *start, char *message);
 void				maximum_heredoc_exceeded(void);
 void				unexpected_token_message(char *message);
+void				end_of_file_in_heredoc(char *limitter_word);
 void				no_such_file_or_directory(char *start);
 void				permission_denied(char *start);
 void				command_not_found(char *start);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_matrix_enviroment.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 19:52:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:02:47 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 			free_matrix_env(data);
 			return (0);
 		}
+		
 		data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
 		if (!data->env_matrix[*i])
 		{
+			printf("fallo aqui_25\n");
 			free(half_str);
 			free_matrix_env(data);
 			free_xtkns_list(data);
@@ -73,7 +75,10 @@ int	get_matrix_env(t_general *data, t_env *env_lst)
 			return (0);
 		}
 		if (fill_matrix(tmp, data, &i) == 0)
+		{
+			printf("salgo aqui22\n");
 			return (0);
+		}
 		data->env_matrix[i] = NULL;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 05:48:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:11:24 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	print_line_in_file(t_redir *redir, char *line, int *pipe_fd,
 
 int	check_limitter_word(char *line, int *pipe_fd, t_redir *redir)
 {
+	if (!line)
+	{
+		end_of_file_in_heredoc(redir->file_name);
+		return (1);
+	}
 	if (ft_strncmp(line, redir->file_name, ft_strlen(redir->file_name)
 			+ 1) == 0)
 	{
@@ -52,13 +57,13 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 	if (create_heredoc_pipe(data, pipe_fd) == 0)
 		return (0);
 	redir->fd = dup(pipe_fd[0]);
-	signal(SIGINT, handle_sig_heredoc);
-	signal(SIGQUIT, handle_sig_heredoc);
+	/* signal(SIGINT, handle_sig_heredoc);
+	signal(SIGQUIT, SIG_IGN); */
 	while (1)
 	{
 		if (g_error == 42)
 			break ;
-		line = readline(YELLOW "> " END);
+		line = readline(YELLOW "> " END); //hija mata proceso al recibir signal
 		if (check_limitter_word(line, pipe_fd, redir) == 1)
 			break ;
 		print_line_in_file(redir, line, pipe_fd, data);

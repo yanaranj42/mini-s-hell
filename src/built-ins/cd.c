@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:36:10 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:58:25 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	ft_cd(t_general *data, char **arg)
 		getcwd(dir, PATH_MAX);
 		if (!check_dir(dir))
 			return (error_dir(data, NULL));
+		//do_oldpwd(data, arg);
 		env_update(data, "PWD", dir);
 		ft_pwd(data->env_lst);
 	}

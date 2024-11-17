@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s.c                                                :+:      :+:    :+:   */
+/*   preparations_for_the_executor.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 21:40:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:37:15 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	preparations_for_the_executor(t_general *data)
 {
 	if (get_matrix_env(data, data->env_lst) == 0)
 	{
-		printf("Failure in matrix enviroment creation");
+		printf("Failure in matrix enviroment creation\n");
 		data->exit_status = 1;
 		return (0);
 	}
