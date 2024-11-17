@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:37:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:09:12 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	env_update(t_general *data, char *k_word, char *n_value)
 		if ((ft_strncmp(tmp->name, k_word, len) == 0)
 			&& (len = ft_strlen(tmp->name)))
 		{
+			free (tmp->value); // porque como creo un valor para pwd en empty env, si no libero antes se queda en el limbo ese valor al sustituirlo por el nuevo
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
 				return (0);

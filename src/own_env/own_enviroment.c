@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 15:44:15 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:22:38 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int fill_empty_env(t_general *data, char *name, char *value)
 int set_empty_env(t_general *data)
 {
 	if (fill_empty_env(data, "PWD", NULL) == 0)
+		return (0);
+	if (fill_oldpwd(data, "OLDPWD") == 0)
 		return (0);
 	if (fill_empty_env(data, "LS_COLORS", "\0") == 0)
 		return (0);

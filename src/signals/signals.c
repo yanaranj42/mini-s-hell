@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:52:43 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 07:29:45 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "minishell.h"
 
 int		g_error = 0;
-
-void	set_sig_default()
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
 
 void	norm_sig_handle(int sig)
 {
@@ -33,24 +27,37 @@ void	norm_sig_handle(int sig)
 	}
 }
 
-void	do_eof(t_general *data)
+void	do_eof()
 {
-	(void)data;
 	write(1, "exit\n", 5);
 	printf("doing EOF\t");
 	printf("[%i]\n", g_error);
 	exit(g_error);
 }
 
+
 // REVISAR
-void	norm_sig_heredoc(int sig)
+void	handle_sig_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
 		ft_putendl_fd("", 1);
-		g_error = 1;
-		//exit(130);
+		rl_done = 1;
+		//rl_on_new_line();
+		//rl_redisplay();
+		g_error = 42;
 	}
-	return ;
+}
+
+void	set_sig_default() //si tenemos el NORM puede que no sea necesarios
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	init_signal()
+{
+	signal(SIGINT, norm_sig_handle);
+	signal(SIGQUIT, norm_sig_handle);
 }

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:38:43 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/17 06:59:12 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,4 @@ void	init_fd_values(t_general *data)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->next_cmd_input_fd = -1;
-}
-
-void	init_signal(t_general *data)
-{
-	(void)data;
-	signal(SIGINT, norm_sig_handle);
-	signal(SIGQUIT, SIG_IGN);
 }
