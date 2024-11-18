@@ -172,12 +172,15 @@ void				free_token_matrix(char **res, int num_col);
 void				init_data_values(t_general *data);
 void				init_quote_values(t_general *data);
 void				init_fd_values(t_general *data);
-void				init_signal(t_general *data);
 
 // SIGNALS
-void				norm_sig_heredoc(int sig);
-void				do_eof(t_general *data);
+void				init_signal();
 void				norm_sig_handle(int sig);
+
+void				handle_sig_heredoc(int sig);
+void				do_eof();
+void				set_sig_default();
+
 
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);

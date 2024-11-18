@@ -13,6 +13,31 @@
 #include "libft.h"
 #include "minishell.h"
 
+static int	ft_isspace(int c)
+{
+	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == ' ')
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int is_line_empty_or_whitespace(char *line)
+{
+	int i;
+
+	i = 0;
+    while (line[i])
+    {
+        if (!ft_isspace(line[i])) // Si encuentra un carácter no-espacio
+            return (0);
+        i++;
+    }
+    return (1); // La línea es vacía o solo contiene espacios
+}
+
+
 int	minishell_loop(t_general *data)
 {
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
@@ -23,7 +48,8 @@ int	minishell_loop(t_general *data)
 	}
 	if (g_error != 0)
 		data->exit_status = g_error; // SI HAGO CONTROL C, LO QUE HACE ES PARAR EL READLINE, HACER EL CONTROL C, Y LUEGO SIGUE ESTANDO ACTIVO EL MISMO READLINE, NO ES QUE EMPIECE UNO NUEVO. POR ESO, PARA PODER ACTUALIZAR EL EXIT STATUS CON ESE VALOR, TENGO QUE HACERLO DESPUES DE EL READLINE, PORQUE SINO CUANDO HAGA ECHO $? NO EXPANDIRA EL VALOR QUE TOCA A TIEMPO. SI LO HAGO DESPUES DEL EXECUTOR O ANTES DEL READLINE, SE ESTARIA ACTUALIZANDO PARA LA PROXIMA VUELTA, OSEA PARA EL PROXIMO COMANDO, OSEA TARDE.
-	add_history(data->line);
+	if (!is_line_empty_or_whitespace(data->line))
+    	add_history(data->line);
 	if (lexer(data) == 0)
 	{
 		free(data->line);
