@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 00:21:06 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:37:16 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	control_c_normal_handler(int sig) //for cntrl-c
 
 void	do_eof()
 {
-	write(1, "exit\n", 5);
-	printf("doing EOF\t");
-	printf("[%i]\n", g_error);
+	printf(PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
+	printf("exit\n");
+	//printf("doing EOF\t");
+	//printf("[%i]\n", g_error);
 	exit(g_error);
 }
 

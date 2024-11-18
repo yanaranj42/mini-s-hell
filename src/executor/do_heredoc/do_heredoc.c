@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 00:21:04 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:28:57 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 	while (1)
 	{
 		line = readline(YELLOW "> " END);
-		if (g_error == 130)
+		printf ("g_error %d\n", g_error);
+		if (line || g_error == 130)
 		{
 			free(line);
 			close(pipe_fd[1]);
