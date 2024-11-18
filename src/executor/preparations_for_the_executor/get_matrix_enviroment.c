@@ -6,42 +6,41 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 16:02:47 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:15:36 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-
+//para reducir lineas podemos liberar la matrix y xtkns al  hacer un break 
 int	fill_matrix(t_env *tmp, t_general *data, int *i)
 {
 	char	*half_str;
-
+	
+	half_str = NULL;
 	while (tmp)
 	{
-		//ya no hay error 22. Falta check para que no lo printe en el
-		//env lst y quite el = en export list
-		if (!tmp->value && data->equal == 0)
-			tmp->value = ft_strdup("");
 		half_str = ft_strjoin(tmp->name, "=");
 		if (!half_str)
-		{
-			free_xtkns_list(data);
-			free_matrix_env(data);
-			return (0);
-		}
-		data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
+			break ;
+		if (!tmp->value && data->equal == 0)
+			data->env_matrix[*i] = ft_strjoin(half_str, "");
+		else
+			data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
+		free(half_str);
 		if (!data->env_matrix[*i])
 		{
-			printf("error_22\n");
-			free(half_str);
-			free_matrix_env(data);
-			free_xtkns_list(data);
-			return (0);
+			printf(PURPLE"ERRROOOOOOR\n"END);//BORRAR
+			break ;
 		}
-		free(half_str);
 		(*i)++;
 		tmp = tmp->next;
+	}
+	if (!half_str || !data->env_matrix[*i])
+	{
+		free_matrix_env(data);
+		free_xtkns_list(data);
+		return (0);
 	}
 	return (1);
 }

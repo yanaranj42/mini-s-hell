@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/17 15:31:26 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:58:04 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 	if (value == NULL && data->equal == 1)
 		value = ft_strdup("");
 	env = data->env_lst;
+	//printf("name2: %s - value2: [%s]\n", name, value);//BORRAR
 	while (env != NULL)
 	{
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 15:24:18 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:58:08 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int fill_empty_env(t_general *data, char *name, char *value)
 	env_to_lst(data, s_env);
 	return (1);
 }
-//volvemos a tener el leak al setear el oldpwd
+
 int fill_oldpwd(t_general *data, char *name)
 {
 	t_env	*s_env;
@@ -128,6 +128,7 @@ void	env_to_lst(t_general *data, t_env *my_env)
 	}
 	while (tmp->next != NULL)
 		tmp = tmp->next;
+	//printf("env_to_lst\tname: %s - value: [%s]\n", my_env->name, my_env->value);//BORRAR
 	tmp->next = my_env;
 }
 /*recibir el i por param para cortar lines*/
