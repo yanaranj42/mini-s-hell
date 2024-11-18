@@ -13,7 +13,19 @@
 #include "libft.h"
 #include "minishell.h"
 
-int		g_error = 0;
+int g_error = 0;
+
+void	control_c_bloquing_handler(int sig) //for bloquing cntrl-c
+{
+	if (sig == SIGINT)
+	{
+		ft_putendl_fd("", 1);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		g_error = 130;
+	}
+}
 
 void	control_c_normal_handler(int sig) //for cntrl-c
 {
@@ -23,7 +35,7 @@ void	control_c_normal_handler(int sig) //for cntrl-c
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_error = 130;
+		g_error = 134;
 	}
 }
 
@@ -36,7 +48,7 @@ void	do_eof()
 }
 
 
-void	set_sig_default()
+void	set_sig_default() // CREO QUE YA NO SE NECESITA
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -58,7 +70,20 @@ void	set_sig_default()
 
 void	init_non_bloquing_signals()
 {
+	if (g_error != 0)
+		g_error = 0;
 	signal(SIGINT, control_c_normal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	init_bloquing_signals()
+{
+	signal(SIGINT, control_c_bloquing_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	init_ignore_signals ()
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}

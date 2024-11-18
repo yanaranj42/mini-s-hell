@@ -51,6 +51,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 {
 	t_redir	*redir;
 
+	init_bloquing_signals();
 	data->builtin = is_builtin(cmd);
 	if (cmd->argv[0] && data->builtin == 0)
 		check_cmd_path(cmd, data->paths);

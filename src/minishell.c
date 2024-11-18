@@ -40,13 +40,14 @@ int is_line_empty_or_whitespace(char *line)
 
 int	minishell_loop(t_general *data)
 {
-	init_non_bloquing_signals(&data);
+	init_non_bloquing_signals();
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
 	if (!data->line)
 	{
 		printf(PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 		do_eof(data);
 	}
+	init_ignore_signals ();
 	if (g_error != 0)
 		data->exit_status = g_error; // SI HAGO CONTROL C, LO QUE HACE ES PARAR EL READLINE, HACER EL CONTROL C, Y LUEGO SIGUE ESTANDO ACTIVO EL MISMO READLINE, NO ES QUE EMPIECE UNO NUEVO. POR ESO, PARA PODER ACTUALIZAR EL EXIT STATUS CON ESE VALOR, TENGO QUE HACERLO DESPUES DE EL READLINE, PORQUE SINO CUANDO HAGA ECHO $? NO EXPANDIRA EL VALOR QUE TOCA A TIEMPO. SI LO HAGO DESPUES DEL EXECUTOR O ANTES DEL READLINE, SE ESTARIA ACTUALIZANDO PARA LA PROXIMA VUELTA, OSEA PARA EL PROXIMO COMANDO, OSEA TARDE.
 	if (!is_line_empty_or_whitespace(data->line))

@@ -176,6 +176,9 @@ void				init_fd_values(t_general *data);
 // SIGNALS
 void				init_non_bloquing_signals();
 void				control_c_normal_handler(int sig);
+void	init_ignore_signals ();
+void				init_bloquing_signals();
+
 
 void				handle_sig_heredoc(int sig);
 void				do_eof();
