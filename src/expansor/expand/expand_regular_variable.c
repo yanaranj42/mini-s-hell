@@ -27,7 +27,6 @@ char	*identify_variable_to_expand(t_token *token, int *i)
 			return (NULL);
 		(*i)++;
 	}
-	printf("  Contenido del xtkn después del $: |%s|\n", tmp);
 	return (tmp);
 }
 

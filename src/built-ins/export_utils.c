@@ -13,15 +13,6 @@
 #include "libft.h"
 #include "minishell.h"
 
-void	print_env(t_general *data, t_env *tmp)
-{
-	ft_putstr_fd("\"", STDOUT);
-	if (tmp->value != NULL && data->equal == 1)
-		ft_putstr_fd(tmp->value, STDOUT);
-	ft_putstr_fd("\"", STDOUT);
-	ft_putstr_fd("\n", STDOUT);
-}
-
 void	print_sort(t_env *own_env)
 {
 	t_env	*tmp;
@@ -49,10 +40,11 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_env *own_env)
+int	print_export_lst(t_env *own_env, t_general *data)
 {
 	t_env	*tmp;
 
+	(void)data;
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
@@ -63,12 +55,12 @@ int	print_export_lst(t_env *own_env)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
-			if (tmp->value)
+			if (tmp->value && ft_strncmp(tmp->value, "\"\"", 2) != 0)
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);
-				if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
-					ft_putstr_fd(tmp->value, STDOUT);
+				//if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
+				ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
 			}
 			ft_putstr_fd("\n", STDOUT);
@@ -119,7 +111,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 		env = data->env_lst;
 		if (!value)
 			value = ft_strdup("");
-		while (env != NULL)
+		while (env)
 		{
 			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))

@@ -96,12 +96,6 @@ int set_empty_env(t_general *data)
 		return (0);
 	if (fill_oldpwd(data, "OLDPWD") == 0)
 		return (0);
-	if (fill_empty_env(data, "LS_COLORS", "\0") == 0)
-		return (0);
-	if (fill_empty_env(data, "LESSCLOSE", "/usr/bin/lesspipe %s %s") == 0)
-		return (0);
-	if (fill_empty_env(data, "LESSOPEN", "| /usr/bin/lesspipe %s") == 0)
-		return (0);
 	if (fill_empty_env(data, "SHLVL", "1") == 0)
 		return (0);
 	if (fill_empty_env(data, "_", "/usr/bin/env") == 0)

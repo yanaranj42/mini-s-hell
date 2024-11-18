@@ -19,7 +19,7 @@ int	ft_env(t_env *env)
 	printf("\n");
 	while (env)
 	{
-		if (env->hidden == 0)
+		if (env->value && env->hidden == 0)
 		{
 			ft_putstr_fd(env->name, 1);
 			ft_putstr_fd("=", 1);

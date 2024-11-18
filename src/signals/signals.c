@@ -15,7 +15,7 @@
 
 int		g_error = 0;
 
-void	norm_sig_handle(int sig)
+void	norm_sig_handle(int sig) //for cntrl-c
 {
 	if (sig == SIGINT)
 	{
@@ -25,13 +25,6 @@ void	norm_sig_handle(int sig)
 		rl_redisplay();
 		g_error = 130;
 	}
-	/* else if (sig == SIGQUIT)
-	{	
-		rl_replace_line("", 1);
-		ft_putstr_fd("Quit (core dumped)\n", 1);
-		rl_on_new_line();
-		g_error = 131;
-	} */
 }
 
 void	do_eof()
@@ -42,24 +35,25 @@ void	do_eof()
 	exit(g_error);
 }
 
+
+void	set_sig_default()
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
 // REVISAR
-void	handle_sig_heredoc(int sig)
+void	handle_sig_heredoc(int sig) //for cntrl-c in heredock
 {
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
-		ft_putendl_fd("", 1);
-		//rl_on_new_line();
+		rl_on_new_line();
+		write(2, "\n", 1);
+		g_global = 130;
 		//rl_redisplay();
-		g_error = 42;
+		exit (130);
 	}
-}
-
-
-void	set_sig_default() //si tenemos el NORM puede que no sea necesarios
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 }
 
 void	init_signal()
@@ -68,4 +62,37 @@ void	init_signal()
 	signal(SIGQUIT, SIG_IGN);
 }
 
-/*si estoy en mitad del executor, CORE DUMP*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void	signal_handle(int status) // to update exit_value after performing simple command
+{
+	if (WIFEXITED(status)) //returns true if child exited normally with exit;
+		g_global = WEXITSTATUS(status); //return exit status of child;
+	else if (WIFSIGNALED(status)) //returns nn-zero if child terminated bc it recieve signal that hasnt been handled
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_putstr_fd("Quit: \n", 2);
+			g_global = 131;
+		}
+		else if (WTERMSIG(status) == SIGINT)
+		{
+			ft_putstr_fd("\n", 2);
+			g_global = 130;
+		}
+	}
+}

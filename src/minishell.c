@@ -40,6 +40,7 @@ int is_line_empty_or_whitespace(char *line)
 
 int	minishell_loop(t_general *data)
 {
+	init_signal(&data);
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
 	if (!data->line)
 	{
@@ -86,7 +87,6 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	}
 	init_data_values(&data);
-	init_signal(&data);
 	if (get_own_env(&data, env) == 0)
 		return (1);
 	while (1)

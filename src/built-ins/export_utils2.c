@@ -43,7 +43,8 @@ int	env_add_last(t_general *data, char *name, char *value)
 		return (0);
 	new_env->name = ft_strdup(name);
 	if (data->equal == 0)
-		new_env->value = NULL;
+		new_env->value = ft_strdup("");
+		//new_env->value = NULL;
 	else
 		new_env->value = ft_strdup(value);
 	new_env->hidden = 0;
@@ -59,6 +60,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 	if (value == NULL && data->equal == 1)
 		value = ft_strdup("");
 	env = data->env_lst;
+	//printf("name2: %s - value2: [%s]\n", name, value);//BORRAR
 	while (env != NULL)
 	{
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
@@ -66,6 +68,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		{
 			if ((value || data->equal == 1))
 			{
+				//printf("encuentro match\n");
 				free(env->value);
 				env->value = ft_strdup(value);
 			}
