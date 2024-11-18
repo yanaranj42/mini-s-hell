@@ -15,7 +15,7 @@
 
 int		g_error = 0;
 
-void	norm_sig_handle(int sig) //for cntrl-c
+void	control_c_normal_handler(int sig) //for cntrl-c
 {
 	if (sig == SIGINT)
 	{
@@ -43,56 +43,22 @@ void	set_sig_default()
 }
 
 // REVISAR
-void	handle_sig_heredoc(int sig) //for cntrl-c in heredock
-{
-	if (sig == SIGINT)
-	{
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		write(2, "\n", 1);
-		g_global = 130;
-		//rl_redisplay();
-		exit (130);
-	}
-}
+// void	handle_sig_heredoc(int sig) //for cntrl-c in heredock
+// {
+// 	if (sig == SIGINT)
+// 	{
+// 		rl_replace_line("", 1);
+// 		rl_on_new_line();
+// 		write(2, "\n", 1);
+// 		g_global = 130;
+// 		//rl_redisplay();
+// 		exit (130);
+// 	}
+// }
 
-void	init_signal()
+void	init_non_bloquing_signals()
 {
-	signal(SIGINT, norm_sig_handle);
+	signal(SIGINT, control_c_normal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void	signal_handle(int status) // to update exit_value after performing simple command
-{
-	if (WIFEXITED(status)) //returns true if child exited normally with exit;
-		g_global = WEXITSTATUS(status); //return exit status of child;
-	else if (WIFSIGNALED(status)) //returns nn-zero if child terminated bc it recieve signal that hasnt been handled
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-		{
-			ft_putstr_fd("Quit: \n", 2);
-			g_global = 131;
-		}
-		else if (WTERMSIG(status) == SIGINT)
-		{
-			ft_putstr_fd("\n", 2);
-			g_global = 130;
-		}
-	}
-}

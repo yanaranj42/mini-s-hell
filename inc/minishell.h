@@ -174,8 +174,8 @@ void				init_quote_values(t_general *data);
 void				init_fd_values(t_general *data);
 
 // SIGNALS
-void				init_signal();
-void				norm_sig_handle(int sig);
+void				init_non_bloquing_signals();
+void				control_c_normal_handler(int sig);
 
 void				handle_sig_heredoc(int sig);
 void				do_eof();

@@ -40,7 +40,7 @@ int is_line_empty_or_whitespace(char *line)
 
 int	minishell_loop(t_general *data)
 {
-	init_signal(&data);
+	init_non_bloquing_signals(&data);
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
 	if (!data->line)
 	{
