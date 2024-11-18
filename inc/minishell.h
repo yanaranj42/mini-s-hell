@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 05:04:31 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:11:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ void				init_fd_values(t_general *data);
 // SIGNALS
 void				init_non_bloquing_signals();
 void				control_c_normal_handler(int sig);
+void	init_heredoc_signals();
 void	init_ignore_signals ();
 void				init_bloquing_signals();
 

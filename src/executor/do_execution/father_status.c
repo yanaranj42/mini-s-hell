@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:21:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 22:36:18 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/18 23:25:53 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,17 @@ void	father_status(t_general *data)
 	}
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			write (2, "Quit (core dumped)\n", 19);
+			data->exit_status = 131;
+		}
+		else if (WTERMSIG(status) == SIGINT)
+		{
+			write (2, "\n", 1);
+			data->exit_status = 130;
+		}
+	}
 }

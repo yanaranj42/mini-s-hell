@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/17 07:29:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 00:21:06 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int g_error = 0;
 
-void	control_c_bloquing_handler(int sig) //for bloquing cntrl-c
+void	control_c_heredoc_handler(int sig) //for bloquing cntrl-c
 {
 	if (sig == SIGINT)
 	{
@@ -35,7 +35,7 @@ void	control_c_normal_handler(int sig) //for cntrl-c
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_error = 134;
+		g_error = 130;
 	}
 }
 
@@ -45,13 +45,6 @@ void	do_eof()
 	printf("doing EOF\t");
 	printf("[%i]\n", g_error);
 	exit(g_error);
-}
-
-
-void	set_sig_default() // CREO QUE YA NO SE NECESITA
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 }
 
 // REVISAR
@@ -76,10 +69,17 @@ void	init_non_bloquing_signals()
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	init_heredoc_signals()
+{
+	signal(SIGINT, control_c_heredoc_handler); // control c
+	signal(SIGQUIT, SIG_IGN); // control contrabarra
+
+}
+
 void	init_bloquing_signals()
 {
-	signal(SIGINT, control_c_bloquing_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_DFL); // control c
+	signal(SIGQUIT, SIG_DFL); // control contrabarra
 }
 
 void	init_ignore_signals ()
@@ -87,3 +87,4 @@ void	init_ignore_signals ()
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
+
