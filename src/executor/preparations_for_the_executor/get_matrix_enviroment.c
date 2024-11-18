@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 13:15:36 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:28:19 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 			break ;
 		if (!tmp->value && data->equal == 0)
 			data->env_matrix[*i] = ft_strjoin(half_str, "");
-		else
+		else 
 			data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
 		free(half_str);
 		if (!data->env_matrix[*i])
@@ -77,10 +77,7 @@ int	get_matrix_env(t_general *data, t_env *env_lst)
 			return (0);
 		}
 		if (fill_matrix(tmp, data, &i) == 0)
-		{
-			printf("salgo aqui22\n");
 			return (0);
-		}
 		data->env_matrix[i] = NULL;
 	}
 	return (1);

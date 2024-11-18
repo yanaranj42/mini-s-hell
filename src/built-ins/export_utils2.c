@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/18 12:58:04 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:40:38 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	env_add_last(t_general *data, char *name, char *value)
 		return (0);
 	new_env->name = ft_strdup(name);
 	if (data->equal == 0)
-		new_env->value = NULL;
+		new_env->value = ft_strdup("");
+		//new_env->value = NULL;
 	else
 		new_env->value = ft_strdup(value);
 	new_env->hidden = 0;
@@ -67,6 +68,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		{
 			if ((value || data->equal == 1))
 			{
+				//printf("encuentro match\n");
 				free(env->value);
 				env->value = ft_strdup(value);
 			}

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/18 13:03:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:24:28 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 		env = data->env_lst;
 		if (!value)
 			value = ft_strdup("");
-		while (env != NULL)
+		while (env)
 		{
 			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/17 16:13:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:31:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_sig_heredoc(int sig)
 	{
 		rl_replace_line("", 1);
 		ft_putendl_fd("", 1);
-		//rl_on_new_line();
+		rl_on_new_line();
 		//rl_redisplay();
 		g_error = 42;
 	}

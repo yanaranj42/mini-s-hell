@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 16:11:24 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:30:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 	if (create_heredoc_pipe(data, pipe_fd) == 0)
 		return (0);
 	redir->fd = dup(pipe_fd[0]);
-	/* signal(SIGINT, handle_sig_heredoc);
-	signal(SIGQUIT, SIG_IGN); */
+	signal(SIGINT, handle_sig_heredoc);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		if (g_error == 42)
