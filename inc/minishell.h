@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 11:46:33 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:09:39 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	int				hidden;
+	int				val;
 	struct s_env	*next;
 }					t_env;
 

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 12:58:08 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:31:45 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	env_to_lst(t_general *data, t_env *my_env)
 	}
 	while (tmp->next != NULL)
 		tmp = tmp->next;
-	//printf("env_to_lst\tname: %s - value: [%s]\n", my_env->name, my_env->value);//BORRAR
+	printf("env_to_lst\tname:%s - value:%s - hid[%d] - val[%d]\n", my_env->name, my_env->value, my_env->hidden, my_env->val);//BORRAR
 	tmp->next = my_env;
 }
 /*recibir el i por param para cortar lines*/
@@ -150,6 +150,7 @@ int	get_own_env(t_general *data, char **env)
 			s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 			s_env->value = ft_strdup(getenv(s_env->name));
 			s_env->hidden = 0;
+			s_env->val = 1;//siempre inicia con 1 aunqu esta no tenga valor
 			s_env->next = NULL;
 			if (!s_env->name || !s_env->value)
 			{

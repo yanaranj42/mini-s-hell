@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/18 13:24:28 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:33:56 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,10 @@ int	print_export_lst(t_env *own_env, t_general *data)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
-			if (tmp->value && ft_strncmp(tmp->value, "\"\"", 2) != 0)
+			if (tmp->val == 1)
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);
-				//if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
 				ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
 			}

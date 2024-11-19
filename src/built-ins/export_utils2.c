@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/18 15:40:38 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:29:25 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*find_env_var(t_general *data, char *var_name)
 	}
 	return (NULL);
 }
-
+//value es ""
 int	env_add_last(t_general *data, char *name, char *value)
 {
 	t_env	*new_env;
@@ -43,10 +43,15 @@ int	env_add_last(t_general *data, char *name, char *value)
 		return (0);
 	new_env->name = ft_strdup(name);
 	if (data->equal == 0)
+	{
 		new_env->value = ft_strdup("");
-		//new_env->value = NULL;
+		new_env->val = 0;
+	}
 	else
+	{
 		new_env->value = ft_strdup(value);
+		new_env->val = 1;
+	}
 	new_env->hidden = 0;
 	new_env->next = NULL;
 	env_to_lst(data, new_env);
@@ -57,8 +62,8 @@ void	add_upd_env(t_general *data, char *name, char *value)
 {
 	t_env	*env;
 
-	if (value == NULL && data->equal == 1)
-		value = ft_strdup("");
+	if (value == NULL)//todas las null vars deben tener valor
+		value = ft_strdup("");//LEAK AQUI
 	env = data->env_lst;
 	//printf("name2: %s - value2: [%s]\n", name, value);//BORRAR
 	while (env != NULL)
@@ -68,12 +73,11 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		{
 			if ((value || data->equal == 1))
 			{
-				//printf("encuentro match\n");
 				free(env->value);
 				env->value = ft_strdup(value);
 			}
-			if (value && ft_strlen(value) == 0)
-				free(value);
+		/* 	if (value && ft_strlen(value) == 0)
+				free(value); */
 			env->hidden = 0;
 			return ;
 		}
@@ -81,6 +85,6 @@ void	add_upd_env(t_general *data, char *name, char *value)
 	}
 	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
-	if (value && ft_strlen(value) == 0)
-		free(value);
+	/* if (value && ft_strlen(value) == 0)
+		free(value); */
 }

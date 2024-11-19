@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/18 15:45:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:32:50 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,13 @@ int	ft_export(t_general *data)
 	char	**argv;
 	int		i;
 
+	//data->exit_status = 0;
 	i = 1;
-	data->exit_status = 0;
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
-	int j = 0;
-	for (; data->env_lst != NULL; j++) {
-		data->env_lst = data->env_lst->next;
-	}
-	data->env_lst = tmp_env;
-	printf("LIST size : %d\n", j);
+	
 	if (!argv[1])
-		print_export_lst(tmp_env, data);
+		print_export_lst(tmp_env, data);//agregar flag->val
 	while (argv[i])
 	{
 		if (argv[i][0] == '=')
@@ -80,15 +75,6 @@ int	ft_export(t_general *data)
 	}
 	if (data->env_matrix)
 		data->env_matrix = arr_clean(data->env_matrix);
-	printf("Flag1\n");
 	get_matrix_env(data, data->env_lst);
-	tmp_env = data->env_lst;
-	j = 0;
-	for (; data->env_lst != NULL; j++) {
-		data->env_lst = data->env_lst->next;
-	}
-	data->env_lst = tmp_env;
-	printf("LIST size AFTER : %d\n", j);
-	printf("Flag2\n");
 	return (0);
 }
