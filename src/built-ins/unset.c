@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:43:57 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:52:57 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	do_unset(t_general *data, char *var)
 			&& head->hidden == 0)
 		{
 			head->hidden = 1;
+			free(head->value);
+			head->value = ft_strdup("");
+			head->val = 0;
+			printf("do_unset\tname:%s - value:%s - hid[%d] - val[%d]\n", head->name, head->value, head->hidden, head->val);//BORRAR
 			return ;
 		}
 		head = head->next;
@@ -39,8 +43,8 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 	i = 1;
 	argv = cmd->argv;
 	//head = data->env_lst;
-	// if (!argv[i])
-	// 	;  //AQUI FALTA O SOBRA ALGO. LO COMENTO PARA QUE ME DEJE COMPILAR
+	if (!argv[i])
+		;
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);

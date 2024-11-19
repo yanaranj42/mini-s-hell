@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/17 13:58:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:47:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_env_path(t_general *data, char *k_word)
 		len = ft_strlen(tmp->name);
 	while (tmp)
 	{
-		if (ft_strncmp(k_word, tmp->name, len) == 0 && tmp->hidden == 0)
+		if (ft_strncmp(k_word, tmp->name, len) == 0 && tmp->hidden == 0 && tmp->val == 1)
 			return (tmp->value);
 		else
 			tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 13:32:50 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:36:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_export(t_general *data)
 	tmp_env = data->env_lst;
 	
 	if (!argv[1])
-		print_export_lst(tmp_env, data);//agregar flag->val
+		print_export_lst(tmp_env, data);
 	while (argv[i])
 	{
 		if (argv[i][0] == '=')

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/19 13:29:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:51:14 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,14 @@ void	add_upd_env(t_general *data, char *name, char *value)
 			{
 				free(env->value);
 				env->value = ft_strdup(value);
+				env->val = 0;
 			}
 		/* 	if (value && ft_strlen(value) == 0)
 				free(value); */
 			env->hidden = 0;
+			printf("env_to_lst\tname:%s - value:%s - hid[%d] - val[%d]\n", env->name, env->value, env->hidden, env->val);//BORRAR
 			return ;
+			
 		}
 		env = env->next;
 	}

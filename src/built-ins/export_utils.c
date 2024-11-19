@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/19 13:33:56 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:20:33 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,22 @@ void	print_sort(t_env *own_env)
 		tmp = tmp->next;
 	}
 }
-
+//NO HACE BIEN LAS CONDICIONES LA PRIMERA VEZ QUE PRINTA DESPUES DE UN UNSET 
 int	print_export_lst(t_env *own_env, t_general *data)
 {
 	t_env	*tmp;
 
-	(void)data;
+	(void)data;//BORRAR esta la podemos suprimir
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
 	tmp = own_env;
 	while (tmp)
 	{
+		/* if (ft_strncmp("HOME", tmp->name, ft_strlen("HOME")) == 0)
+		{
+			printf(RED"print_export\tname:%s - value:%s - hid[%d] - val[%d]\n"END, tmp->name, tmp->value, tmp->hidden, tmp->val);//BORRAR
+		} */
 		if (tmp->hidden == 0)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
@@ -104,7 +108,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 
 	env_var = find_env_var(data, name);
 	if (!env_var)
-		return ((void)add_upd_env(data, name, value));
+		return ((void)add_upd_env(data, name, value));//CHECK: podemos enviar directamente env_add_last
 	else
 	{
 		env = data->env_lst;
