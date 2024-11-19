@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/19 14:20:33 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:34:13 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ int	print_export_lst(t_env *own_env, t_general *data)
 	tmp = own_env;
 	while (tmp)
 	{
-		/* if (ft_strncmp("HOME", tmp->name, ft_strlen("HOME")) == 0)
-		{
-			printf(RED"print_export\tname:%s - value:%s - hid[%d] - val[%d]\n"END, tmp->name, tmp->value, tmp->hidden, tmp->val);//BORRAR
-		} */
 		if (tmp->hidden == 0)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
@@ -65,6 +61,10 @@ int	print_export_lst(t_env *own_env, t_general *data)
 				ft_putstr_fd("\"", STDOUT);
 				ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
+				ft_putchar_fd('[', STDOUT);
+				ft_putstr_fd(ft_itoa(tmp->hidden), STDOUT);
+				ft_putchar_fd(']', STDOUT);
+				ft_putchar_fd(tmp->val, STDOUT);
 			}
 			ft_putstr_fd("\n", STDOUT);
 		}

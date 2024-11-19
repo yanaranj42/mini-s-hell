@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 13:52:57 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:46:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,18 @@ void	do_unset(t_general *data, char *var)
 	while (head)
 	{
 		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
-			&& head->hidden == 0)
+			&& (ft_strlen(head->name) == ft_strlen(var)))
 		{
-			head->hidden = 1;
 			free(head->value);
 			head->value = ft_strdup("");
 			head->val = 0;
-			printf("do_unset\tname:%s - value:%s - hid[%d] - val[%d]\n", head->name, head->value, head->hidden, head->val);//BORRAR
-			return ;
+			head->hidden = 1;
+			//return ;
+			break ; 
 		}
 		head = head->next;
 	}
+	printf("do_unset\tname:%s - value:%s - hid[%d] - val[%d]\n", head->name, head->value, head->hidden, head->val);//BORRAR
 }
 
 int	ft_unset(t_general *data, t_cmd *cmd)

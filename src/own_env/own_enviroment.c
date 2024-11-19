@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 13:31:45 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:26:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	env_to_lst(t_general *data, t_env *my_env)
 	}
 	while (tmp->next != NULL)
 		tmp = tmp->next;
-	printf("env_to_lst\tname:%s - value:%s - hid[%d] - val[%d]\n", my_env->name, my_env->value, my_env->hidden, my_env->val);//BORRAR
+	//printf("env_to_lst\tname:%s - value:%s - hid[%d] - val[%d]\n", my_env->name, my_env->value, my_env->hidden, my_env->val);//BORRAR
 	tmp->next = my_env;
 }
 /*recibir el i por param para cortar lines*/
