@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 13:36:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:22:02 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,18 @@ int	ft_export(t_general *data)
 	i = 1;
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
+	t_env	*pio = data->env_lst; 
 	
 	if (!argv[1])
-		print_export_lst(tmp_env, data);
+	{
+		while(pio)
+		{
+			if (ft_strncmp("HOME", pio->name, ft_strlen("HOME")) == 0)	
+				printf("ft_export\tname:%s - value:%s - hid[%d] - val[%d]\n", pio->name, pio->value, pio->hidden, pio->val);//BORRAR
+			pio = pio->next;
+		}
+		print_export_lst(tmp_env, data);		
+	}
 	while (argv[i])
 	{
 		if (argv[i][0] == '=')

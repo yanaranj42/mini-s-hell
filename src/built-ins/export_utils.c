@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/19 15:34:13 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:00:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 void	print_sort(t_env *own_env)
 {
 	t_env	*tmp;
-	char	*tmp_name;
-	char	*tmp_value;
+	char	*name;
+	char	*value;
+	int		hid;
+	int		val;
 
 	tmp = own_env;
 	while (tmp)
@@ -27,18 +29,51 @@ void	print_sort(t_env *own_env)
 			if (ft_strncmp(tmp->name, tmp->next->name,
 					ft_strlen(tmp->name)) > 0)
 			{
-				tmp_name = tmp->name;
-				tmp_value = tmp->value;
+				name = tmp->name;
+				value = tmp->value;
+				hid = tmp->hidden;
+				val = tmp->val;
 				tmp->name = tmp->next->name;
 				tmp->value = tmp->next->value;
-				tmp->next->name = tmp_name;
-				tmp->next->value = tmp_value;
+				tmp->hidden =  tmp->next->hidden;
+				tmp->val =  tmp->next->val;
+				tmp->next->name = name;
+				tmp->next->value = value;
+				tmp->next->hidden = hid;
+				tmp->next->val = val;
 				tmp = own_env;
 			}
 		}
 		tmp = tmp->next;
 	}
 }
+
+/* while (tmp)
+	{
+		if (tmp->next && tmp->hidden == 0)
+		{
+			if (ft_strncmp(tmp->name, tmp->next->name,
+					ft_strlen(tmp->name)) > 0)
+			{
+				name = tmp->name;
+				printf ("name: %s\n", name);
+				printf ("tmp name: %s\n", tmp->name);
+				value = tmp->value;
+				printf ("value: %s\n", value);
+				printf ("tmp->value: %s\n", tmp->value);
+				tmp->name = tmp->next->name;
+				printf ("name 2: %s\n", name);
+				printf ("tmp name 2: %s\n", tmp->name);
+				tmp->value = tmp->next->value;
+				printf ("value 2: %s\n", value);
+				printf ("tmp->value 2: %s\n", tmp->value);
+				tmp->next->name = name;
+				tmp->next->value = value;
+				tmp = own_env;
+			}
+		}
+		tmp = tmp->next;
+	} */
 //NO HACE BIEN LAS CONDICIONES LA PRIMERA VEZ QUE PRINTA DESPUES DE UN UNSET 
 int	print_export_lst(t_env *own_env, t_general *data)
 {
@@ -51,6 +86,8 @@ int	print_export_lst(t_env *own_env, t_general *data)
 	tmp = own_env;
 	while (tmp)
 	{
+		if (ft_strncmp("HOME", tmp->name, ft_strlen("HOME")) == 0)
+			printf("print_export\tname:%s - value:%s - hid[%d] - val[%d]\n", tmp->name, tmp->value, tmp->hidden, tmp->val);//BORRAR
 		if (tmp->hidden == 0)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);

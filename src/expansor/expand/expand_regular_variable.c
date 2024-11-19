@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_regular_variable.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 23:26:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:23:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*identify_variable_to_expand(t_token *token, int *i)
 			return (NULL);
 		(*i)++;
 	}
-	printf("  Contenido del xtkn después del $: |%s|\n", tmp);
+	//printf("  Contenido del xtkn después del $: |%s|\n", tmp);
 	return (tmp);
 }
 

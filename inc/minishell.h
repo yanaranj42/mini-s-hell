@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 13:09:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:14:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ int					duplicate_pipe_fd0(t_general *data);
 void				create_pipe(t_general *data);
 int					init_new_process(t_general *data, t_cmd *cmd);
 int					create_child(t_general *data, t_cmd *cmd, int i, int n);
-void				check_cmd_path(t_cmd *cmd, char **paths);
+void				check_cmd_path(t_cmd *cmd, char **paths, t_env *env);
 char				*check_cmd_access(char **paths, char *cmd_argv);
 char				*check_cmd_current_directory(char *cmd_argv);
 char				*check_cmd_absolut_path(char *cmd_argv);
