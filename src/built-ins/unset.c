@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 12:29:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:23:39 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	do_unset(t_general *data, char *var)
 			head->value = ft_strdup("");
 			head->val = 0;
 			head->hidden = 1;
-			break ; 
+			break ;
 		}
 		head = head->next;
 	}

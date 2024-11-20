@@ -3,43 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 16:00:01 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:07:58 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-void	print_sort(t_env *own_env)
+static void	swap_node(t_env *a, t_env *b)
 {
-	t_env	*tmp;
 	char	*name;
 	char	*value;
 	int		hid;
 	int		val;
+
+	name = a->name;
+	value = a->value;
+	hid = a->hidden;
+	val = a->val;
+	a->name = b->name;
+	a->value = b->value;
+	a->hidden = b->hidden;
+	a->val = b->val;
+	b->name = name;
+	b->value = value;
+	b->hidden = hid;
+	b->val = val;
+}
+
+void	print_sort(t_env *own_env)
+{
+	t_env	*tmp;
 
 	tmp = own_env;
 	while (tmp)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name, \
+			ft_strlen(tmp->name)) > 0)
 			{
-				name = tmp->name;
-				value = tmp->value;
-				hid = tmp->hidden;
-				val = tmp->val;
-				tmp->name = tmp->next->name;
-				tmp->value = tmp->next->value;
-				tmp->hidden =  tmp->next->hidden;
-				tmp->val =  tmp->next->val;
-				tmp->next->name = name;
-				tmp->next->value = value;
-				tmp->next->hidden = hid;
-				tmp->next->val = val;
+				swap_node(tmp, tmp->next);
 				tmp = own_env;
 			}
 		}
@@ -81,8 +88,6 @@ int	export_opt(char *name, char *argv)
 	int	i;
 	int	end;
 
-	printf ("entro3\n");
-	printf ("name %c\n", name[0]);
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (0);
 	i = 1;
@@ -91,17 +96,13 @@ int	export_opt(char *name, char *argv)
 	{
 		if (!ft_isalnum(name[i] && name[i] != '_'))
 		{
-			printf ("entro4\n");
 			if (name[i] == '+' && (name[i + 1] || !ft_strchr(argv, '=')))
 				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
 				return (0);
 			if (name[end] != '+' && name[end] != '='
 				&& !(ft_isalnum(name[end])))
-			{
-				printf ("entro4\n");
 				return (0);
-			}
 		}
 		i++;
 	}
@@ -111,7 +112,6 @@ int	export_opt(char *name, char *argv)
 void	export_plus_var(t_general *data, char *name, char *value)
 {
 	t_env	*env;
-	char	*old_val;
 	char	*env_var;
 
 	env_var = find_env_var(data, name);
@@ -127,9 +127,9 @@ void	export_plus_var(t_general *data, char *name, char *value)
 			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))
 			{
-				old_val = env->value;
-				env->value = ft_strjoin(old_val, value);
-				free(old_val);
+				upd_node(env, env->value, value, 0);
+				if (ft_strncmp(value, "", 1) == 0)
+					free(value);
 				return ;
 			}
 			env = env->next;

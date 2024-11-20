@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:19:52 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:51:44 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@ int					change_expanded_heredoc_line(char **xline, char *tmp,
 int					check_expanded_heredoc_line_exists(char *tmp, t_env *env);
 void				heredoc_father_status(t_general *data, int *pid,
 						int *pipe_fd);
-int					do_execution(t_general *data);
+int					do_execution(t_general *data, int *builtin_only);
 int					check_executor_type(t_general *data);
 int					builtin_execution_only(t_general *data);
 int					check_father_redirs_1(t_general *data, t_cmd *first_cmd);
@@ -355,15 +355,15 @@ void				father_signal_status(t_general *data, int status);
 // BUILT-INS
 int					is_builtin(t_cmd *cmd);
 void				execute_builtin(t_general *data, t_cmd *cmd);
+int					do_oldpwd(t_general *data, char **arg);
 int					ft_env(t_env *env);
 int					ft_pwd(t_env *env);
-int					ft_cd(t_general *data, char **argv);
-int					do_oldpwd(t_general *data, char **arg);
+int					ft_cd(t_general *data, char **argv, int cd_ret);
 int					error_dir(t_general *data, char *str);
 int					check_dir(char *path);
 void				is_hidd(t_general *data, char *name, char *dir);
 int					go_to_path(int opt, t_general *data);
-void				upd_oldpwd(t_general *data); // puede ser void
+void				upd_oldpwd(t_general *data);
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
 int					ft_echo(char **argv);
@@ -372,12 +372,13 @@ int					ft_export(t_general *data);
 int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
+void				upd_node(t_env *env, char *old_value, char *value, int equal);
 void				print_sort(t_env *own_env);
 int					print_export_lst(t_env *own_env);
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);
-int					env_add_last(t_general *data, char *name, char *value);		
+int					env_add_last(t_general *data, char *name, char *value);
 void				add_upd_env(t_general *data, char *name, char *value);
 
 // UTILS
@@ -439,7 +440,7 @@ void				free_heredoc_pipe(t_general *data, t_redir *redir,
 void				free_control_c_in_heredoc(t_general *data);
 void				close_heredoc_fds(t_general *data);
 void				*ft_memdel(void *ptr);
-char				**arr_clean(char **arr);
+void				arr_clean(char **arr);
 void				unset_free(t_env *env);
 void				free_exit(t_general *data);
 

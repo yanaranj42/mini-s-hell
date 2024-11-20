@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 02:46:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:02:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ static int	check_long(char *arg);
 void	ft_exit(t_general *data)
 {
 	printf(ORANGE "    Fire can't kill a dragon ❤️‍🔥\n" END);
-	printf(CYAN "              But.... Winter is coming ❄️\n\n" END);
+	printf(CYAN "              But.... Winter is coming ❄️\n" END);
+	printf("\n");
 	ft_putstr_fd("exit \n", STDERR);
 	if (data->first_cmd->argv[0] && data->first_cmd->argv[1] == NULL)
-		exit(0);
+		exit(data->exit_status);
 	if (exit_code(data, data->first_cmd->argv) == 1)
 		;
 	else

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:21:59 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:49:47 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	line_is_empty_or_whitespace(char *line)
 
 int	minishell_loop(t_general *data)
 {
-	printf ("exit status %d\n", data->exit_status);
 	init_non_bloquing_signals();
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
 	if (!data->line)
@@ -45,7 +44,6 @@ int	minishell_loop(t_general *data)
 		return (free(data->line), 0);
 	if (expansor(data) == 0)
 		return (free(data->line), 0);
-	data->exit_status = 0;
 	if (executor(data) == 0)
 		return (free(data->line), 0);
 	free_before_next_round(data);

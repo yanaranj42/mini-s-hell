@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/20 03:36:52 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/20 20:53:14 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -116,19 +116,18 @@ ${NAME}: ${OBJS}
 	@echo "  *       l  /   V       ))            V   \\ l        *"
 	@echo "          l/            //                  \\I"
 	@echo "                        V"
-	@echo "$(END)"
-
+	@echo "$(END)$(NC)$(END)"
 clean:
 	@${RM} ${OBJDIR}
 	@make -C libs/Libft clean
-	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
+	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)$(NC)$(END)"
 
 fclean:
 	@${RM} ${OBJDIR}
 	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
 	@${RM} ${NAME}
 	@make -C libs/Libft fclean
-	@echo "$(RED) DRACKYSHELL EXEC DELETED$(END)"
+	@echo "$(RED) DRACKYSHELL EXEC DELETED$(END)$(NC)$(END)"
 
 re: fclean all
 #	@echo "drackishell re done"

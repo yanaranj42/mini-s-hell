@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 12:56:35 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:21:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,26 @@ int	env_add_last(t_general *data, char *name, char *value)
 	return (1);
 }
 
+void	upd_node(t_env *env, char *old_value, char *value, int equal)
+{
+	char	*old_val;
+
+	if (!equal)
+	{
+		old_val = old_value;
+		env->value = ft_strjoin(old_value, value);
+		env->val = 1;
+		free(old_val);
+	}
+	else if (value || equal)
+	{
+		free(env->value);
+		env->value = ft_strdup(value);
+		env->val = 1;
+	}
+	env->hidden = 0;
+}
+
 void	add_upd_env(t_general *data, char *name, char *value)
 {
 	t_env	*env;
@@ -72,17 +92,15 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
-			if ((value || data->equal == 1))
-			{
-				free(env->value);
-				env->value = ft_strdup(value);
-				env->val = 1;
-			}
-			env->hidden = 0;
-			return ;			
+			upd_node(env, NULL, value, data->equal);
+			if (ft_strncmp(value, "", 1) == 0)
+				free(value);
+			return ;
 		}
 		env = env->next;
 	}
 	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
+	if (ft_strncmp(value, "", 1) == 0)
+		free(value);
 }

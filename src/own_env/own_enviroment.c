@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 03:32:40 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:06:05 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	fill_env_node(t_general *data, t_env *s_env, char **env, int i)
 	s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 	s_env->value = ft_strdup(getenv(s_env->name));
 	s_env->hidden = 0;
+	s_env->val = 1;
 	s_env->next = NULL;
 	if (!s_env->name || !s_env->value)
 	{

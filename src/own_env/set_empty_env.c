@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:25:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 12:51:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:06:54 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	fill_path_env(t_general *data, char *name)
 	}
 	s_env->name = ft_strdup(name);
 	tmp = ft_strjoin("/usr/local/sbin:", "/usr/local/sbin:/usr/local/bin:");
-	if (!*tmp)
+	if (!tmp)
 		return (free_env(data->env_lst), 0);
 	s_env->value = ft_strjoin(tmp, "/usr/sbin:/usr/bin:/sbin:/bin");
 	s_env->hidden = 1;
@@ -35,9 +35,11 @@ int	fill_path_env(t_general *data, char *name)
 	{
 		printf("Error: It's not possible to set the enviroment\n");
 		data->exit_status = 1;
+		free (tmp);
 		return (free_env(data->env_lst), 0);
 	}
 	env_to_lst(data, s_env);
+	free (tmp);
 	return (1);
 }
 
@@ -53,6 +55,7 @@ int	fill_oldpwd(t_general *data, char *name)
 	s_env->name = ft_strdup(name);
 	s_env->value = getcwd(NULL, 0);
 	s_env->hidden = 1;
+	s_env->val = 0;
 	s_env->next = NULL;
 	if (!s_env->name || !s_env->value)
 	{
@@ -79,6 +82,7 @@ int	fill_empty_env(t_general *data, char *name, char *value)
 	else
 		s_env->value = ft_strdup(value);
 	s_env->hidden = 0;
+	s_env->val = 1;
 	s_env->next = NULL;
 	if (!s_env->name || !s_env->value)
 	{

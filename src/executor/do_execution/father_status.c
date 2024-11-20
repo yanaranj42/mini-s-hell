@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:21:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 14:32:54 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:18:20 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	father_status(t_general *data)
 
 	tmp = data->first_cmd;
 	status = 0;
-	printf ("exit status 4 %d\n", data->exit_status);
 	while (tmp)
 	{
 		status = 0;
@@ -42,7 +41,6 @@ void	father_status(t_general *data)
 	}
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
-	printf ("exit status 5 %d\n", data->exit_status);
-	// else if (WIFSIGNALED(status))
-	// 	father_signal_status(data, status);
+	else if (WIFSIGNALED(status))
+		father_signal_status(data, status);
 }

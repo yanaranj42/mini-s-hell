@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 03:35:18 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:21:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ void	upd_oldpwd(t_general *data)
 	getcwd(cwd, PATH_MAX);
 	is_hidd(data, "OLDPWD", cwd);
 }
-/*si esta oculta pero hacemos un cd, esta se actualiza*/
+
 int	env_update(t_general *data, char *k_word, char *n_value)
 {
 	t_env	*tmp;
 	size_t	len;
 
 	tmp = data->env_lst;
-	len = ft_strlen(k_word);//ahorrar
+	len = ft_strlen(k_word);
 	while (tmp != NULL)
 	{
 		if ((ft_strncmp(tmp->name, k_word, len) == 0)
-			&& (len = ft_strlen(tmp->name)))
+			&& (len == ft_strlen(tmp->name)))
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(n_value);
