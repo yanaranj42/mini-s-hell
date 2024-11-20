@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 19:49:17 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:30:30 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ int					check_dir(char *path);
 
 void				is_hidd(t_general *data, char *name, char *dir);
 int					go_to_path(int opt, t_general *data);
-void				upd_oldpwd(t_general *data); // puede ser void
+void				upd_oldpwd(t_general *data);
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
 
@@ -380,8 +380,9 @@ int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
 /*export utils*/
+void				upd_node(t_env *env, char *old_value, char *value, int equal);
 void				print_sort(t_env *own_env);
-int					print_export_lst(t_env *own_env, int equal);
+int					print_export_lst(t_env *own_env);
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);

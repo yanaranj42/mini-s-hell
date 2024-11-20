@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 19:29:32 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:07:58 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,10 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_env *own_env, int equal)
+int	print_export_lst(t_env *own_env)
 {
 	t_env	*tmp;
 
-	(void)equal;//BORRAR
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
@@ -69,7 +68,7 @@ int	print_export_lst(t_env *own_env, int equal)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
-			if (tmp->val == 1)//me printa las vars aunque no tengan valor
+			if (tmp->val == 1)
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);
@@ -113,7 +112,6 @@ int	export_opt(char *name, char *argv)
 void	export_plus_var(t_general *data, char *name, char *value)
 {
 	t_env	*env;
-	char	*old_val;
 	char	*env_var;
 
 	env_var = find_env_var(data, name);
@@ -129,13 +127,9 @@ void	export_plus_var(t_general *data, char *name, char *value)
 			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))
 			{
-				//use upd_node
-				old_val = env->value;
-				env->value = ft_strjoin(old_val, value);
-				env->hidden = 0;
-				env->val = 1;
-				free(old_val);
-				free(value);
+				upd_node(env, env->value, value, 0);
+				if (ft_strncmp(value, "", 1) == 0)
+					free(value);
 				return ;
 			}
 			env = env->next;

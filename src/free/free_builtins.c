@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 04:15:09 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 19:51:30 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:24:31 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ void	free_split(char **split)
 	}
 	free(split);
 }
+
 void	*ft_memdel(void *ptr)
 {
-	if (ptr)
+	if (ptr != NULL)
 		free(ptr);
 	return (NULL);
 }
+
 void	arr_clean(char **arr)
 {
 	int	i;
