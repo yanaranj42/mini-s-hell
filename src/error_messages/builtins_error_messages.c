@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_error_messages.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:01:32 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:32:43 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int	error_opt(char *s1, char *s2, char **arr, char *argv)
 	if (ft_strchr(argv, '='))
 		ft_putstr_fd("=", STDOUT);
 	if (s2 == NULL)
-		s2 = ft_strdup("");
+		s2 = ft_strdup("");//LEAK AQUI
 	ft_putstr_fd(s2, STDOUT);
 	ft_putstr_fd(": not a valid identifier\n", STDOUT);
 	arr_clean(arr);
-	return (0);
+	return (1);
 }
 
 void	error_brk(t_general *data, char *msg, char *name, int flag)

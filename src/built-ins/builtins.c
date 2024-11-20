@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 11:46:48 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:15:11 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	execute_builtin(t_general *data, t_cmd *cmd)
 		ft_export(data);
 	else if (data->builtin == 7)
 		ft_unset(data, cmd);
+	printf("status3: %i\n", data->exit_status);
 }
 
 int	is_builtin(t_cmd *cmd)

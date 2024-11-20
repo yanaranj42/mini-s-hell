@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:40:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:12:53 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ static int	valid_arg(char *argv)
 
 static int	exit_code(t_general *data, char **argv)
 {
-	printf("LEN: %zu\n", ft_strlen(argv[1]));
+	//printf("LEN: %zu\n", ft_strlen(argv[1]));
 	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 21)
 	{
 		if (argv[2])
 		{
 			ft_putendl_fd(CYAN "minishell: exit: too many arguments" END,
 				STDERR);
-			data->exit_status = 155;
+			data->exit_status = 1;
+			//printf("e_val: %i\n", data->exit_status);
 			return (1);
 		}
 		else

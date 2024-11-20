@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 15:26:27 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:59:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	get_own_env(t_general *data, char **env)
 			s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 			s_env->value = ft_strdup(getenv(s_env->name));
 			s_env->hidden = 0;
-			s_env->val = 1;//siempre inicia con 1 aunqu esta no tenga valor
+			s_env->val = 1;
 			s_env->next = NULL;
 			if (!s_env->name || !s_env->value)
 			{

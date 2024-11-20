@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 00:14:11 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:17:02 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,7 +386,7 @@ void				do_unset(t_general *data, char *var);
 /*export utils*/
 //void				print_env(t_general *data, t_env *tmp); // MODIFF
 void				print_sort(t_env *own_env);
-int					print_export_lst(t_env *own_env, t_general *data);
+int					print_export_lst(t_env *own_env);
 		// quitamos data porque no usamos equal en esta zona
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
@@ -430,7 +430,6 @@ void				free_cmd_argv(t_general *data, int *i);
 void				free_cmd_redir(t_general *data);
 void				*ft_memdel(void *ptr);
 char				**arr_clean(char **arr);
-void				unset_free(t_env *env);
 void				free_exit(t_general *data);
 
 #endif

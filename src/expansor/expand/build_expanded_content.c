@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_expanded_content.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/07 12:10:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:06:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
