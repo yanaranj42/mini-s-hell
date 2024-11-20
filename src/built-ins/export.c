@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 15:55:47 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:51:36 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_export(t_general *data)
 		i++;
 	}
 	if (data->env_matrix)
-		data->env_matrix = arr_clean(data->env_matrix);
+		arr_clean(data->env_matrix);
 	get_matrix_env(data, data->env_lst);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 02:46:19 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:51:45 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_exit(t_general *data)
 	printf(CYAN "              But.... Winter is coming ❄️\n\n" END);
 	ft_putstr_fd("exit \n", STDERR);
 	if (data->first_cmd->argv[0] && data->first_cmd->argv[1] == NULL)
-		exit(0);
+		exit(data->exit_status);
 	if (exit_code(data, data->first_cmd->argv) == 1)
 		;
 	else

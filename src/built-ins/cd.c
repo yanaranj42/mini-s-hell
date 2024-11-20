@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 14:17:28 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:14:20 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	is_hidd(t_general *data, char *name, char *dir)
 			if (tmp->hidden == 1)
 				break ;
 			else
-				env_update(data, "PWD", dir);
+				env_update(data, name, dir);
 		}
 		tmp = tmp->next;
 	}

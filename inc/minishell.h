@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 15:56:22 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:49:17 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,7 +423,8 @@ void				free_cmd(t_general *data);
 void				free_cmd_argv(t_general *data, int *i);
 void				free_cmd_redir(t_general *data);
 void				*ft_memdel(void *ptr);
-char				**arr_clean(char **arr);
+void				arr_clean(char **arr);
 void				free_exit(t_general *data);
+void				free_split(char **split);	
 
 #endif

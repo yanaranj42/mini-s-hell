@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 16:53:31 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:29:32 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,13 @@ void	export_plus_var(t_general *data, char *name, char *value)
 			if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 				&& (ft_strlen(env->name) == ft_strlen(name)))
 			{
+				//use upd_node
 				old_val = env->value;
 				env->value = ft_strjoin(old_val, value);
+				env->hidden = 0;
+				env->val = 1;
 				free(old_val);
+				free(value);
 				return ;
 			}
 			env = env->next;

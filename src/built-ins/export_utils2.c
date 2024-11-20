@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 17:07:00 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:32:59 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static void	upd_node(t_env *env, char *value, int equal)
 		free(env->value);
 		env->value = ft_strdup(value);
 		env->val = 1;
-		//free(value);
 	}
 	env->hidden = 0;
 }
@@ -85,10 +84,12 @@ void	add_upd_env(t_general *data, char *name, char *value)
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
 			upd_node(env, value, data->equal);
+			free(value); //doble free
 			return ;
 		}
 		env = env->next;
 	}
 	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
+	free(value);
 }
