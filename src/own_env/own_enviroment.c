@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 17:44:57 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:32:40 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	update_lvl(t_general *data)
 	t_env	*env;
 	char	*lvl;
 	int		i;
+
 	env = data->env_lst;
 	while (env != NULL)
 	{
@@ -41,69 +42,6 @@ void	update_lvl(t_general *data)
 	}
 }
 
-int fill_oldpwd(t_general *data, char *name)
-{
-	t_env	*s_env;
-
-	s_env = malloc(sizeof(t_env));
-	{
-		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
-	}
-	s_env->name = ft_strdup(name);
-	s_env->value = getcwd(NULL, 0);
-	s_env->hidden = 1;
-	s_env->next = NULL;
-	if (!s_env->name || !s_env->value)
-	{
-		printf("Error: It's not possible to set the enviroment\n");
-		data->exit_status = 1;
-		return (free_env(data->env_lst), 0);
-	}
-	env_to_lst(data, s_env);
-	return (1);
-}
-
-int fill_empty_env(t_general *data, char *name, char *value)
-{
-	t_env	*s_env;
-
-	s_env = malloc(sizeof(t_env));
-	{
-		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
-	}
-	s_env->name = ft_strdup(name);
-	if (name[0] == 'P')
-		s_env->value = getcwd(NULL, 0);
-	else
-		s_env->value = ft_strdup(value);
-	s_env->hidden = 0;
-	s_env->next = NULL;	
-	if (!s_env->name || !s_env->value)
-	{
-		printf("Error: It's not possible to set the enviroment\n");
-		data->exit_status = 1;
-		return (free_env(data->env_lst), 0);
-	}
-	env_to_lst(data, s_env);
-	return (1);
-}
-
-int set_empty_env(t_general *data)
-{
-	if (fill_empty_env(data, "PWD", NULL) == 0)
-		return (0);
-	if (fill_oldpwd(data, "OLDPWD") == 0)
-		return (0);
-	if (fill_empty_env(data, "SHLVL", "1") == 0)
-		return (0);
-	if (fill_empty_env(data, "_", "/usr/bin/env") == 0)
-		return (0);
-	return (1);
-}
-
-
 void	env_to_lst(t_general *data, t_env *my_env)
 {
 	t_env	*head;
@@ -123,6 +61,21 @@ void	env_to_lst(t_general *data, t_env *my_env)
 	tmp->next = my_env;
 }
 
+int	fill_env_node(t_general *data, t_env *s_env, char **env, int i)
+{
+	s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
+	s_env->value = ft_strdup(getenv(s_env->name));
+	s_env->hidden = 0;
+	s_env->next = NULL;
+	if (!s_env->name || !s_env->value)
+	{
+		printf("Error: It's not possible to copy the enviroment\n");
+		data->exit_status = 1;
+		return (free_env(data->env_lst), 0);
+	}
+	return (1);
+}
+
 int	get_own_env(t_general *data, char **env)
 {
 	t_env	*s_env;
@@ -138,16 +91,8 @@ int	get_own_env(t_general *data, char **env)
 			s_env = malloc(sizeof(t_env));
 			if (!s_env)
 				return (perror_message(NULL, ERR02), 0);
-			s_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
-			s_env->value = ft_strdup(getenv(s_env->name));
-			s_env->hidden = 0;
-			s_env->next = NULL;
-			if (!s_env->name || !s_env->value)
-			{
-				printf("Error: It's not possible to copy the enviroment\n");
-				data->exit_status = 1;
-				return (free_env(data->env_lst), 0);
-			}
+			if (fill_env_node(data, s_env, env, i) == 0)
+				return (0);
 			env_to_lst(data, s_env);
 		}
 		update_lvl(data);

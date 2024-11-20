@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:01:32 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:39:53 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,19 @@ int	error_cd_last(t_general *data, char c, int flag)
 	return (0);
 }
 
-int	error_opt(char *s1, char *s2, char **arr, char *argv)
+int error_opt(char *s1, char *s2, char **arr, char *argv)
 {
-	ft_putstr_fd("minishell: export: `", STDOUT);
-	ft_putstr_fd(s1, STDOUT);
-	if (ft_strchr(argv, '='))
-		ft_putstr_fd("=", STDOUT);
-	if (s2 == NULL)
-		s2 = ft_strdup("");
-	ft_putstr_fd(s2, STDOUT);
-	ft_putstr_fd(": not a valid identifier\n", STDOUT);
-	arr_clean(arr);
-	return (0);
+    ft_putstr_fd("minishell: export: `", STDOUT);
+    ft_putstr_fd(s1, STDOUT);
+    if (ft_strchr(argv, '='))
+        ft_putstr_fd("=", STDOUT);
+    if (s2 == NULL)
+        s2 = ft_strdup("");
+    ft_putstr_fd(s2, STDOUT);
+    ft_putstr_fd(": not a valid identifier\n", STDOUT);
+    free(s2);
+    arr_clean(arr);
+    return (1);
 }
 
 void	error_brk(t_general *data, char *msg, char *name, int flag)

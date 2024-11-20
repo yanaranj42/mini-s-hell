@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:23:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:40:41 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:46:19 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ static int	valid_arg(char *argv)
 
 static int	exit_code(t_general *data, char **argv)
 {
-	printf("LEN: %zu\n", ft_strlen(argv[1]));
 	if (valid_arg(argv[1]) && ft_strlen(argv[1]) < 21)
 	{
 		if (argv[2])
 		{
-			ft_putendl_fd(CYAN "minishell: exit: too many arguments" END,
-				STDERR);
-			data->exit_status = 155;
+			ft_putendl_fd(CYAN "minishell: exit: too many arguments" END, 2);
+			data->exit_status = 1;
 			return (1);
 		}
 		else
@@ -105,7 +103,6 @@ static int	check_long(char *argv)
 	len = ft_strlen(argv);
 	if (len == 20)
 	{
-		printf(YELLOW "IS LONG SIGN NUM\n" END);
 		if (argv[0] == '-' && ft_strncmp(argv, "-9223372036854775807",
 				len) == 0)
 			return (1);
@@ -116,10 +113,7 @@ static int	check_long(char *argv)
 	else
 	{
 		if (ft_strncmp(argv, "9223372036854775807", len) == 0)
-		{
-			printf(BLUE "IS LONG NO SIGN NUM\n" END);
 			return (1);
-		}
 	}
 	return (0);
 }

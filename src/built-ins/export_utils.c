@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/12 16:41:27 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:00:01 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,30 @@
 void	print_sort(t_env *own_env)
 {
 	t_env	*tmp;
-	char	*tmp_name;
-	char	*tmp_value;
+	char	*name;
+	char	*value;
+	int		hid;
+	int		val;
 
 	tmp = own_env;
 	while (tmp)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name,
-					ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
 			{
-				tmp_name = tmp->name;
-				tmp_value = tmp->value;
+				name = tmp->name;
+				value = tmp->value;
+				hid = tmp->hidden;
+				val = tmp->val;
 				tmp->name = tmp->next->name;
 				tmp->value = tmp->next->value;
-				tmp->next->name = tmp_name;
-				tmp->next->value = tmp_value;
+				tmp->hidden =  tmp->next->hidden;
+				tmp->val =  tmp->next->val;
+				tmp->next->name = name;
+				tmp->next->value = value;
+				tmp->next->hidden = hid;
+				tmp->next->val = val;
 				tmp = own_env;
 			}
 		}
@@ -40,26 +47,24 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_env *own_env, t_general *data)
+int	print_export_lst(t_env *own_env)
 {
 	t_env	*tmp;
 
-	(void)data;
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
 	tmp = own_env;
 	while (tmp)
 	{
-		if (tmp->hidden == 0)
+		if (tmp->hidden == 0 && ft_strncmp(tmp->name, "_", 1) != 0)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
-			if (tmp->value && ft_strncmp(tmp->value, "\"\"", 2) != 0)
+			if (tmp->val == 1)
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);
-				//if (ft_strncmp(tmp->value, "\"\"", 2) != 0)
 				ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
 			}
@@ -76,6 +81,8 @@ int	export_opt(char *name, char *argv)
 	int	i;
 	int	end;
 
+	printf ("entro3\n");
+	printf ("name %c\n", name[0]);
 	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (0);
 	i = 1;
@@ -84,13 +91,17 @@ int	export_opt(char *name, char *argv)
 	{
 		if (!ft_isalnum(name[i] && name[i] != '_'))
 		{
+			printf ("entro4\n");
 			if (name[i] == '+' && (name[i + 1] || !ft_strchr(argv, '=')))
 				return (0);
 			if (name[i] == ' ' || name[i] == '%' || name[i] == '/')
 				return (0);
 			if (name[end] != '+' && name[end] != '='
 				&& !(ft_isalnum(name[end])))
+			{
+				printf ("entro4\n");
 				return (0);
+			}
 		}
 		i++;
 	}
@@ -104,7 +115,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 	char	*env_var;
 
 	env_var = find_env_var(data, name);
-	if (!env_var)
+	if (!env_var || ft_strncmp(name, "_", 1) == 0)
 		return ((void)add_upd_env(data, name, value));
 	else
 	{

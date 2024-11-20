@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 19:52:14 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:16:29 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 
 	while (tmp)
 	{
-		//if (!tmp->value && data->equal == 0)
-		//	tmp->value = ft_strdup("");
 		half_str = ft_strjoin(tmp->name, "=");
 		if (!half_str)
 		{

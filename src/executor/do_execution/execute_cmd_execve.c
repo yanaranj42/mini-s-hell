@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 22:32:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:37:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,12 @@ void	execute_cmd(t_general *data, t_cmd *cmd)
 		}
 	}
 	else if (cmd->argv[0] && data->builtin != 0)
+	{
 		execute_builtin(data, cmd);
+		exit (data->exit_status);
+	}
 }
+
+
+// ejecutas .pones a variable, el hijo antes de terminar acaba con un exit con el valor de la variable exit status
+// 			exit valor que te ha dejado el hijo

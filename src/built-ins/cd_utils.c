@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/17 16:09:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:35:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,31 @@ void	upd_oldpwd(t_general *data)
 	char	cwd[PATH_MAX];
 
 	getcwd(cwd, PATH_MAX);
-	env_update(data, "OLDPWD", cwd);
+	is_hidd(data, "OLDPWD", cwd);
 }
-
+/*si esta oculta pero hacemos un cd, esta se actualiza*/
 int	env_update(t_general *data, char *k_word, char *n_value)
 {
 	t_env	*tmp;
 	size_t	len;
 
 	tmp = data->env_lst;
-	len = ft_strlen(k_word);
+	len = ft_strlen(k_word);//ahorrar
 	while (tmp != NULL)
 	{
 		if ((ft_strncmp(tmp->name, k_word, len) == 0)
 			&& (len = ft_strlen(tmp->name)))
 		{
-			free (tmp->value); // porque como creo un valor para pwd en empty env, si no libero antes se queda en el limbo ese valor al sustituirlo por el nuevo
+			free(tmp->value);
 			tmp->value = ft_strdup(n_value);
 			if (!tmp->value)
 				return (0);
 			tmp->hidden = 0;
+			tmp->val = 1;
 			return (1);
 		}
 		tmp = tmp->next;
 	}
-	printf("VAR: %s [%s]\n", k_word, data->env_lst->value); // BORRAR???
 	return (0);
 }
 

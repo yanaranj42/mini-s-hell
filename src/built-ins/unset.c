@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/12 16:43:57 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:29:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ void	do_unset(t_general *data, char *var)
 	while (head)
 	{
 		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
-			&& head->hidden == 0)
+			&& (ft_strlen(head->name) == ft_strlen(var)))
 		{
+			free(head->value);
+			head->value = ft_strdup("");
+			head->val = 0;
 			head->hidden = 1;
-			return ;
+			break ; 
 		}
 		head = head->next;
 	}
@@ -32,15 +35,13 @@ void	do_unset(t_general *data, char *var)
 
 int	ft_unset(t_general *data, t_cmd *cmd)
 {
-	//t_env	*head; //EL COMPILADOR DICE QUE ESTA VARIABLE NO SE USA, LA COMENTO PARA PODER COMPILAR. REVISAR
 	char	**argv;
 	int		i;
 
 	i = 1;
 	argv = cmd->argv;
-	//head = data->env_lst;
-	// if (!argv[i])
-	// 	;  //AQUI FALTA O SOBRA ALGO. LO COMENTO PARA QUE ME DEJE COMPILAR
+	if (!argv[i] || argv[i][0] == '_')
+		return (1);
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);

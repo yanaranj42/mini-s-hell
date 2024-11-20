@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 01:33:04 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:19:52 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,15 @@
 
 /*PARSING*/
 # define PIPE 1
-# define INPUT 2   // < STDIN_REDIRECTION
-# define HEREDOC 3 // << STDIN_DOUBLE_REDIRECTION
-# define OUTPUT 4  // > STDOUT_REDIRECTION
-# define APPEND 5  // >>  STDOUT_DOUBLE_REDIRECTION
+# define INPUT 2
+# define HEREDOC 3
+# define OUTPUT 4
+# define APPEND 5
 # define FILE_REDIRECTION 6
 # define CMD_ARGV 7
 
 /*VARIABLE GLOBAL*/
-extern int   g_error;
-
+extern int			g_error;
 
 typedef struct s_quotes
 {
@@ -67,7 +66,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	int				hidden;
-	int 			val;
+	int				val;
 	struct s_env	*next;
 }					t_env;
 
@@ -144,17 +143,15 @@ typedef struct s_general
 	int				exit_status;
 	int				pipe_fd[2];
 	int				next_cmd_input_fd;
-	int				flag;// variable yaja
-	t_env			*env_lst;// variable yaja
-	int				equal;// variable yaja
-	int				builtin;// variable yaja
+	int				flag;
+	t_env			*env_lst;
+	int				equal;
+	int				builtin;
 }					t_general;
 
-
-
-//MAIN
-int	minishell_loop(t_general *data);
-int line_is_empty_or_whitespace(char *line);
+// MAIN
+int					minishell_loop(t_general *data);
+int					line_is_empty_or_whitespace(char *line);
 
 // INITIALITATIONS
 void				init_data_values(t_general *data);
@@ -162,21 +159,25 @@ void				init_quote_values(t_general *data);
 void				init_fd_values(t_general *data);
 
 // SIGNALS
-void				init_non_bloquing_signals();
+void				init_non_bloquing_signals(void);
+void				init_heredoc_signals(void);
+void				init_ignore_signals(void);
+void				init_bloquing_signals(void);
+void				do_eof(void);
 void				control_c_normal_handler(int sig);
-void	init_heredoc_signals();
-void	init_ignore_signals ();
-void				init_bloquing_signals();
-
-
-void				handle_sig_heredoc(int sig);
-void				do_eof();
-void				set_sig_default();
-
+void				control_c_heredoc_handler(int sig);
 
 // CREATE OWN ENVIROMENT
 int					get_own_env(t_general *data, char **env);
+int					set_empty_env(t_general *data);
+int					fill_empty_env(t_general *data, char *name, char *value);
+int					fill_oldpwd(t_general *data, char *name);
+int					fill_path_env(t_general *data, char *name);
+int					fill_env_node(t_general *data, t_env *s_env, char **env,
+						int i);
+
 void				env_to_lst(t_general *data, t_env *new_env);
+void				update_lvl(t_general *data);
 
 // LEXER
 int					lexer(t_general *data);
@@ -286,6 +287,8 @@ int					do_heredoc(t_general *data);
 int					manage_heredoc_stuff(t_general *data, int *pipe_fd,
 						t_redir *redir);
 int					create_heredoc_pipe(t_general *data, int *pipe_fd);
+int					child_heredoc_process(t_general *data, int *pipe_fd,
+						t_redir *redir);
 int					check_limitter_word(char *line, int *pipe_fd,
 						t_redir *redir);
 void				print_line_in_file(t_redir *redir, char *line, int *pipe_fd,
@@ -303,6 +306,8 @@ char				*identify_heredoc_variable_to_expand(char *line, int *i);
 int					change_expanded_heredoc_line(char **xline, char *tmp,
 						t_env *env);
 int					check_expanded_heredoc_line_exists(char *tmp, t_env *env);
+void				heredoc_father_status(t_general *data, int *pid,
+						int *pipe_fd);
 int					do_execution(t_general *data);
 int					check_executor_type(t_general *data);
 int					builtin_execution_only(t_general *data);
@@ -345,44 +350,34 @@ int					check_overwrite_file(t_cmd *cmd, t_redir *redir);
 void				execute_cmd(t_general *data, t_cmd *cmd);
 void				close_fds(t_general *data, t_redir *redir);
 void				father_status(t_general *data);
+void				father_signal_status(t_general *data, int status);
 
 // BUILT-INS
 int					is_builtin(t_cmd *cmd);
 void				execute_builtin(t_general *data, t_cmd *cmd);
-int					ft_strcmp(const char *s1, const char *s2);
-int					do_oldpwd(t_general *data, char **arg);
-
 int					ft_env(t_env *env);
 int					ft_pwd(t_env *env);
-
 int					ft_cd(t_general *data, char **argv);
-/*utils cd*/
-// void	set_oldpwd(t_general *data);
+int					do_oldpwd(t_general *data, char **arg);
 int					error_dir(t_general *data, char *str);
 int					check_dir(char *path);
-
+void				is_hidd(t_general *data, char *name, char *dir);
 int					go_to_path(int opt, t_general *data);
 void				upd_oldpwd(t_general *data); // puede ser void
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
-
 int					ft_echo(char **argv);
 void				ft_exit(t_general *data);
-
 int					ft_export(t_general *data);
 int					handle_args(t_general *data, char *argv);
-
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
-/*export utils*/
-//void				print_env(t_general *data, t_env *tmp); // MODIFF
 void				print_sort(t_env *own_env);
-int					print_export_lst(t_env *own_env, t_general *data);
-		// quitamos data porque no usamos equal en esta zona
+int					print_export_lst(t_env *own_env);
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);
-int					env_add_last(t_general *data, char *name, char *value);
+int					env_add_last(t_general *data, char *name, char *value);		
 void				add_upd_env(t_general *data, char *name, char *value);
 
 // UTILS
@@ -439,6 +434,10 @@ void				free_get_cmd_process(t_general *data);
 void				free_cmd(t_general *data);
 void				free_cmd_argv(t_general *data, int *i);
 void				free_cmd_redir(t_general *data);
+void				free_heredoc_pipe(t_general *data, t_redir *redir,
+						int *pipe_fd);
+void				free_control_c_in_heredoc(t_general *data);
+void				close_heredoc_fds(t_general *data);
 void				*ft_memdel(void *ptr);
 char				**arr_clean(char **arr);
 void				unset_free(t_env *env);

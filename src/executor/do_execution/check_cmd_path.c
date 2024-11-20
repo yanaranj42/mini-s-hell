@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 01:25:54 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:45:27 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*check_cmd_absolut_path(char *cmd_argv)
 
 void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 {
-	t_env 	*tmp;
+	t_env	*tmp;
 	int		flag;
 
 	flag = 0;
@@ -106,13 +106,13 @@ void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 	cmd->path = check_cmd_current_directory(cmd->argv[0]);
 	if (!cmd->path)
 	{
-		while (tmp) //Este while y la flag de la condicion del siguiente if, son porque en el unset y export, en vez de eliminar la variable, la oculta, por lo que si me hacen unset no entraria nunca. A modo apaño.
+		while (tmp)
 		{
 			if (ft_strncmp("PATH", tmp->name, 5) == 0 && tmp->val == 0)
 				flag = 1;
 			tmp = tmp->next;
 		}
-		if (!paths || flag == 1)  // hasta aqui
+		if (!paths || flag == 1)
 		{
 			cmd->path = check_cmd_absolut_path(cmd->argv[0]);
 			if (cmd->path == NULL)

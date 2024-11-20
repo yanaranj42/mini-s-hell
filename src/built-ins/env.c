@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
+/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 16:39:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:48:32 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 
 int	ft_env(t_env *env)
 {
-	printf(YELLOW "OWN ENVIRONMENT\n" END);
-	printf("\n");
 	while (env)
 	{
-		if (env->value && env->hidden == 0)
+		if (env->hidden == 0 && env->val == 1)
 		{
 			ft_putstr_fd(env->name, 1);
 			ft_putstr_fd("=", 1);

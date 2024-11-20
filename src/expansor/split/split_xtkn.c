@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/09 23:05:48 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:08:58 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,4 @@ int	split_xtkn(t_xtkn *xtkn, t_general *data)
 	free_splited_content(splited_content);
 	return (1);
 }
+
