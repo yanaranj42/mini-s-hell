@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 02:08:29 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:33:04 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	int				hidden;
+	int 			val;
 	struct s_env	*next;
 }					t_env;
 
@@ -91,6 +92,7 @@ typedef struct s_redir
 {
 	int				type;
 	char			*file_name;
+	pid_t			pid;
 	int				fd;
 	int				heardoc_expansion;
 	struct s_redir	*next;
@@ -148,25 +150,11 @@ typedef struct s_general
 	int				builtin;// variable yaja
 }					t_general;
 
-// UTILS
-void				account_quotes(char c, t_general *data);
-char				**ft_token_split(char const *s, char del, t_general *data);
-int					token_num_words(const char *s, char del, t_general *data);
-char				**matrix_token_words(char **res, const char *s, char del,
-						t_general *data);
-int					matrix_process(t_split *info, int *i, int word,
-						t_general *data);
-int					build_matrix_word(t_split *info, int *i, int word,
-						t_general *data);
-void				find_end_of_the_miniquotes_word(int *i, const char *s,
-						char del, t_general *data);
-void				find_end_of_the_quotes_word(int *i, const char *s, char del,
-						t_general *data);
-void				find_end_of_the_word(int *i, const char *s, char del,
-						t_general *data);
-void				skip_delimiter(int *i, const char *s, char del,
-						t_general *data);
-void				free_token_matrix(char **res, int num_col);
+
+
+//MAIN
+int	minishell_loop(t_general *data);
+int line_is_empty_or_whitespace(char *line);
 
 // INITIALITATIONS
 void				init_data_values(t_general *data);
@@ -337,7 +325,7 @@ int					duplicate_pipe_fd0(t_general *data);
 void				create_pipe(t_general *data);
 int					init_new_process(t_general *data, t_cmd *cmd);
 int					create_child(t_general *data, t_cmd *cmd, int i, int n);
-void				check_cmd_path(t_cmd *cmd, char **paths);
+void				check_cmd_path(t_cmd *cmd, char **paths, t_env *env);
 char				*check_cmd_access(char **paths, char *cmd_argv);
 char				*check_cmd_current_directory(char *cmd_argv);
 char				*check_cmd_absolut_path(char *cmd_argv);
@@ -396,6 +384,26 @@ void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);
 int					env_add_last(t_general *data, char *name, char *value);
 void				add_upd_env(t_general *data, char *name, char *value);
+
+// UTILS
+void				account_quotes(char c, t_general *data);
+char				**ft_token_split(char const *s, char del, t_general *data);
+int					token_num_words(const char *s, char del, t_general *data);
+char				**matrix_token_words(char **res, const char *s, char del,
+						t_general *data);
+int					matrix_process(t_split *info, int *i, int word,
+						t_general *data);
+int					build_matrix_word(t_split *info, int *i, int word,
+						t_general *data);
+void				find_end_of_the_miniquotes_word(int *i, const char *s,
+						char del, t_general *data);
+void				find_end_of_the_quotes_word(int *i, const char *s, char del,
+						t_general *data);
+void				find_end_of_the_word(int *i, const char *s, char del,
+						t_general *data);
+void				skip_delimiter(int *i, const char *s, char del,
+						t_general *data);
+void				free_token_matrix(char **res, int num_col);
 
 // ERROR_MESSAGES
 void				too_many_parameters(void);

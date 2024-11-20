@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 02:50:00 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 23:01:17 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,5 @@ int	expand_exit_status_variable(t_xtkn *xtkn, int exit_status, int *i)
 	}
 	free(exit_number);
 	(*i)++;
-	printf ("exit status expandido: %s\n", xtkn->content);
 	return (1);
 }

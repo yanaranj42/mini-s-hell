@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 00:37:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:27:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ void	control_c_heredoc_handler(int sig) //for bloquing cntrl-c
 {
 	if (sig == SIGINT)
 	{
-		ft_putendl_fd("", 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
-		rl_redisplay();
-		g_error = 130;
+		write(2, "\n", 1);
+		exit (130);
 	}
 }
 
@@ -43,24 +42,8 @@ void	do_eof()
 {
 	printf(PURPLE"    The night is dark and full of secrets 🌜 ✨\n\n"END);
 	printf("exit\n");
-	//printf("doing EOF\t");
-	//printf("[%i]\n", g_error);
 	exit(g_error);
 }
-
-// REVISAR
-// void	handle_sig_heredoc(int sig) //for cntrl-c in heredock
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		rl_replace_line("", 1);
-// 		rl_on_new_line();
-// 		write(2, "\n", 1);
-// 		g_global = 130;
-// 		//rl_redisplay();
-// 		exit (130);
-// 	}
-// }
 
 void	init_non_bloquing_signals()
 {
@@ -88,4 +71,3 @@ void	init_ignore_signals ()
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
-

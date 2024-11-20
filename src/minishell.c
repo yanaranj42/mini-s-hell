@@ -6,22 +6,13 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/19 00:38:12 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:59:05 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-static int	ft_isspace(int c)
-{
-	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r' || c == ' ')
-	{
-		return (1);
-	}
-	return (0);
-}
 
 int is_line_empty_or_whitespace(char *line)
 {
@@ -64,6 +55,7 @@ int	minishell_loop(t_general *data)
 		free(data->line);
 		return (0);
 	}
+	data->exit_status = 0;
 	if (executor(data) == 0)
 	{
 		free(data->line);

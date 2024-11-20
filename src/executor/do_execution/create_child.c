@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 23:09:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:45:13 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	create_child(t_general *data, t_cmd *cmd, int i, int n)
 	init_bloquing_signals();
 	data->builtin = is_builtin(cmd);
 	if (cmd->argv[0] && data->builtin == 0)
-		check_cmd_path(cmd, data->paths);
+		check_cmd_path(cmd, data->paths, data->env_lst);
 	if (n > 1 && i != 0)
 		prepare_input_pipe(data);
 	if (n > 1 && i < (n - 1))
