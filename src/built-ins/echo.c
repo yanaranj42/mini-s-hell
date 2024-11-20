@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:41:00 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/10/21 13:10:51 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:59:41 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_echo(char **argv)
 		while (argv[i])
 		{
 			ft_putstr_fd(argv[i], 1);
-			if (argv[i + 1] && argv[i][0] != '\0')
+			if (argv[i + 1])
 				write(1, " ", 1);
 			i++;
 		}

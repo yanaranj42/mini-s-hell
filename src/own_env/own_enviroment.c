@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 00:59:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:22:08 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int fill_empty_env(t_general *data, char *name, char *value)
 	else
 		s_env->value = ft_strdup(value);
 	s_env->hidden = 0;
+	s_env->val = 1;
 	s_env->next = NULL;
 	if (!s_env->name || !s_env->value)
 	{
@@ -77,19 +78,31 @@ int fill_oldpwd(t_general *data, char *name)
 			return (perror_message(NULL, ERR02), 0);
 	}
 	s_env->name = ft_strdup(name);
-	s_env->value = getcwd(NULL, 0);
-	s_env->hidden = 1;
+	s_env->value = ft_strdup("");
+	s_env->hidden = 0;
+	s_env->val = 0;
 	s_env->next = NULL;
-	if (!s_env->name || !s_env->value)
-	{
-		printf("Error: It's not possible to set the enviroment\n");
-		data->exit_status = 1;
-		return (free_env(data->env_lst), 0);
-	}
 	env_to_lst(data, s_env);
 	return (1);
 }
 
+int	fill_path_env(t_general *data, char  *name, char *value)
+{
+	t_env *s_env;
+	
+	s_env = malloc(sizeof(t_env));
+	{
+		if (!s_env)
+			return (perror_message(NULL, ERR02), 0);
+	}
+	s_env->name = ft_strdup(name);
+	s_env->value = ft_strdup(value);
+	s_env->hidden = 1;
+	s_env->val = 1;
+	s_env->next = NULL;
+	env_to_lst(data, s_env);
+	return (1);
+}
 
 
 int set_empty_env(t_general *data)
@@ -98,11 +111,8 @@ int set_empty_env(t_general *data)
 		return (0);
 	if (fill_oldpwd(data, "OLDPWD") == 0)
 		return (0);
-	if (fill_empty_env(data, "LS_COLORS", "\0") == 0)
-		return (0);
-	if (fill_empty_env(data, "LESSCLOSE", "/usr/bin/lesspipe %s %s") == 0)
-		return (0);
-	if (fill_empty_env(data, "LESSOPEN", "| /usr/bin/lesspipe %s") == 0)
+	if (fill_path_env(data, "PATH",
+		"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") == 0)
 		return (0);
 	if (fill_empty_env(data, "SHLVL", "1") == 0)
 		return (0);
@@ -128,10 +138,8 @@ void	env_to_lst(t_general *data, t_env *my_env)
 	}
 	while (tmp->next != NULL)
 		tmp = tmp->next;
-	//printf("env_to_lst\tname:%s - value:%s - hid[%d] - val[%d]\n", my_env->name, my_env->value, my_env->hidden, my_env->val);//BORRAR
 	tmp->next = my_env;
 }
-/*recibir el i por param para cortar lines*/
 int	get_own_env(t_general *data, char **env)
 {
 	t_env	*s_env;

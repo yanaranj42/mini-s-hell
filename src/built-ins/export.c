@@ -6,19 +6,13 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 01:43:33 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:42:49 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-/* TENGO QUE PONER UNA FLAG PARA QUE NO PRINTE LAS NUEVAS VARIABLES QUE NO TENGAN VALOR
-ES DECIR, SI HAGO export a. Esta no se debe printar en el env y printar sin  = en el 
-export. Creo que ahora ya funcionaria.
-Esto haria que volvamos a cambiar a la version original el:
-int	fill_matrix(t_env *tmp, t_general *data, int *i)
-*/
 int	handle_args(t_general *data, char *argv)
 {
 	char	**arr;
@@ -30,7 +24,7 @@ int	handle_args(t_general *data, char *argv)
 		data->equal = 1;
 	arr = ft_split(argv, '=');
 	if (!export_opt(arr[0], argv))
-		return (error_opt(arr[0], arr[1], arr, argv));//1
+		return (error_opt(arr[0], arr[1], arr, argv));
 	else
 	{
 		if (ft_strchr(arr[0], '+'))
@@ -56,7 +50,6 @@ int	ft_export(t_general *data)
 	i = 1;
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
-	printf("status1: %i\n", data->exit_status);
 	if (!argv[1])
 		print_export_lst(tmp_env);
 	while (argv[i])
@@ -70,6 +63,5 @@ int	ft_export(t_general *data)
 	if (data->env_matrix)
 		data->env_matrix = arr_clean(data->env_matrix);
 	get_matrix_env(data, data->env_lst);
-	printf("status2: %i\n", data->exit_status);
 	return (0);
 }

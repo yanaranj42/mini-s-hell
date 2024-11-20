@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 01:01:08 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:00:18 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	print_sort(t_env *own_env)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name,
-					ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
 			{
 				name = tmp->name;
 				value = tmp->value;
@@ -48,33 +47,6 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-/* while (tmp)
-	{
-		if (tmp->next && tmp->hidden == 0)
-		{
-			if (ft_strncmp(tmp->name, tmp->next->name,
-					ft_strlen(tmp->name)) > 0)
-			{
-				name = tmp->name;
-				printf ("name: %s\n", name);
-				printf ("tmp name: %s\n", tmp->name);
-				value = tmp->value;
-				printf ("value: %s\n", value);
-				printf ("tmp->value: %s\n", tmp->value);
-				tmp->name = tmp->next->name;
-				printf ("name 2: %s\n", name);
-				printf ("tmp name 2: %s\n", tmp->name);
-				tmp->value = tmp->next->value;
-				printf ("value 2: %s\n", value);
-				printf ("tmp->value 2: %s\n", tmp->value);
-				tmp->next->name = name;
-				tmp->next->value = value;
-				tmp = own_env;
-			}
-		}
-		tmp = tmp->next;
-	} */
-//NO HACE BIEN LAS CONDICIONES LA PRIMERA VEZ QUE PRINTA DESPUES DE UN UNSET 
 int	print_export_lst(t_env *own_env)
 {
 	t_env	*tmp;
@@ -85,7 +57,7 @@ int	print_export_lst(t_env *own_env)
 	tmp = own_env;
 	while (tmp)
 	{
-		if (tmp->hidden == 0)
+		if (tmp->hidden == 0 && ft_strncmp(tmp->name, "_", 1) != 0)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
@@ -95,7 +67,6 @@ int	print_export_lst(t_env *own_env)
 				ft_putstr_fd("\"", STDOUT);
 				ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
-				ft_putchar_fd(tmp->val, STDOUT);
 			}
 			ft_putstr_fd("\n", STDOUT);
 		}
@@ -138,8 +109,8 @@ void	export_plus_var(t_general *data, char *name, char *value)
 	char	*env_var;
 
 	env_var = find_env_var(data, name);
-	if (!env_var)
-		return ((void)add_upd_env(data, name, value));//CHECK: podemos enviar directamente env_add_last
+	if (!env_var || ft_strncmp(name, "_", 1) == 0)
+		return ((void)add_upd_env(data, name, value));
 	else
 	{
 		env = data->env_lst;

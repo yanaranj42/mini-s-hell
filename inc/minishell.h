@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 02:17:02 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:06:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-/*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
-# define ERR01 "Malloc error\n"
-# define ERR02 "ENV creation failiure"
 
 /*PARSING*/
 # define PIPE 1
@@ -143,10 +139,10 @@ typedef struct s_general
 	int				exit_status;
 	int				pipe_fd[2];
 	int				next_cmd_input_fd;
-	int				flag;// variable yaja
-	t_env			*env_lst;// variable yaja
-	int				equal;// variable yaja
-	int				builtin;// variable yaja
+	int				flag;
+	t_env			*env_lst;
+	int				equal;
+	int				builtin;
 }					t_general;
 
 // UTILS
@@ -173,12 +169,10 @@ void				free_token_matrix(char **res, int num_col);
 void				init_data_values(t_general *data, char **env);
 void				init_quote_values(t_general *data);
 void				init_fd_values(t_general *data);
-//void				init_signal(t_general *data);
 
 // SIGNALS
 void				init_signal();
 void				norm_sig_handle(int sig);
-
 void				handle_sig_heredoc(int sig);
 void				do_eof();
 void				set_sig_default();
@@ -358,18 +352,16 @@ void				father_status(t_general *data);
 // BUILT-INS
 int					is_builtin(t_cmd *cmd);
 void				execute_builtin(t_general *data, t_cmd *cmd);
-int					ft_strcmp(const char *s1, const char *s2);
-int					do_oldpwd(t_general *data, char **arg);
 
 int					ft_env(t_env *env);
 int					ft_pwd(t_env *env);
-
 int					ft_cd(t_general *data, char **argv);
 /*utils cd*/
-// void	set_oldpwd(t_general *data);
+int					do_oldpwd(t_general *data, char **arg);
 int					error_dir(t_general *data, char *str);
 int					check_dir(char *path);
 
+void				is_hidd(t_general *data, char *name, char *dir);
 int					go_to_path(int opt, t_general *data);
 void				upd_oldpwd(t_general *data); // puede ser void
 int					env_update(t_general *data, char *k_word, char *n_value);
@@ -384,10 +376,8 @@ int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
 /*export utils*/
-//void				print_env(t_general *data, t_env *tmp); // MODIFF
 void				print_sort(t_env *own_env);
 int					print_export_lst(t_env *own_env);
-		// quitamos data porque no usamos equal en esta zona
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);

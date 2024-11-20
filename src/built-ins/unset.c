@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 00:59:18 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:29:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,21 @@ void	do_unset(t_general *data, char *var)
 			head->value = ft_strdup("");
 			head->val = 0;
 			head->hidden = 1;
-			//return ;
 			break ; 
 		}
 		head = head->next;
 	}
-	//printf("do_unset\tname:%s - value:%s - hid[%d] - val[%d]\n", head->name, head->value, head->hidden, head->val);//BORRAR
 }
 
 int	ft_unset(t_general *data, t_cmd *cmd)
 {
-	//t_env	*head; //EL COMPILADOR DICE QUE ESTA VARIABLE NO SE USA, LA COMENTO PARA PODER COMPILAR. REVISAR
 	char	**argv;
 	int		i;
 
 	i = 1;
 	argv = cmd->argv;
-	//head = data->env_lst;
-	if (!argv[i])
-		;
+	if (!argv[i] || argv[i][0] == '_')
+		return (1);
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);

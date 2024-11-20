@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 01:00:02 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:56:35 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*find_env_var(t_general *data, char *var_name)
 		return (NULL);
 	env = data->env_lst;
 	len_var_name = ft_strlen(var_name);
-	while (env != NULL)
+	while (env)
 	{
 		len_env_name = ft_strlen(env->name);
 		if (ft_strncmp(env->name, var_name, len_env_name) == 0
@@ -33,6 +33,7 @@ char	*find_env_var(t_general *data, char *var_name)
 	}
 	return (NULL);
 }
+
 int	env_add_last(t_general *data, char *name, char *value)
 {
 	t_env	*new_env;
@@ -61,33 +62,27 @@ void	add_upd_env(t_general *data, char *name, char *value)
 {
 	t_env	*env;
 
-	if (value == NULL && data->equal == 1)//todas las null vars deben tener valor
-		value = ft_strdup("");//LEAK AQUI
+	if (ft_strncmp(name, "_", 1) == 0)
+		return ;
+	if (value == NULL && data->equal == 1)
+		value = ft_strdup("");
 	env = data->env_lst;
-	//printf("name2: %s - value2: [%s]\n", name, value);//BORRAR
 	while (env != NULL)
 	{
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
-			printf("hay match\n");
 			if ((value || data->equal == 1))
 			{
 				free(env->value);
 				env->value = ft_strdup(value);
 				env->val = 1;
 			}
-		/* 	if (value && ft_strlen(value) == 0)
-				free(value); */
 			env->hidden = 0;
-			printf("add_upd_env\tname:%s - value:%s - hid[%d] - val[%d]\n", env->name, env->value, env->hidden, env->val);//BORRAR
-			return ;
-			
+			return ;			
 		}
 		env = env->next;
 	}
 	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
-	/* if (value && ft_strlen(value) == 0)
-		free(value); */
 }

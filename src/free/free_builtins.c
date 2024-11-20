@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 04:15:09 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 02:16:37 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:33:43 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,5 @@ char	**arr_clean(char **arr)
 void	free_exit(t_general *data)
 {
 	free(data->line);
-	printf("status7: %i\n", data->exit_status);
 	exit(data->exit_status);
 }

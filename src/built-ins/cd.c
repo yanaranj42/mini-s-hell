@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/19 13:47:11 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:58:36 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,24 @@ int	do_oldpwd(t_general *data, char **arg)
 	return (cd_ret);
 }
 
+void	is_hidd(t_general *data, char *name, char *dir)
+{
+	t_env	*tmp;
+(void)dir;
+	tmp = data->env_lst;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
+		{
+			if (tmp->hidden == 1)
+				break ;
+			else
+				env_update(data, "PWD", dir);
+		}
+		tmp = tmp->next;
+	}
+}
+
 int	ft_cd(t_general *data, char **arg)
 {
 	int		cd_ret;
@@ -97,9 +115,7 @@ int	ft_cd(t_general *data, char **arg)
 		getcwd(dir, PATH_MAX);
 		if (!check_dir(dir))
 			return (error_dir(data, NULL));
-		//do_oldpwd(data, arg);
-		env_update(data, "PWD", dir);
-		ft_pwd(data->env_lst);
+		is_hidd(data, "PWD", dir);
 	}
 	return (cd_ret);
 }

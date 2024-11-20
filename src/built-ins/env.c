@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 00:49:41 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:48:32 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 int	ft_env(t_env *env)
 {
-	//printf(YELLOW "OWN ENVIRONMENT\n" END);
-	//print_matrix_env(data->env_matrix);
-	//(void)data;
 	while (env)
 	{
 		if (env->hidden == 0 && env->val == 1)
