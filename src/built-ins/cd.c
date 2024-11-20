@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 03:58:36 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:17:28 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ char	*get_env_path(t_general *data, char *k_word)
 		len = ft_strlen(tmp->name);
 	while (tmp)
 	{
-		if (ft_strncmp(k_word, tmp->name, len) == 0 && tmp->hidden == 0 && tmp->val == 1)
+		if (ft_strncmp(k_word, tmp->name, len) == 0
+			&& tmp->hidden == 0 && tmp->val == 1)
 			return (tmp->value);
 		else
 			tmp = tmp->next;
@@ -75,7 +76,7 @@ int	do_oldpwd(t_general *data, char **arg)
 void	is_hidd(t_general *data, char *name, char *dir)
 {
 	t_env	*tmp;
-(void)dir;
+
 	tmp = data->env_lst;
 	while (tmp)
 	{
@@ -90,12 +91,10 @@ void	is_hidd(t_general *data, char *name, char *dir)
 	}
 }
 
-int	ft_cd(t_general *data, char **arg)
+int	ft_cd(t_general *data, char **arg, int cd_ret)
 {
-	int		cd_ret;
 	char	dir[PATH_MAX];
 
-	cd_ret = 0;
 	if (!arg[1] || arg[1][0] == '~')
 		return (go_to_path(0, data));
 	else if (arg[1][0] == '-' && !arg[2])

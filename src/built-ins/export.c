@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 12:42:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:55:47 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,15 @@ int	ft_export(t_general *data)
 	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
-		print_export_lst(tmp_env);
+		print_export_lst(tmp_env, data->equal);
 	while (argv[i])
 	{
 		if (argv[i][0] == '=')
 			error_opt("", "\'", NULL, argv[i]);
-		else
+		else if (!data->exit_status)
 			data->exit_status = handle_args(data, argv[i]);
+		else
+			handle_args(data, argv[i]);
 		i++;
 	}
 	if (data->env_matrix)

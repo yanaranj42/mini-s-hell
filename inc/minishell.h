@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:06:27 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:56:22 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
+# define ERR01 "Malloc error\n"
+# define ERR02 "ENV creation failiure"
 
 /*PARSING*/
 # define PIPE 1
@@ -173,6 +176,7 @@ void				init_fd_values(t_general *data);
 // SIGNALS
 void				init_signal();
 void				norm_sig_handle(int sig);
+
 void				handle_sig_heredoc(int sig);
 void				do_eof();
 void				set_sig_default();
@@ -352,12 +356,12 @@ void				father_status(t_general *data);
 // BUILT-INS
 int					is_builtin(t_cmd *cmd);
 void				execute_builtin(t_general *data, t_cmd *cmd);
+int					do_oldpwd(t_general *data, char **arg);
 
 int					ft_env(t_env *env);
 int					ft_pwd(t_env *env);
-int					ft_cd(t_general *data, char **argv);
+int					ft_cd(t_general *data, char **argv, int cd_ret);
 /*utils cd*/
-int					do_oldpwd(t_general *data, char **arg);
 int					error_dir(t_general *data, char *str);
 int					check_dir(char *path);
 
@@ -377,7 +381,7 @@ int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
 /*export utils*/
 void				print_sort(t_env *own_env);
-int					print_export_lst(t_env *own_env);
+int					print_export_lst(t_env *own_env, int equal);
 int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);

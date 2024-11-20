@@ -6,40 +6,47 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 13:00:18 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:53:31 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-void	print_sort(t_env *own_env)
+static void	swap_node(t_env *a, t_env *b)
 {
-	t_env	*tmp;
 	char	*name;
 	char	*value;
 	int		hid;
 	int		val;
+
+	name = a->name;
+	value = a->value;
+	hid = a->hidden;
+	val = a->val;
+	a->name = b->name;
+	a->value = b->value;
+	a->hidden = b->hidden;
+	a->val = b->val;
+	b->name = name;
+	b->value = value;
+	b->hidden = hid;
+	b->val = val;
+}
+
+void	print_sort(t_env *own_env)
+{
+	t_env	*tmp;
 
 	tmp = own_env;
 	while (tmp)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name, ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name, \
+			ft_strlen(tmp->name)) > 0)
 			{
-				name = tmp->name;
-				value = tmp->value;
-				hid = tmp->hidden;
-				val = tmp->val;
-				tmp->name = tmp->next->name;
-				tmp->value = tmp->next->value;
-				tmp->hidden =  tmp->next->hidden;
-				tmp->val =  tmp->next->val;
-				tmp->next->name = name;
-				tmp->next->value = value;
-				tmp->next->hidden = hid;
-				tmp->next->val = val;
+				swap_node(tmp, tmp->next);
 				tmp = own_env;
 			}
 		}
@@ -47,10 +54,11 @@ void	print_sort(t_env *own_env)
 	}
 }
 
-int	print_export_lst(t_env *own_env)
+int	print_export_lst(t_env *own_env, int equal)
 {
 	t_env	*tmp;
 
+	(void)equal;//BORRAR
 	if (!own_env)
 		return (1);
 	print_sort(own_env);
@@ -61,7 +69,7 @@ int	print_export_lst(t_env *own_env)
 		{
 			ft_putstr_fd(" declare -x ", STDOUT);
 			ft_putstr_fd(tmp->name, STDOUT);
-			if (tmp->val == 1)
+			if (tmp->val == 1)//me printa las vars aunque no tengan valor
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 12:29:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:41:07 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	do_unset(t_general *data, char *var)
 		}
 		head = head->next;
 	}
+	//printf("do_unset\tname: %s - value: %s - hid[%i] - val[%i]\n", head->name, head->value, head->hidden, head->val);
 }
 
 int	ft_unset(t_general *data, t_cmd *cmd)
