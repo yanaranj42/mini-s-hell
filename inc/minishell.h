@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 02:18:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:11:55 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,7 +366,7 @@ int					go_to_path(int opt, t_general *data);
 void				upd_oldpwd(t_general *data);
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
-int					ft_echo(char **argv, t_general *data);
+int					ft_echo(char **argv, t_general *data, int flag);
 void				ft_exit(t_general *data);
 int					ft_export(t_general *data);
 int					handle_args(t_general *data, char *argv);

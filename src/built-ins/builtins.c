@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 00:45:00 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:10:46 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	execute_builtin(t_general *data, t_cmd *cmd)
 {
 	if (data->builtin == 1)
-		ft_echo(cmd->argv, data);
+		ft_echo(cmd->argv, data, 0);
 	else if (data->builtin == 2)
 		data->exit_status = ft_cd(data, cmd->argv, data->exit_status);
 	else if (data->builtin == 3)

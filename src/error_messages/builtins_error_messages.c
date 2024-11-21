@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 02:22:07 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:45:09 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@ int	error_cd_last(t_general *data, char c, int flag)
 	{
 		ft_putstr_fd("minishell: cd: -", STDERR);
 		ft_putchar_fd(c, STDERR);
-		ft_putstr_fd(": invalid option", STDERR);
+		ft_putstr_fd(": invalid option\n", STDERR);
 		data->exit_status = 2;
 	}
 	if (flag == 0)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR);
-		ft_putstr_fd("too many arguments", STDERR);
+		ft_putstr_fd("too many arguments\n", STDERR);
 		data->exit_status = 1;
 	}
-	ft_putendl_fd("\n", STDERR);
 	return (data->exit_status);
 }
 
