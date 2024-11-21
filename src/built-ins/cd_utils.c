@@ -6,12 +6,30 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 13:52:35 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:31:33 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+
+void	is_hidd(t_general *data, char *name, char *dir)
+{
+	t_env	*tmp;
+
+	tmp = data->env_lst;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
+		{
+			if (tmp->hidden == 1)
+				break ;
+			else
+				env_update(data, name, dir);
+		}
+		tmp = tmp->next;
+	}
+}
 
 void	upd_oldpwd(t_general *data)
 {

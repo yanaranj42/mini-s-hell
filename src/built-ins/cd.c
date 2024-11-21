@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 23:57:41 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:32:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,41 @@ char	*get_env_path(t_general *data, char *k_word)
 	return (NULL);
 }
 
-int	go_to_path(int opt, t_general *data)
+int	go_to_home_path(t_general *data)
 {
 	int		ret;
 	char	*env_path;
+	char	*new_pwd;
 
 	env_path = NULL;
-	if (opt == 0)
-	{
-		upd_oldpwd(data);
-		env_path = get_env_path(data, "HOME");
-		if (!env_path)
-			return (ft_putendl_fd("minishell: cd: HOME is not set", 2), 1);
-	}
-	if (opt == 1)
-	{
-		env_path = get_env_path(data, "OLDPWD");
-		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not set", STDOUT), 1);
-		upd_oldpwd(data);
-	}
+	new_pwd = NULL;
+	env_path = get_env_path(data, "HOME");
+	if (!env_path)
+		return (ft_putendl_fd("minishell: cd: HOME is not set", 2), 1);
+	upd_oldpwd(data);
 	ret = chdir(env_path);
 	env_update(data, "PWD", env_path);
+	free(new_pwd);
+	return (ret);
+}
+
+int	go_to_old_path(t_general *data)
+{
+	int		ret;
+	char	*env_path;
+	char	*new_pwd;
+
+	env_path = NULL;
+	new_pwd = NULL;
+	env_path = get_env_path(data, "OLDPWD");
+	if (!env_path)
+		return (ft_putendl_fd("minish: cd: OLDPWD not set", STDOUT), 1);
+	new_pwd = ft_strdup(env_path);
+	upd_oldpwd(data);
+	env_update(data, "PWD", new_pwd);
+	ret = chdir(new_pwd);
 	ft_pwd(data->env_lst);
+	free(new_pwd);
 	return (ret);
 }
 
@@ -69,26 +81,8 @@ int	do_oldpwd(t_general *data, char **arg)
 	cd_ret = 0;
 	if (arg[1][1] != '\0')
 		return (error_cd_last(data, arg[1][1], 1));
-	cd_ret = go_to_path(1, data);
+	cd_ret = go_to_old_path(data);
 	return (cd_ret);
-}
-
-void	is_hidd(t_general *data, char *name, char *dir)
-{
-	t_env	*tmp;
-
-	tmp = data->env_lst;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
-		{
-			if (tmp->hidden == 1)
-				break ;
-			else
-				env_update(data, name, dir);
-		}
-		tmp = tmp->next;
-	}
 }
 
 int	ft_cd(t_general *data, char **arg, int cd_ret)
@@ -96,7 +90,7 @@ int	ft_cd(t_general *data, char **arg, int cd_ret)
 	char	dir[PATH_MAX];
 
 	if (!arg[1] || arg[1][0] == '~')
-		cd_ret = go_to_path(0, data);
+		cd_ret = go_to_home_path(data);
 	else if (arg[1][0] == '-' && !arg[2])
 		cd_ret = do_oldpwd(data, arg);
 	else if (arg[2] != NULL)

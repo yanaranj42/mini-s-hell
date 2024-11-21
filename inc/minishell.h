@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 19:24:45 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:30:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,7 +358,8 @@ int					ft_cd(t_general *data, char **argv, int cd_ret);
 int					error_dir(t_general *data, char *str);
 int					check_dir(char *path);
 void				is_hidd(t_general *data, char *name, char *dir);
-int					go_to_path(int opt, t_general *data);
+int					go_to_old_path(t_general *data);
+int					go_to_home_path(t_general *data);
 void				upd_oldpwd(t_general *data);
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
