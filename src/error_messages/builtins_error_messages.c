@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 11:25:34 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:17:16 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	error_cd_last(t_general *data, char c, int flag)
 	return (data->exit_status);
 }
 
-int error_opt(char *s1, char *s2, char **arr, char *argv)
+int error_identifier(char *s1, char *s2, char **arr, char *argv)
 {
     ft_putstr_fd("minishell: export: `", STDERR);
     ft_putstr_fd(s1, STDERR);
@@ -64,4 +64,14 @@ void	error_brk(t_general *data, char *msg, char *name, int flag)
 	}
 	data->exit_status = flag;
 	free_exit(data);
+}
+
+int	error_opt(char *s1, char c1)
+{
+	write(1, "minishell: ", 12);
+	write(1, s1, ft_strlen(s1));
+	write(1, ": -", 3);
+	write(1, &c1, 1);
+	write(1, ": invalid option\n", 18);
+	return (2);
 }

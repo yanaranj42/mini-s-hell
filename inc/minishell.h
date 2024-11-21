@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 13:13:40 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:24:54 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,8 +414,9 @@ void				command_not_found(char *start);
 void				perror_message(char *start, char *message);
 void				ambiguous_redirect(char *start);
 int					error_cd_last(t_general *data, char c, int flag);
-int					error_opt(char *s1, char *s2, char **arr, char *argv);
+int					error_identifier(char *s1, char *s2, char **arr, char *argv);
 void				error_brk(t_general *data, char *msg, char *name, int flag);
+int					error_opt(char *s1, char c1);
 
 // FREE
 void				free_env(t_env *head);
@@ -441,7 +442,6 @@ void				free_control_c_in_heredoc(t_general *data);
 void				close_heredoc_fds(t_general *data);
 void				*ft_memdel(void *ptr);
 void				arr_clean(char **arr);
-void				unset_free(t_env *env);
 void				free_exit(t_general *data);
 
 #endif

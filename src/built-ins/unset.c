@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 00:37:01 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:24:07 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 	argv = cmd->argv;
 	if (!argv[i] || argv[i][0] == '_')
 		return (1);
+	if (argv[i][0] == '-')
+		return (error_opt("unset", argv[i][1]));
 	while (argv[i])
 	{
 		do_unset(data, argv[i]);
