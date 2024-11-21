@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 18:46:02 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:32:55 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,11 @@ void	do_unset(t_general *data, char *var)
 	}
 }
 
-/*void    do_unset(t_general *data, char *var)
+int	ft_unset(t_general *data, t_cmd *cmd)
 {
-	t_env	*head;
-	char	*value;
 	char	**argv;
 	int		i;
 
-	head = data->env_lst;
-	value = NULL;
-	while (head)
-	{
-		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
-			&& (ft_strlen(head->name) == ft_strlen(var)))
-		{
-			free(head->value);
-			value = ft_strdup("");
-			head->value = value;
-			head->val = 0;
-			head->hidden = 1;
-			if (!head->value || ft_strncmp(head->value, "", 1) == 0)
-				free(value);
-			break ;
-		}
-		head = head->next;
-	}
-}*/
-int	ft_unset(t_general *data, t_cmd *cmd)
-{
 	i = 1;
 	argv = cmd->argv;
 	if (!argv[i] || argv[i][0] == '_')
