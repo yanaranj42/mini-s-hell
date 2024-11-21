@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:53:26 by mfontser          #+#    #+#              #
-#    Updated: 2024/10/28 18:49:31 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/20 00:55:14 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS =  ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_strl
 		ft_putendl_fd.c ft_putnbr_fd.c ft_putnbr.c ft_write.c
 
 
-SRCS +=	ft_adapted_strjoin.c ft_strjoinchar.c
+SRCS +=	ft_adapted_strjoin.c ft_strjoinchar.c ft_isspace.c
 
 SRCSBONUS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c ft_lstadd_back_bonus.c \
 			ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c 

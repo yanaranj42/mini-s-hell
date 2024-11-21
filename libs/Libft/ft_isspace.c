@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_expansor_variable_exists.c                   :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:19:23 by mfontser         ###   ########.fr       */
+/*   Created: 2024/11/20 00:52:20 by mfontser          #+#    #+#             */
+/*   Updated: 2024/11/20 00:54:23 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
 
-int	check_expansor_variable_exists(char *tmp, t_env *env)
+int	ft_isspace(int c)
 {
-	t_env	*env_tmp;
-
-	env_tmp = env;
-	if (!tmp)
-		return (0);
-	while (env_tmp)
+	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == ' ')
 	{
-		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0)
-			&& env_tmp->hidden == 0)
-			return (1);
-		env_tmp = env_tmp->next;
+		return (1);
 	}
 	return (0);
 }

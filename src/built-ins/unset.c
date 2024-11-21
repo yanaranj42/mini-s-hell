@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:20:52 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 22:23:39 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 00:37:01 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ int	ft_unset(t_general *data, t_cmd *cmd)
 		do_unset(data, argv[i]);
 		i++;
 	}
-	return (1);
+	return (0);
 }

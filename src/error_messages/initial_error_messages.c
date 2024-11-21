@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/17 02:38:28 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:54:37 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ void	too_many_parameters(void)
 
 void	error_lvl(char *i)
 {
+	printf ("%s", i);
 	write(2, RED, ft_strlen(RED));
 	write(2, "💀 bash: ", 11);
 	write(2, "warning: shell level (", 22);
-	write(2, &i, ft_strlen(i));
+	write(2, i, ft_strlen(i));
 	write(2, ") too high, resetting to 1\n", 27);
 	write(2, END, ft_strlen(END));
+	free(i);
 }

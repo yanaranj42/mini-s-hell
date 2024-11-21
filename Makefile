@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/17 04:58:11 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/20 20:53:14 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ FILES += utils/general_utils.c utils/ft_token_split.c utils/split_utils.c
 
 FILES += initializations/initializations.c
 
-FILES += signals/signals.c
+FILES += signals/init_signals.c signals/control_c_handler.c
 
-FILES += own_env/own_enviroment.c
+FILES += own_env/own_enviroment.c own_env/set_empty_env.c
 
 FILES += lexer/lexer.c 
 
@@ -47,8 +47,8 @@ FILES += executor/executor.c executor/preparations_for_the_executor/preparations
 		 executor/preparations_for_the_executor/get_command/get_command.c executor/preparations_for_the_executor/get_command/new_cmd_node.c \
 		 executor/preparations_for_the_executor/get_command/count_cmd_argvs.c executor/preparations_for_the_executor/get_command/fill_cmd_argvs.c \
 		 executor/preparations_for_the_executor/get_command/fill_cmd_redirs.c executor/do_heredoc/do_heredoc.c \
-		 executor/do_heredoc/heredoc_expansion.c executor/do_heredoc/expand_specific_variables.c \
-		 executor/do_execution/do_execution.c executor/do_execution/builtin_execution_only.c \
+		 executor/do_heredoc/heredoc_children_process.c executor/do_heredoc/heredoc_father_status.c executor/do_heredoc/heredoc_expansion.c \
+		 executor/do_heredoc/expand_specific_variables.c executor/do_execution/do_execution.c executor/do_execution/builtin_execution_only.c \
 		 executor/do_execution/check_father_input_redirs.c executor/do_execution/check_father_output_redirs.c \
 		 executor/do_execution/get_children.c executor/do_execution/create_child.c executor/do_execution/check_cmd_path.c \
 		 executor/do_execution/check_cmd_access.c executor/do_execution/check_input_redirs.c \
@@ -61,7 +61,8 @@ FILES += built-ins/builtins.c built-ins/env.c built-ins/echo.c built-ins/cd.c bu
 FILES += error_messages/initial_error_messages.c error_messages/parser_error_messages.c error_messages/heredoc_error_messages.c \
 		 error_messages/executor_error_messages.c error_messages/builtins_error_messages.c
 
-FILES += free/free_main.c free/free_parser.c free/free_expansor.c free/free_executor.c free/free_executor_2.c free/free_builtins.c
+FILES += free/free_main.c free/free_parser.c free/free_expansor.c free/free_executor.c free/free_executor_cmd.c \
+		 free/free_executor_heredoc.c free/free_builtins.c
 
 
 SRCDIR = src/
@@ -115,19 +116,18 @@ ${NAME}: ${OBJS}
 	@echo "  *       l  /   V       ))            V   \\ l        *"
 	@echo "          l/            //                  \\I"
 	@echo "                        V"
-	@echo "$(END)"
-
+	@echo "$(END)$(NC)$(END)"
 clean:
 	@${RM} ${OBJDIR}
 	@make -C libs/Libft clean
-	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
+	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)$(NC)$(END)"
 
 fclean:
 	@${RM} ${OBJDIR}
 	@echo "$(RED)DRACKYSHELL OBJECTS DELETED$(END)"
 	@${RM} ${NAME}
 	@make -C libs/Libft fclean
-	@echo "$(RED) DRACKYSHELL EXEC DELETED$(END)"
+	@echo "$(RED) DRACKYSHELL EXEC DELETED$(END)$(NC)$(END)"
 
 re: fclean all
 #	@echo "drackishell re done"

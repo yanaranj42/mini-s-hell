@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_matrix_enviroment.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 17:32:10 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:16:29 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

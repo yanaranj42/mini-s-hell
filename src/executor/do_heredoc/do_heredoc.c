@@ -3,42 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   do_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/18 13:30:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:32:39 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-
-void	print_line_in_file(t_redir *redir, char *line, int *pipe_fd,
-		t_general *data)
-{
-	if (redir->heardoc_expansion == 1 && ft_strchr(line, '$'))
-		line = expand_line(line, data);
-	write(pipe_fd[1], line, ft_strlen(line));
-	write(pipe_fd[1], "\n", 1);
-}
-
-int	check_limitter_word(char *line, int *pipe_fd, t_redir *redir)
-{
-	if (!line)
-	{
-		end_of_file_in_heredoc(redir->file_name);
-		return (1);
-	}
-	if (ft_strncmp(line, redir->file_name, ft_strlen(redir->file_name)
-			+ 1) == 0)
-	{
-		free(line);
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-		return (1);
-	}
-	return (0);
-}
 
 int	create_heredoc_pipe(t_general *data, int *pipe_fd)
 {
@@ -52,24 +25,25 @@ int	create_heredoc_pipe(t_general *data, int *pipe_fd)
 
 int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 {
-	char	*line;
+	int		pid;
 
+	pid = 0;
 	if (create_heredoc_pipe(data, pipe_fd) == 0)
 		return (0);
 	redir->fd = dup(pipe_fd[0]);
-	signal(SIGINT, handle_sig_heredoc);
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
+	pid = fork();
+	if (pid == -1)
 	{
-		if (g_error == 42)
-			break ;
-		line = readline(YELLOW "> " END); //hija mata proceso al recibir signal
-		if (check_limitter_word(line, pipe_fd, redir) == 1)
-			break ;
-		print_line_in_file(redir, line, pipe_fd, data);
-		free(line);
+		free_heredoc_pipe(data, redir, pipe_fd);
+		return (0);
 	}
-	set_sig_default();//set signals back
+	if (pid == 0)
+		child_heredoc_process (data, pipe_fd, redir);
+	else
+		init_ignore_signals();
+	heredoc_father_status(data, &pid, pipe_fd);
+	if (data->exit_status == 1)
+		return (0);
 	return (1);
 }
 
@@ -88,11 +62,20 @@ int	do_heredoc(t_general *data)
 			if (redir->type == HEREDOC)
 			{
 				if (manage_heredoc_stuff(data, pipe_fd, redir) == 0)
+				{
+					printf("Error: There have been problems doing the heredoc");
 					return (0);
+				}
+			}
+			if (data->exit_status == 130)
+			{
+				free_control_c_in_heredoc (data);
+				return (0);
 			}
 			redir = redir->next;
 		}
 		cmd = cmd->next;
 	}
+
 	return (1);
 }

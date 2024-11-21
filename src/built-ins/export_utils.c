@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 22:07:58 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:04:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	print_export_lst(t_env *own_env)
 		tmp = tmp->next;
 	}
 	tmp = own_env;
-	return (1);
+	return (0);
 }
 
 int	export_opt(char *name, char *argv)

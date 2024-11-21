@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd_path.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 00:22:07 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:45:27 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,9 @@ char	*check_cmd_absolut_path(char *cmd_argv)
 
 void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 {
-	t_env *tmp;
-
+	t_env	*tmp;
 	int		flag;
-	
+
 	flag = 0;
 	tmp = env;
 	cmd->path = check_cmd_current_directory(cmd->argv[0]);
@@ -115,7 +114,6 @@ void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 		}
 		if (!paths || flag == 1)
 		{
-			printf("PAPAYA\n");
 			cmd->path = check_cmd_absolut_path(cmd->argv[0]);
 			if (cmd->path == NULL)
 				command_not_found(cmd->argv[0]);

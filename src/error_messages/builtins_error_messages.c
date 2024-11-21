@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:39:23 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:22:07 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,41 @@ int	error_cd_last(t_general *data, char c, int flag)
 {
 	if (flag == 1)
 	{
-		ft_putstr_fd("minishell: cd: -", STDOUT);
+		ft_putstr_fd("minishell: cd: -", STDERR);
 		ft_putchar_fd(c, STDERR);
-		ft_putstr_fd(": invalid option", STDOUT);
-		data->exit_status = 1;
+		ft_putstr_fd(": invalid option", STDERR);
+		data->exit_status = 2;
 	}
 	if (flag == 0)
 	{
-		ft_putstr_fd("minishell: cd: ", STDOUT);
-		ft_putstr_fd("too many arguments", STDOUT);
-		data->exit_status = 2;
+		ft_putstr_fd("minishell: cd: ", STDERR);
+		ft_putstr_fd("too many arguments", STDERR);
+		data->exit_status = 1;
 	}
-	ft_putendl_fd("\n", STDOUT);
-	return (0);
+	ft_putendl_fd("\n", STDERR);
+	return (data->exit_status);
 }
 
-int	error_opt(char *s1, char *s2, char **arr, char *argv)
+int	error_env(void)
 {
-	ft_putstr_fd("minishell: export: `", STDOUT);
-	ft_putstr_fd(s1, STDOUT);
-	if (ft_strchr(argv, '='))
-		ft_putstr_fd("=", STDOUT);
-	if (s2 == NULL)
-		s2 = ft_strdup("");
-	ft_putstr_fd(s2, STDOUT);
-	ft_putstr_fd(": not a valid identifier\n", STDOUT);
-	free(s2);
-	arr_clean(arr);
-	return (1);
+    ft_putstr_fd("minishell: env:", STDERR);
+    ft_putstr_fd(" No such file or directory\n", STDERR);
+	return (127);
+}
+
+int error_opt(char *s1, char *s2, char **arr, char *argv)
+{
+    ft_putstr_fd("minishell: export: `", STDERR);
+    ft_putstr_fd(s1, STDERR);
+    if (ft_strchr(argv, '='))
+        ft_putstr_fd("=", STDERR);
+    if (s2 == NULL)
+        s2 = ft_strdup("");
+    ft_putstr_fd(s2, STDERR);
+    ft_putstr_fd(": not a valid identifier\n", STDERR);
+    free(s2);
+    arr_clean(arr);
+    return (1);
 }
 
 void	error_brk(t_general *data, char *msg, char *name, int flag)

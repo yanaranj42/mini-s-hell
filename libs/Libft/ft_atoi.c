@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   atoi.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfontser <mfontser@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 21:30:43 by mfontser          #+#    #+#             */
-/*   Updated: 2024/03/25 14:06:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 02:10:19 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@
 // Nota: una variable la tienes que inicializar siempre, para que entre 
 // donde entre la tenga disponible
 
-#include "libft.h"
+// static int	ft_isspace(int c)
+// {
+// 	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
+// 		|| c == '\r' || c == ' ')
+// 	{
+// 		return (1);
+// 	}
+// 	return (0);
+// }
 
-static int	ft_isspace(int c)
-{
-	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r' || c == ' ')
-	{
-		return (1);
-	}
-	return (0);
-}
+#include "libft.h"
 
 int	ft_atoi(const char *str)
 {

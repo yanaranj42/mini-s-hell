@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   initializations.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 22:03:19 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 16:18:25 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/17 06:59:12 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_data_values(t_general *data, char **env)
+void	init_data_values(t_general *data)
 {
 	data->line = NULL;
 	data->first_token = NULL;
@@ -27,8 +27,6 @@ void	init_data_values(t_general *data, char **env)
 	data->pipe_fd[0] = -1;
 	data->pipe_fd[1] = -1;
 	data->next_cmd_input_fd = -1;
-	data->equal = 1;
-	(void)env;
 }
 
 void	init_quote_values(t_general *data)
@@ -43,9 +41,3 @@ void	init_fd_values(t_general *data)
 	data->pipe_fd[1] = -1;
 	data->next_cmd_input_fd = -1;
 }
-
-/* void	init_signal()
-{
-	signal(SIGINT, norm_sig_handle);
-	signal(SIGQUIT, SIG_IGN);
-} */

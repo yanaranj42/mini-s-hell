@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_expansor_variable_exists.c                   :+:      :+:    :+:   */
+/*   control_c_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 06:19:23 by mfontser         ###   ########.fr       */
+/*   Created: 2024/11/20 01:48:15 by mfontser          #+#    #+#             */
+/*   Updated: 2024/11/20 01:55:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-int	check_expansor_variable_exists(char *tmp, t_env *env)
+void	control_c_heredoc_handler(int sig)
 {
-	t_env	*env_tmp;
-
-	env_tmp = env;
-	if (!tmp)
-		return (0);
-	while (env_tmp)
+	if (sig == SIGINT)
 	{
-		if ((ft_strncmp(tmp, env_tmp->name, ft_strlen(env_tmp->name) + 1) == 0)
-			&& env_tmp->hidden == 0)
-			return (1);
-		env_tmp = env_tmp->next;
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		write(2, "\n", 1);
+		exit(130);
 	}
-	return (0);
+}
+
+void	control_c_normal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putendl_fd("", 1);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		g_error = 130;
+	}
 }
