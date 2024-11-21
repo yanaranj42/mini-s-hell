@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 11:27:23 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:13:40 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,7 +368,7 @@ int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
 int					ft_echo(char **argv, t_general *data, int flag);
 void				ft_exit(t_general *data);
-int					ft_export(t_general *data);
+int					ft_export(char **argv, t_general *data);
 int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);

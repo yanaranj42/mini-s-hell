@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 02:52:12 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:19:29 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,12 @@ int	handle_args(t_general *data, char *argv)
 	return (arr_clean(arr), 0);
 }
 
-int	ft_export(t_general *data)
+int	ft_export(char **argv, t_general *data)
 {
 	t_env	*tmp_env;
-	char	**argv;
 	int		i;
 
 	i = 1;
-	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
 		return (print_export_lst(tmp_env));
