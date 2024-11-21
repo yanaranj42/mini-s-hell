@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 22:32:39 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:52:20 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,10 @@ int	do_heredoc(t_general *data)
 				}
 			}
 			if (data->exit_status == 130)
-			{
-				free_control_c_in_heredoc (data);
-				return (0);
-			}
+				return (free_control_c_in_heredoc (data), 0);
 			redir = redir->next;
 		}
 		cmd = cmd->next;
 	}
-
 	return (1);
 }

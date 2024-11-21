@@ -15,7 +15,7 @@
 
 int	executor(t_general *data)
 {
-	int builtin_only;
+	int	builtin_only;
 
 	builtin_only = 0;
 	if (preparations_for_the_executor(data) == 0)

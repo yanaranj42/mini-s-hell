@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 13:39:24 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/12 07:21:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:20:10 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	lexer(t_general *data)
 	delete_spaces(data);
 	if (data->line[0] == '\0')
 	{
-		data->exit_status = 127;
+		data->exit_status = 0;
 		return (0);
 	}
 	if (review_closed_quotes(data) == 0)

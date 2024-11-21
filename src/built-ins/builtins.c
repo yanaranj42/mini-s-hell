@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 01:50:35 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:18:07 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:10:46 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@
 void	execute_builtin(t_general *data, t_cmd *cmd)
 {
 	if (data->builtin == 1)
-		ft_echo(cmd->argv);
+		ft_echo(cmd->argv, data, 0);
 	else if (data->builtin == 2)
-		ft_cd(data, cmd->argv, 0);
+		data->exit_status = ft_cd(data, cmd->argv, data->exit_status);
 	else if (data->builtin == 3)
-		ft_pwd(data->env_lst);
+		data->exit_status = ft_pwd(data->env_lst);
 	else if (data->builtin == 4)
-		ft_env(data->env_lst);
+		data->exit_status = ft_env(data->env_lst);
 	else if (data->builtin == 5)
 		ft_exit(data);
 	else if (data->builtin == 6)
 		ft_export(data);
 	else if (data->builtin == 7)
-		ft_unset(data, cmd);
+		data->exit_status = ft_unset(data, cmd);
 }
 
 int	is_builtin(t_cmd *cmd)

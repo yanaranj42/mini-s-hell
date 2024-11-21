@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 22:51:44 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:18:04 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,13 +366,14 @@ int					go_to_path(int opt, t_general *data);
 void				upd_oldpwd(t_general *data);
 int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
-int					ft_echo(char **argv);
+int					ft_echo(char **argv, t_general *data, int flag);
 void				ft_exit(t_general *data);
 int					ft_export(t_general *data);
 int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
-void				upd_node(t_env *env, char *old_value, char *value, int equal);
+void				upd_node(t_env *env, char *old_value, char *value,
+						int equal);
 void				print_sort(t_env *own_env);
 int					print_export_lst(t_env *own_env);
 int					export_opt(char *name, char *argv);

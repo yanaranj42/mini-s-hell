@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:03:04 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 00:45:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:56:08 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	prepare_output_pipe(t_general *data)
 
 void	prepare_input_pipe(t_general *data)
 {
-	printf("dup2 input fd %d\n", data->next_cmd_input_fd);
 	if (dup2(data->next_cmd_input_fd, 0) == -1)
 	{
 		perror_message(NULL, "Problem with dup2 of cmd std_input");

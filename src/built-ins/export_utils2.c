@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/20 22:21:27 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:55:16 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,6 @@ void	add_upd_env(t_general *data, char *name, char *value)
 	}
 	if (env_add_last(data, name, value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
-	if (ft_strncmp(value, "", 1) == 0)
+	if (!value || ft_strncmp(value, "", 1) == 0)
 		free(value);
 }

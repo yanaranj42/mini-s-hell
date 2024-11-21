@@ -86,4 +86,3 @@ int	split_xtkn(t_xtkn *xtkn, t_general *data)
 	free_splited_content(splited_content);
 	return (1);
 }
-

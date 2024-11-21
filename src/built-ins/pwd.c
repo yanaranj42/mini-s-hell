@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:30:55 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 02:55:24 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 00:05:27 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_pwd(t_env *env)
 	{
 		ft_putstr_fd(cwd, 0);
 		ft_putendl_fd("", 1);
-		return (1);
 	}
 	else
 	{
@@ -31,7 +30,6 @@ int	ft_pwd(t_env *env)
 			{
 				ft_putstr_fd(env->value, 1);
 				ft_putendl_fd("\n", 1);
-				return (1);
 			}
 			env = env->next;
 		}

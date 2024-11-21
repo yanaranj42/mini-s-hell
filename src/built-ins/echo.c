@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:41:00 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 11:59:41 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:32:59 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ static int	n_flag(char *argv)
 	return (1);
 }
 
-int	ft_echo(char **argv)
+int	ft_echo(char **argv, t_general *data, int flag)
 {
 	int	i;
-	int	n_opt;
-
+	
 	i = 1;
-	n_opt = 0;
-	if (args_counter(argv) > 1)
+	if (args_counter(argv) >= 1)
 	{
-		if (n_flag(argv[1]))
+		while (argv[i] && ft_strchr(&argv[i][0], '-'))
 		{
-			n_opt = 1;
+			if (!n_flag(argv[i]))
+				break ;
+			flag = 1;
 			i++;
 		}
 		while (argv[i])
@@ -58,8 +58,9 @@ int	ft_echo(char **argv)
 				write(1, " ", 1);
 			i++;
 		}
-		if (n_opt == 0)
+		if (flag == 0)
 			write(1, "\n", 1);
 	}
+	data->exit_status = 0;
 	return (1);
 }

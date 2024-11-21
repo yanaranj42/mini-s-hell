@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 19:14:20 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:57:41 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int	go_to_path(int opt, t_general *data)
 		upd_oldpwd(data);
 		env_path = get_env_path(data, "HOME");
 		if (!env_path)
-			return (ft_putendl_fd("minishell: cd: HOME is not set", 2), 0);
+			return (ft_putendl_fd("minishell: cd: HOME is not set", 2), 1);
 	}
 	if (opt == 1)
 	{
 		env_path = get_env_path(data, "OLDPWD");
 		if (!env_path)
-			return (ft_putendl_fd("minish: cd: OLDPWD not set", STDOUT), -1);
+			return (ft_putendl_fd("minish: cd: OLDPWD not set", STDOUT), 1);
 		upd_oldpwd(data);
 	}
 	ret = chdir(env_path);
@@ -96,7 +96,7 @@ int	ft_cd(t_general *data, char **arg, int cd_ret)
 	char	dir[PATH_MAX];
 
 	if (!arg[1] || arg[1][0] == '~')
-		return (go_to_path(0, data));
+		cd_ret = go_to_path(0, data);
 	else if (arg[1][0] == '-' && !arg[2])
 		cd_ret = do_oldpwd(data, arg);
 	else if (arg[2] != NULL)
