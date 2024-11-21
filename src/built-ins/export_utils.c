@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/21 02:04:29 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:46:24 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	print_export_lst(t_env *own_env)
 			{
 				ft_putstr_fd("=", STDOUT);
 				ft_putstr_fd("\"", STDOUT);
-				ft_putstr_fd(tmp->value, STDOUT);
+				if (tmp->value)
+					ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);
 			}
 			ft_putstr_fd("\n", STDOUT);

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 04:14:13 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:48:02 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	build_expanded_content(t_xtkn *xtkn, t_token *token, t_general *data)
 		account_quotes(token->content[i], data);
 		if (data->qdata.quotes == 1 || data->qdata.miniquotes == 1)
 			xtkn->heardoc_expansion = 0;
-		if (token->content[i] == '$')
+		if (token->content[i] == '$' && token->content[i + 1] != '\0')
 		{
 			i++;
 			if (there_is_expansion_to_manage(xtkn, token, &i, data) == 0)

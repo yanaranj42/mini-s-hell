@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 03:25:10 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 02:02:36 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:29:53 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	fill_path_env(t_general *data, char *name)
 	s_env = malloc(sizeof(t_env));
 	{
 		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
+			return (perror_message(NULL, "ENV creation failiure"), 0);
 	}
 	s_env->name = ft_strdup(name);
 	tmp = ft_strjoin("/usr/local/sbin:", "/usr/local/sbin:/usr/local/bin:");
@@ -49,7 +49,7 @@ int	fill_oldpwd(t_general *data, char *name)
 	s_env = malloc(sizeof(t_env));
 	{
 		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
+			return (perror_message(NULL, "ENV creation failiure"), 0);
 	}
 	s_env->name = ft_strdup(name);
 	s_env->value = ft_strdup("");
@@ -73,7 +73,7 @@ int	fill_empty_env(t_general *data, char *name, char *value)
 	s_env = malloc(sizeof(t_env));
 	{
 		if (!s_env)
-			return (perror_message(NULL, ERR02), 0);
+			return (perror_message(NULL, "ENV creation failiure"), 0);
 	}
 	s_env->name = ft_strdup(name);
 	if (name[0] == 'P')

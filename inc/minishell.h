@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 11:27:17 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:51:29 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-/*ERRORS*/ // PENDIENTE BORRAR Y PONER DIRECTAMENTE LOS ERRORES EN LOS MENSAJES
-# define ERR01 "Malloc error\n"
-# define ERR02 "ENV creation failiure"
 
 /*PARSING*/
 # define PIPE 1
@@ -163,7 +159,7 @@ void				init_non_bloquing_signals(void);
 void				init_heredoc_signals(void);
 void				init_ignore_signals(void);
 void				init_bloquing_signals(void);
-void				do_eof(void);
+void				do_eof(t_general *data);
 void				control_c_normal_handler(int sig);
 void				control_c_heredoc_handler(int sig);
 
@@ -332,7 +328,6 @@ int					init_new_process(t_general *data, t_cmd *cmd);
 int					create_child(t_general *data, t_cmd *cmd, int i, int n);
 void				check_cmd_path(t_cmd *cmd, char **paths, t_env *env);
 char				*check_cmd_access(char **paths, char *cmd_argv);
-char				*check_cmd_current_directory(char *cmd_argv);
 char				*check_cmd_absolut_path(char *cmd_argv);
 char				*check_cmd_relative_path(char *cmd_argv, char *path);
 int					build_command_path(char **tmp, char **tmp2, char *str,
@@ -368,7 +363,7 @@ int					env_update(t_general *data, char *k_word, char *n_value);
 char				*get_env_path(t_general *data, char *k_word);
 int					ft_echo(char **argv, t_general *data, int flag);
 void				ft_exit(t_general *data);
-int					ft_export(t_general *data);
+int					ft_export(char **argv, t_general *data);
 int					handle_args(t_general *data, char *argv);
 int					ft_unset(t_general *dat, t_cmd *cmd);
 void				do_unset(t_general *data, char *var);
@@ -415,8 +410,9 @@ void				command_not_found(char *start);
 void				perror_message(char *start, char *message);
 void				ambiguous_redirect(char *start);
 int					error_cd_last(t_general *data, char c, int flag);
-int					error_opt(char *s1, char *s2, char **arr, char *argv);
+int 				error_identifier(char *s1, char *s2, char **arr, char *argv);
 void				error_brk(t_general *data, char *msg, char *name, int flag);
+int					error_opt(char *s1, char c1);
 
 // FREE
 void				free_env(t_env *head);

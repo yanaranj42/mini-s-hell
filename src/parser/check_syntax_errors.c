@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:35:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/06 05:51:20 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:06:30 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ int	check_input(t_general *data, t_token *token)
 		unexpected_token_message("`|'");
 	else if (token->next->type == INPUT)
 		unexpected_token_message("`<'");
+	else if (token->next->type == HEREDOC)
+		unexpected_token_message("`<<'");
+	else if (token->next->type == OUTPUT)
+		unexpected_token_message("`>'");
+	else if (token->next->type == APPEND)
+		unexpected_token_message("`>>'");
 	else
 		return (1);
 	data->exit_status = 2;
@@ -72,8 +78,12 @@ int	check_output(t_general *data, t_token *token)
 		unexpected_token_message("`|'");
 	else if (token->next->type == INPUT)
 		unexpected_token_message("`<'");
+	else if (token->next->type == HEREDOC)
+		unexpected_token_message("`<<'");
 	else if (token->next->type == OUTPUT)
 		unexpected_token_message("`>'");
+	else if (token->next->type == APPEND)
+		unexpected_token_message("`>>'");
 	else
 		return (1);
 	data->exit_status = 2;

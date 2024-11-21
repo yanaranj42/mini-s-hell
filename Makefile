@@ -6,7 +6,7 @@
 #    By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/06 12:21:16 by mfontser          #+#    #+#              #
-#    Updated: 2024/11/20 20:53:14 by mfontser         ###   ########.fr        #
+#    Updated: 2024/11/21 16:36:56 by mfontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@
 NC = \033[0m
 GREEN = \033[1;92m
 RED = \033[1;91m
-#YELLOW = \033[1;33m
 YELLOW = \e[1;93m
 
 #------------------------------------------------VARIABLES---------------------------------------------------#
@@ -81,7 +80,7 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LDFLAGS = -lreadline
 
-LIBS = libs/Libft/libft.a -ldl -lm #-lglfw -lm
+LIBS = libs/Libft/libft.a
 
 #--------------------------------------------------NORMAS----------------------------------------------------#
 

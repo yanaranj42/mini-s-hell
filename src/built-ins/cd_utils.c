@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:03:39 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/20 13:21:49 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:52:35 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,5 @@ int	check_dir(char *path)
 		if (S_ISDIR(stats.st_mode))
 			return (1);
 	}
-	return (0);
-}
-
-int	error_dir(t_general *data, char *path)
-{
-	ft_putstr_fd("minishell: cd: ", STDOUT);
-	if (path)
-		ft_putstr_fd(path, STDOUT);
-	else
-	{
-		ft_putstr_fd("error retrieving current directory: ", STDERR);
-		ft_putstr_fd("getcwd: cannot access parent directories", STDERR);
-	}
-	ft_putstr_fd(": No such file or directory\n", STDOUT);
-	data->exit_status = 1;
 	return (0);
 }

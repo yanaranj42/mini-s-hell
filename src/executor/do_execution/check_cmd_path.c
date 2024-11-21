@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:24:27 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 01:45:27 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:16:47 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,6 @@ int	build_command_path(char **tmp, char **tmp2, char *str, char *cmd_argv)
 		return (0);
 	}
 	return (1);
-}
-
-char	*check_cmd_current_directory(char *cmd_argv)
-{
-	char	cwd[PATH_MAX];
-	char	*tmp;
-	char	*tmp2;
-
-	tmp = NULL;
-	tmp2 = NULL;
-	if (getcwd(cwd, PATH_MAX))
-	{
-		if (build_command_path(&tmp, &tmp2, cwd, cmd_argv) == 0)
-			return (NULL);
-		if (access(tmp2, F_OK) == 0)
-		{
-			if (access(tmp2, X_OK) == 0)
-			{
-				free(tmp);
-				return (tmp2);
-			}
-			else
-				permission_denied(cmd_argv);
-		}
-	}
-	free(tmp);
-	free(tmp2);
-	return (NULL);
 }
 
 char	*check_cmd_relative_path(char *cmd_argv, char *path)
@@ -103,22 +75,19 @@ void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 
 	flag = 0;
 	tmp = env;
-	cmd->path = check_cmd_current_directory(cmd->argv[0]);
-	if (!cmd->path)
+	
+	while (tmp)
 	{
-		while (tmp)
-		{
-			if (ft_strncmp("PATH", tmp->name, 5) == 0 && tmp->val == 0)
-				flag = 1;
-			tmp = tmp->next;
-		}
-		if (!paths || flag == 1)
-		{
-			cmd->path = check_cmd_absolut_path(cmd->argv[0]);
-			if (cmd->path == NULL)
-				command_not_found(cmd->argv[0]);
-		}
-		else
-			cmd->path = check_cmd_access(paths, cmd->argv[0]);
+		if (ft_strncmp("PATH", tmp->name, 5) == 0 && tmp->val == 0)
+			flag = 1;
+		tmp = tmp->next;
 	}
+	if (!paths || flag == 1)
+	{
+		cmd->path = check_cmd_absolut_path(cmd->argv[0]);
+		if (cmd->path == NULL)
+			command_not_found(cmd->argv[0]);
+	}
+	else
+		cmd->path = check_cmd_access(paths, cmd->argv[0]);
 }

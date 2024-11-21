@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 03:16:29 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:20:33 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 			free_matrix_env(data);
 			return (0);
 		}
-		data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
+		if  (!tmp->value)
+			data->env_matrix[*i] = ft_strjoin(half_str, "");
+		else
+			 data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
 		if (!data->env_matrix[*i])
 		{
 			free(half_str);

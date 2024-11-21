@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:54:46 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 20:06:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:29:11 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	get_own_env(t_general *data, char **env)
 		{
 			s_env = malloc(sizeof(t_env));
 			if (!s_env)
-				return (perror_message(NULL, ERR02), 0);
+				return (perror_message(NULL, "ENV creation failiure"), 0);
 			if (fill_env_node(data, s_env, env, i) == 0)
 				return (0);
 			env_to_lst(data, s_env);

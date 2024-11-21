@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 13:07:54 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 02:00:15 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:25:38 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_args(t_general *data, char *argv)
 		data->equal = 1;
 	arr = ft_split(argv, '=');
 	if (!export_opt(arr[0], argv))
-		return (error_opt(arr[0], arr[1], arr, argv));
+		return (error_identifier(arr[0], arr[1], arr, argv));
 	else
 	{
 		if (ft_strchr(arr[0], '+'))
@@ -41,21 +41,21 @@ int	handle_args(t_general *data, char *argv)
 	return (arr_clean(arr), 0);
 }
 
-int	ft_export(t_general *data)
+int	ft_export(char **argv, t_general *data)
 {
 	t_env	*tmp_env;
-	char	**argv;
 	int		i;
 
 	i = 1;
-	argv = data->first_cmd->argv;
 	tmp_env = data->env_lst;
 	if (!argv[1])
 		return (print_export_lst(tmp_env));
 	while (argv[i])
 	{
+		if (argv[i][0] == '-')
+			return (data->exit_status = error_opt("export", argv[i][1]));
 		if (argv[i][0] == '=')
-			data->exit_status = error_opt("", "\'", NULL, argv[i]);
+			data->exit_status = error_identifier("", "\'", NULL, argv[i]);
 		else if (!data->exit_status)
 			data->exit_status = handle_args(data, argv[i]);
 		else

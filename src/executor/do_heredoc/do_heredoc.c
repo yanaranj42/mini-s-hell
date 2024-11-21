@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 23:52:20 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:47:50 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 		init_ignore_signals();
 	heredoc_father_status(data, &pid, pipe_fd);
 	if (data->exit_status == 1)
+	{
+		free_executor_process(data);
 		return (0);
+	}
 	return (1);
 }
 
@@ -63,7 +66,7 @@ int	do_heredoc(t_general *data)
 			{
 				if (manage_heredoc_stuff(data, pipe_fd, redir) == 0)
 				{
-					printf("Error: There have been problems doing the heredoc");
+					printf("Error: There have been problems doing the heredoc\n");
 					return (0);
 				}
 			}

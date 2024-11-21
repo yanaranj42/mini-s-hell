@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/21 02:55:16 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:02:04 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
+			if(env->value && env->value[0] == '\0')
+				free(env->value);
 			upd_node(env, NULL, value, data->equal);
-			if (ft_strncmp(value, "", 1) == 0)
-				free(value);
 			return ;
 		}
 		env = env->next;
