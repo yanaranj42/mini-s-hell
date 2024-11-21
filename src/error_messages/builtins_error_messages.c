@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 02:45:09 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:25:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ int	error_cd_last(t_general *data, char c, int flag)
 		data->exit_status = 1;
 	}
 	return (data->exit_status);
-}
-
-int	error_env(void)
-{
-    ft_putstr_fd("minishell: env:", STDERR);
-    ft_putstr_fd(" No such file or directory\n", STDERR);
-	return (127);
 }
 
 int error_opt(char *s1, char *s2, char **arr, char *argv)

@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 23:41:06 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 03:17:11 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:26:34 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 
 int	ft_env(t_env *env)
 {
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (ft_strncmp("PATH", tmp->name, 5) == 0)
-			return (error_env());
-		tmp = tmp->next;
-	}
 	while (env)
 	{
 		if (env->hidden == 0 && env->val == 1)

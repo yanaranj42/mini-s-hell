@@ -6,7 +6,7 @@
 /*   By: yanaranj <yanaranj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 03:11:55 by yanaranj         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:27:23 by yanaranj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,7 +416,6 @@ void				ambiguous_redirect(char *start);
 int					error_cd_last(t_general *data, char c, int flag);
 int					error_opt(char *s1, char *s2, char **arr, char *argv);
 void				error_brk(t_general *data, char *msg, char *name, int flag);
-int					error_env(void);
 
 // FREE
 void				free_env(t_env *head);
