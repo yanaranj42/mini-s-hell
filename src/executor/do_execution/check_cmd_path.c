@@ -75,7 +75,6 @@ void	check_cmd_path(t_cmd *cmd, char **paths, t_env *env)
 
 	flag = 0;
 	tmp = env;
-	
 	while (tmp)
 	{
 		if (ft_strncmp("PATH", tmp->name, 5) == 0 && tmp->val == 0)

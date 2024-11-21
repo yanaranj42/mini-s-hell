@@ -6,12 +6,18 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 00:28:49 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 18:20:33 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:23:59 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+
+void	free_things(t_general *data)
+{
+	free_xtkns_list(data);
+	free_matrix_env(data);
+}
 
 int	fill_matrix(t_env *tmp, t_general *data, int *i)
 {
@@ -22,19 +28,17 @@ int	fill_matrix(t_env *tmp, t_general *data, int *i)
 		half_str = ft_strjoin(tmp->name, "=");
 		if (!half_str)
 		{
-			free_xtkns_list(data);
-			free_matrix_env(data);
+			free_things(data);
 			return (0);
 		}
-		if  (!tmp->value)
+		if (!tmp->value)
 			data->env_matrix[*i] = ft_strjoin(half_str, "");
 		else
-			 data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
+			data->env_matrix[*i] = ft_strjoin(half_str, tmp->value);
 		if (!data->env_matrix[*i])
 		{
 			free(half_str);
-			free_matrix_env(data);
-			free_xtkns_list(data);
+			free_things(data);
 			return (0);
 		}
 		free(half_str);

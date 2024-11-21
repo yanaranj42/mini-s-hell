@@ -13,22 +13,22 @@
 #include "libft.h"
 #include "minishell.h"
 
-void    execute_builtin(t_general *data, t_cmd *cmd)
+void	execute_builtin(t_general *data, t_cmd *cmd)
 {
-    if (data->builtin == 1)
-        ft_echo(cmd->argv, data, 0);
-    else if (data->builtin == 2)
-        data->exit_status = ft_cd(data, cmd->argv, data->exit_status);
-    else if (data->builtin == 3)
-        data->exit_status = ft_pwd(data->env_lst);
-    else if (data->builtin == 4)
-        data->exit_status = ft_env(data->env_lst);
-    else if (data->builtin == 5)
-        ft_exit(data);
-    else if (data->builtin == 6)
-        ft_export(cmd->argv, data);
-    else if (data->builtin == 7)
-        data->exit_status = ft_unset(data, cmd);
+	if (data->builtin == 1)
+		ft_echo(cmd->argv, data, 0);
+	else if (data->builtin == 2)
+		data->exit_status = ft_cd(data, cmd->argv, data->exit_status);
+	else if (data->builtin == 3)
+		data->exit_status = ft_pwd(data->env_lst);
+	else if (data->builtin == 4)
+		data->exit_status = ft_env(data->env_lst);
+	else if (data->builtin == 5)
+		ft_exit(data);
+	else if (data->builtin == 6)
+		ft_export(cmd->argv, data);
+	else if (data->builtin == 7)
+		data->exit_status = ft_unset(data, cmd);
 }
 
 int	is_builtin(t_cmd *cmd)

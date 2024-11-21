@@ -13,54 +13,54 @@
 #include "libft.h"
 #include "minishell.h"
 
-void    do_unset(t_general *data, char *var)
+void	do_unset(t_general *data, char *var)
 {
-    t_env   *head;
-    head = data->env_lst;
-    while (head)
-    {
-        if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
-            && (ft_strlen(head->name) == ft_strlen(var)))
-        {
-            free(head->value);
-            head->value = ft_strdup("");
-            head->val = 0;
-            head->hidden = 1;
-            break ;
-        }
-        head = head->next;
-    }
+	t_env	*head;
+
+	head = data->env_lst;
+	while (head)
+	{
+		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
+			&& (ft_strlen(head->name) == ft_strlen(var)))
+		{
+			free(head->value);
+			head->value = ft_strdup("");
+			head->val = 0;
+			head->hidden = 1;
+			break ;
+		}
+		head = head->next;
+	}
 }
 
 /*void    do_unset(t_general *data, char *var)
 {
-    t_env   *head;
-    char    *value;
-    head = data->env_lst;
-    value = NULL;
-    while (head)
-    {
-        if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
-            && (ft_strlen(head->name) == ft_strlen(var)))
-        {
-            free(head->value);
-            value = ft_strdup("");
-            head->value = value;
-            head->val = 0;
-            head->hidden = 1;
-            if (!head->value || ft_strncmp(head->value, "", 1) == 0)
-                free(value);
-            break ;
-        }
-        head = head->next;
-    }
-}*/
-
-int	ft_unset(t_general *data, t_cmd *cmd)
-{
+	t_env	*head;
+	char	*value;
 	char	**argv;
 	int		i;
 
+	head = data->env_lst;
+	value = NULL;
+	while (head)
+	{
+		if (ft_strncmp(head->name, var, ft_strlen(var)) == 0
+			&& (ft_strlen(head->name) == ft_strlen(var)))
+		{
+			free(head->value);
+			value = ft_strdup("");
+			head->value = value;
+			head->val = 0;
+			head->hidden = 1;
+			if (!head->value || ft_strncmp(head->value, "", 1) == 0)
+				free(value);
+			break ;
+		}
+		head = head->next;
+	}
+}*/
+int	ft_unset(t_general *data, t_cmd *cmd)
+{
 	i = 1;
 	argv = cmd->argv;
 	if (!argv[i] || argv[i][0] == '_')

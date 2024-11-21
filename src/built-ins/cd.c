@@ -27,8 +27,8 @@ char	*get_env_path(t_general *data, char *k_word)
 		len = ft_strlen(tmp->name);
 	while (tmp)
 	{
-		if (ft_strncmp(k_word, tmp->name, len) == 0
-			&& tmp->hidden == 0 && tmp->val == 1)
+		if (ft_strncmp(k_word, tmp->name, len) == 0 && tmp->hidden == 0
+			&& tmp->val == 1)
 			return (tmp->value);
 		else
 			tmp = tmp->next;

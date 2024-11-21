@@ -92,7 +92,7 @@ void	add_upd_env(t_general *data, char *name, char *value)
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
-			if(env->value && env->value[0] == '\0')
+			if (env->value && env->value[0] == '\0')
 				free(env->value);
 			upd_node(env, NULL, value, data->equal);
 			return ;

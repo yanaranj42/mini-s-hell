@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 14:21:29 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:25:59 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	error_cd_last(t_general *data, char c, int flag)
 	return (data->exit_status);
 }
 
-int error_identifier(char *s1, char *s2, char **arr, char *argv)
+int	error_identifier(char *s1, char *s2, char **arr, char *argv)
 {
 	write(2, RED, ft_strlen(RED));
 	ft_putstr_fd("💀 minishell: export: `", STDERR);

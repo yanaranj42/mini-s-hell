@@ -40,7 +40,7 @@ static int	n_flag(char *argv)
 int	ft_echo(char **argv, t_general *data, int flag)
 {
 	int	i;
-	
+
 	i = 1;
 	if (args_counter(argv) >= 1)
 	{

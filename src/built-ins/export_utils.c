@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/21 18:46:24 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:29:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	print_sort(t_env *own_env)
 	{
 		if (tmp->next && tmp->hidden == 0)
 		{
-			if (ft_strncmp(tmp->name, tmp->next->name, \
-			ft_strlen(tmp->name)) > 0)
+			if (ft_strncmp(tmp->name, tmp->next->name,
+					ft_strlen(tmp->name)) > 0)
 			{
 				swap_node(tmp, tmp->next);
 				tmp = own_env;
@@ -70,8 +70,7 @@ int	print_export_lst(t_env *own_env)
 			ft_putstr_fd(tmp->name, STDOUT);
 			if (tmp->val == 1)
 			{
-				ft_putstr_fd("=", STDOUT);
-				ft_putstr_fd("\"", STDOUT);
+				ft_putstr_fd("=\"", STDOUT);
 				if (tmp->value)
 					ft_putstr_fd(tmp->value, STDOUT);
 				ft_putstr_fd("\"", STDOUT);

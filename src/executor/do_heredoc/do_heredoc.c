@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 21:34:31 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 12:47:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:19:19 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	create_heredoc_pipe(t_general *data, int *pipe_fd)
 
 int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 {
-	int		pid;
+	int	pid;
 
 	pid = 0;
 	if (create_heredoc_pipe(data, pipe_fd) == 0)
@@ -38,7 +38,7 @@ int	manage_heredoc_stuff(t_general *data, int *pipe_fd, t_redir *redir)
 		return (0);
 	}
 	if (pid == 0)
-		child_heredoc_process (data, pipe_fd, redir);
+		child_heredoc_process(data, pipe_fd, redir);
 	else
 		init_ignore_signals();
 	heredoc_father_status(data, &pid, pipe_fd);
@@ -66,12 +66,12 @@ int	do_heredoc(t_general *data)
 			{
 				if (manage_heredoc_stuff(data, pipe_fd, redir) == 0)
 				{
-					printf("Error: There have been problems doing the heredoc\n");
+					printf("Error: There have been problems with heredoc\n");
 					return (0);
 				}
 			}
 			if (data->exit_status == 130)
-				return (free_control_c_in_heredoc (data), 0);
+				return (free_control_c_in_heredoc(data), 0);
 			redir = redir->next;
 		}
 		cmd = cmd->next;

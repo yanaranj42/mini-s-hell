@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 18:51:29 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:24:45 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,7 @@ int					executor(t_general *data);
 int					preparations_for_the_executor(t_general *data);
 int					get_matrix_env(t_general *data, t_env *env_lst);
 int					env_matrix_base(t_env *env_lst);
+void				free_things(t_general *data);
 int					fill_matrix(t_env *tmp, t_general *data, int *i);
 int					get_all_paths(t_env *env_lst, t_general *data);
 t_env				*there_is_path(t_env *env_lst);
@@ -410,7 +411,8 @@ void				command_not_found(char *start);
 void				perror_message(char *start, char *message);
 void				ambiguous_redirect(char *start);
 int					error_cd_last(t_general *data, char c, int flag);
-int 				error_identifier(char *s1, char *s2, char **arr, char *argv);
+int					error_identifier(char *s1, char *s2, char **arr,
+						char *argv);
 void				error_brk(t_general *data, char *msg, char *name, int flag);
 int					error_opt(char *s1, char c1);
 
