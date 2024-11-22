@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/11 12:10:52 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/21 23:28:41 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*check_cmd_access(char **paths, char *cmd_argv)
 	int		i;
 	char	*tmp;
 
-	if (cmd_argv == NULL)
+	if (cmd_argv == NULL || cmd_argv[0] == '\0') //para el caso que el omand sea '' o ""
 	{
 		command_not_found("''");
 		return (NULL);

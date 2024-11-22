@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:46:16 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/21 19:29:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:08:14 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	export_plus_var(t_general *data, char *name, char *value)
 
 	env_var = find_env_var(data, name);
 	if (!env_var || ft_strncmp(name, "_", 1) == 0)
-		return ((void)add_upd_env(data, name, value));
+		return ((void)add_upd_env(data, name, &value));
 	else
 	{
 		env = data->env_lst;

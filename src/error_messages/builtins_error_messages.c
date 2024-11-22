@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 19:25:59 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:57:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 int	error_dir(t_general *data, char *path)
 {
 	write(2, RED, ft_strlen(RED));
-	ft_putstr_fd("💀 minishell: cd: ", STDOUT);
+	ft_putstr_fd("💀 minishell: cd: ", STDERR);
 	if (path)
-		ft_putstr_fd(path, STDOUT);
+		ft_putstr_fd(path, STDERR);
 	else
 	{
 		ft_putstr_fd("error retrieving current directory: ", STDERR);
 		ft_putstr_fd("getcwd: cannot access parent directories", STDERR);
 	}
-	ft_putstr_fd(": No such file or directory\n", STDOUT);
+	ft_putstr_fd(": No such file or directory\n", STDERR);
 	write(2, END, ft_strlen(END));
 	data->exit_status = 1;
 	return (0);
@@ -64,7 +64,7 @@ int	error_identifier(char *s1, char *s2, char **arr, char *argv)
 	ft_putstr_fd(s2, STDERR);
 	ft_putstr_fd(": not a valid identifier\n", STDERR);
 	write(2, END, ft_strlen(END));
-	free(s2);
+	//free(s2);
 	arr_clean(arr);
 	return (1);
 }

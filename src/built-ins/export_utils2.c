@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/21 19:02:04 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:08:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,29 +78,38 @@ void	upd_node(t_env *env, char *old_value, char *value, int equal)
 	env->hidden = 0;
 }
 
-void	add_upd_env(t_general *data, char *name, char *value)
+void	add_upd_env(t_general *data, char *name, char **value)
 {
 	t_env	*env;
 
 	if (ft_strncmp(name, "_", 1) == 0)
 		return ;
-	if (value == NULL && data->equal == 1)
-		value = ft_strdup("");
+	if (*value == NULL && data->equal == 1)
+		*value = ft_strdup("");
 	env = data->env_lst;
 	while (env != NULL)
 	{
 		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
 			&& (ft_strlen(env->name) == ft_strlen(name)))
 		{
-			if (env->value && env->value[0] == '\0')
+			if (env->value) // solo liberabamos en caso de que fuera un valor ""
+			{
 				free(env->value);
-			upd_node(env, NULL, value, data->equal);
+				env->value = NULL; //aqui
+			}
+			upd_node(env, NULL, *value, data->equal);
+			free(*value); // esto tambien
+			*value = NULL;
 			return ;
 		}
 		env = env->next;
 	}
-	if (env_add_last(data, name, value) == 0)
+	if (env_add_last(data, name, *value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
-	if (!value || ft_strncmp(value, "", 1) == 0)
-		free(value);
+	//if (value) //en todos los casos si hay value me lo cargo, ya lo use e hize strdups a donde meti eso
+	if (!(*value) || ft_strncmp(*value, "", 1) == 0)
+	{
+		free(*value);
+		*value = NULL;
+	}
 }

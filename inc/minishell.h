@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:40:28 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 20:30:46 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:07:40 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ int					export_opt(char *name, char *argv);
 void				export_plus_var(t_general *data, char *name, char *value);
 char				*find_env_var(t_general *data, char *var_name);
 int					env_add_last(t_general *data, char *name, char *value);
-void				add_upd_env(t_general *data, char *name, char *value);
+void				add_upd_env(t_general *data, char *name, char **value);
 
 // UTILS
 void				account_quotes(char c, t_general *data);
