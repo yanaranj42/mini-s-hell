@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/22 00:08:49 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:54:09 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,27 @@ void	upd_node(t_env *env, char *old_value, char *value, int equal)
 	env->hidden = 0;
 }
 
+void loop_add_upd_env (t_general *data, char *name, t_env	*env, char **value) // DA SEGFAULT - REVISAR QUE ESTE LLEGANDO TODO BIEN
+{
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
+			&& (ft_strlen(env->name) == ft_strlen(name)))
+		{
+			if (env->value)
+			{
+				free(env->value);
+				env->value = NULL;
+			}
+			upd_node(env, NULL, *value, data->equal);
+			free(*value);
+			*value = NULL;
+			return ;
+		}
+		env = env->next;
+	}
+}
+
 void	add_upd_env(t_general *data, char *name, char **value)
 {
 	t_env	*env;
@@ -87,26 +108,12 @@ void	add_upd_env(t_general *data, char *name, char **value)
 	if (*value == NULL && data->equal == 1)
 		*value = ft_strdup("");
 	env = data->env_lst;
-	while (env != NULL)
-	{
-		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
-			&& (ft_strlen(env->name) == ft_strlen(name)))
-		{
-			if (env->value) // solo liberabamos en caso de que fuera un valor ""
-			{
-				free(env->value);
-				env->value = NULL; //aqui
-			}
-			upd_node(env, NULL, *value, data->equal);
-			free(*value); // esto tambien
-			*value = NULL;
-			return ;
-		}
-		env = env->next;
-	}
+	
+	loop_add_upd_env (data, name, env, value);
+
+
 	if (env_add_last(data, name, *value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
-	//if (value) //en todos los casos si hay value me lo cargo, ya lo use e hize strdups a donde meti eso
 	if (!(*value) || ft_strncmp(*value, "", 1) == 0)
 	{
 		free(*value);

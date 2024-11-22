@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 02:53:52 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:38:46 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	permission_denied(char *start)
 {
 	write(2, RED, ft_strlen(RED));
 	write(2, "💀 minishell: ", 16);
-	write(2, "Permission denied: ", 19);
 	write(2, start, ft_strlen(start));
+	write(2, ": Permission denied", 19);
 	write(2, END, ft_strlen(END));
 	write(2, "\n", 1);
 	exit(126);
@@ -39,8 +39,8 @@ void	command_not_found(char *start)
 {
 	write(2, RED, ft_strlen(RED));
 	write(2, "💀 minishell: ", 16);
-	write(2, "Command not found: ", 19);
 	write(2, start, ft_strlen(start));
+	write(2, ": Command not found", 19);
 	write(2, END, ft_strlen(END));
 	write(2, "\n", 1);
 	exit(127);
