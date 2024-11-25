@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 20:04:20 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 13:08:58 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:58:21 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,25 @@ int	adapt_xtkn_list(t_xtkn *xtkn, t_general *data, char **splited_content,
 	return (1);
 }
 
+//BORRARRRR
+void debug_xtoken(t_xtkn	*xtkn, int num)
+{
+	char *type[] = {"null", "PIPE", "INPUT", "HEREDOC", "OUTPUT", "APPEND", "FILE_REDIRECTION", "CMD_ARGV"};
+
+	printf("\n  >> Contenido del xtkn %d:\n", num);
+	printf("     contenido = |%s|\n", xtkn->content);
+	printf("     tipo de xtkn: %d (%s)\n", xtkn->type, type[xtkn->type]);
+	printf("     xtkn actual: %p\n", xtkn);
+	printf("     next apunta a %p\n", xtkn->next);
+	printf("     back apunta a %p\n\n", xtkn->back);
+}
+
 int	split_xtkn(t_xtkn *xtkn, t_general *data)
 {
 	char	**splited_content;
 	int		i;
 	t_xtkn	*new_xtkn;
+	int num = 0; //BORRAR
 
 	splited_content = ft_token_split(xtkn->content, ' ', data);
 	if (!splited_content)
@@ -82,6 +96,13 @@ int	split_xtkn(t_xtkn *xtkn, t_general *data)
 	{
 		if (adapt_xtkn_list(xtkn, data, splited_content, new_xtkn) == 0)
 			return (0);
+	}
+	t_xtkn *super_tmp = data->first_xtkn; // BORRAR
+	while (super_tmp) //BORRAR
+	{
+		debug_xtoken(super_tmp, num); // PARA CHECKEAR, LUEGO BORRAR
+		num++; //BORRAR
+		super_tmp= super_tmp->next; // BORRAR
 	}
 	free_splited_content(splited_content);
 	return (1);
