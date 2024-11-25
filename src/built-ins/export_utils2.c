@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 11:44:50 by yaja              #+#    #+#             */
-/*   Updated: 2024/11/22 14:54:09 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/23 21:03:34 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	upd_node(t_env *env, char *old_value, char *value, int equal)
 	env->hidden = 0;
 }
 
-void loop_add_upd_env (t_general *data, char *name, t_env	*env, char **value) // DA SEGFAULT - REVISAR QUE ESTE LLEGANDO TODO BIEN
+int	loop_add_upd_env(t_general *data, char *name, t_env *env, char **value)
 {
 	while (env != NULL)
 	{
@@ -93,10 +93,11 @@ void loop_add_upd_env (t_general *data, char *name, t_env	*env, char **value) //
 			upd_node(env, NULL, *value, data->equal);
 			free(*value);
 			*value = NULL;
-			return ;
+			return (0);
 		}
 		env = env->next;
 	}
+	return (1);
 }
 
 void	add_upd_env(t_general *data, char *name, char **value)
@@ -108,10 +109,8 @@ void	add_upd_env(t_general *data, char *name, char **value)
 	if (*value == NULL && data->equal == 1)
 		*value = ft_strdup("");
 	env = data->env_lst;
-	
-	loop_add_upd_env (data, name, env, value);
-
-
+	if (loop_add_upd_env(data, name, env, value) == 0)
+		return ;
 	if (env_add_last(data, name, *value) == 0)
 		return ((void)error_brk(data, "malloc", NULL, 12));
 	if (!(*value) || ft_strncmp(*value, "", 1) == 0)

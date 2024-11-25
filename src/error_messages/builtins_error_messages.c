@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 20:05:12 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/22 12:57:25 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/25 00:26:03 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	error_identifier(char *s1, char *s2, char **arr, char *argv)
 	ft_putstr_fd(s2, STDERR);
 	ft_putstr_fd(": not a valid identifier\n", STDERR);
 	write(2, END, ft_strlen(END));
-	//free(s2);
 	arr_clean(arr);
 	return (1);
 }

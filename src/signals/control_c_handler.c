@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:48:15 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/20 01:55:50 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:20:49 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ void	control_c_normal_handler(int sig)
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_error = 130;
+		g_signal_received = 1;
 	}
 }

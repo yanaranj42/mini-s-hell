@@ -6,14 +6,14 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 20:21:45 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 18:51:37 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:20:25 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-int		g_error = 0;
+volatile sig_atomic_t	g_signal_received = 0;
 
 void	do_eof(t_general *data)
 {
@@ -21,13 +21,13 @@ void	do_eof(t_general *data)
 	printf("\n");
 	free_env(data->env_lst);
 	printf("exit\n");
-	exit(g_error);
+	exit(data->exit_status);
 }
 
 void	init_non_bloquing_signals(void)
 {
-	if (g_error != 0)
-		g_error = 0;
+	if (g_signal_received != 0)
+		g_signal_received = 0;
 	signal(SIGINT, control_c_normal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

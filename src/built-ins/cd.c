@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:23:07 by yanaranj          #+#    #+#             */
-/*   Updated: 2024/11/21 20:32:03 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:50:42 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,13 @@ int	ft_cd(t_general *data, char **arg, int cd_ret)
 		return (error_cd_last(data, '\0', 0));
 	else
 	{
-		if (!check_dir(arg[1]))
-			return (error_dir(data, arg[1]));
 		upd_oldpwd(data);
 		cd_ret = chdir(arg[1]);
 		if (cd_ret < 0)
-			cd_ret *= -1;
+		{
+			perror(RED"💀 minishell: cd"END);
+			return (cd_ret *= -1);
+		}
 		else if (cd_ret != 0)
 			printf(RED "ERROR de args" END);
 		getcwd(dir, PATH_MAX);

@@ -6,7 +6,7 @@
 /*   By: mfontser <mfontser@student.42.barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:00:25 by mfontser          #+#    #+#             */
-/*   Updated: 2024/11/21 18:51:05 by mfontser         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:20:31 by mfontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	minishell_loop(t_general *data)
 {
 	init_non_bloquing_signals();
 	data->line = readline("🔥 ÐrackyŠhell ▶ ");
+	if (g_signal_received != 0)
+		data->exit_status = 130;
 	if (!data->line)
 		do_eof(data);
 	init_ignore_signals();
-	if (g_error != 0)
-		data->exit_status = g_error;
 	if (!line_is_empty_or_whitespace(data->line))
 		add_history(data->line);
 	if (lexer(data) == 0)
